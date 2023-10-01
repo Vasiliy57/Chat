@@ -1,0 +1,78 @@
+.user {
+  padding: 12px 0;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px 24px;
+}
+
+.user-select {
+  background-color: #00a2ff44;
+  padding: 12px 0;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px 24px;
+}
+
+.img {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+
+.info {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.name {
+  font-size: 1.8rem;
+  color: var(--color-user-name);
+  font-weight: 600;
+  max-width: 176px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  line-height: 1.2;
+}
+
+.lastMessage {
+  font-size: 1.4rem;
+  color: #E0E0E0;
+  max-width: 196px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  line-height: 1.2;
+}
+
+.time {
+  font-size: 1.4rem;
+  color: #E0E0E0;
+}
+
+.count {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-white);
+  background: var(--color-light-blue);
+  border-radius: 50%;
+  padding: 3px 6px;
+}

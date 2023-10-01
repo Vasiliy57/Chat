@@ -1,0 +1,27 @@
+html {
+  font-size: 10px;
+  font-family: sans-serif;
+}
+
+body {
+  min-width: 300px;
+  background-color: var(--color-bg-dark);
+}
+
+:root {
+  --color-orange: #F7A279;
+  --color-green: #73BA9A;
+  --color-purpure: #8267C6;
+  --color-grey: #81858F;
+  --color-white: #fff;
+  --color-light-grey: #aebada;
+
+  --color-bg-dark: #313131;
+  /* --color-bg-dark: #141325; */
+  --color-bg-main: #121212;
+  /* --color-bg-main: #0A0A14; */
+
+  --color-light-blue: #00A3FF;
+  --color-user-name: #DADADA;
+  --fs-description: 2rem;
+}

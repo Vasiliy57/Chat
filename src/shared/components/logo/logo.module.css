@@ -1,0 +1,18 @@
+.logo {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.icon {
+  width: 33px;
+  height: 30px;
+}
+
+.name {
+  font-weight: 600;
+  font-size: 22px;
+  color: var(--color-light-blue);
+  line-height: 1;
+  padding-top: 6px;
+}

@@ -1,0 +1,9 @@
+.btn {
+  font-size: var(--fs-description);
+  padding: 15px;
+  background-color: var(--color-light-blue);
+  border-radius: 10px;
+  color: var(--color-white);
+  font-weight: 600;
+  line-height: 1;
+}

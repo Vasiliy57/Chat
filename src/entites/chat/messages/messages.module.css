@@ -1,0 +1,25 @@
+.messages {
+  padding: 0 45px 10px 45px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: flex-end; */
+  overflow-y: auto;
+}
+
+
+
+.messages::-webkit-scrollbar {
+  width: 5px;
+  background-color: var(--color-bg-main);
+}
+
+.messages::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: var(--color-light-blue);
+}
+
+.messages::-webkit-scrollbar-track {
+  border-radius: 5px;
+  background-color: var(--color-bg-main);
+}

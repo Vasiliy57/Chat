@@ -1,0 +1,19 @@
+.friends {}
+
+
+.title {
+  color: #BCBCBC;
+  padding-left: 23px;
+  position: relative;
+  margin-bottom: 10px;
+  padding: 0 24px 0 50px;
+}
+
+.title::after {
+  content: url('./icon.svg');
+  position: absolute;
+  top: -1px;
+  left: 24px;
+  width: 14px;
+  height: 14px;
+}

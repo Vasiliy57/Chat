@@ -1,0 +1,82 @@
+.message {
+  position: relative;
+  padding-left: 64px;
+  margin-top: 10px;
+}
+
+.img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+
+.name {
+  font-size: 1.6rem;
+  color: var(--color-user-name);
+}
+
+.time {
+  font-size: 1.2rem;
+  color: #A0A0A0;
+
+}
+
+.text {
+  margin-top: 7px;
+  font-size: 1.8rem;
+  color: var(--color-user-name);
+  max-width: 564px;
+  padding: 16px 24px;
+  border: 1px solid #323232;
+  background-color: #292929;
+  line-height: 1.3;
+  letter-spacing: .6px;
+  border-radius: 0 14px 14px 14px;
+}
+
+
+.MyMessage {
+  position: relative;
+  padding-right: 64px;
+  align-self: flex-end;
+}
+
+.MyImg {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  /* margin-right: 20px; */
+}
+
+.MyName {
+  font-size: 1.6rem;
+  color: var(--color-user-name);
+  text-align: right;
+}
+
+.MyTime {
+  font-size: 1.2rem;
+  color: #A0A0A0;
+  margin-right: 10px;
+}
+
+.MyText {
+  margin-top: 7px;
+  font-size: 1.8rem;
+  color: var(--color-white);
+  max-width: 564px;
+  padding: 16px 24px;
+  border: 1px solid #323232;
+  background-color: var(--color-light-blue);
+  line-height: 1.3;
+  letter-spacing: .6px;
+  border-radius: 14px 0 14px 14px;
+  box-shadow: 1px 2px 6px #ffffff31;
+}

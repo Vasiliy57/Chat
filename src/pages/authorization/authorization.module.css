@@ -1,0 +1,44 @@
+.authorization {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  max-width: 560px;
+  width: 100%;
+  padding: 90px 90px 135px 90px;
+  gap: 50px;
+  border-radius: 15px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+
+  background-color: var(--color-bg-main);
+}
+
+.text {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--color-white);
+  text-align: center;
+}
+
+.link {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-light-blue);
+  white-space: nowrap;
+}
+
+@media (max-width:560px) {
+  .form {
+    padding: 90px 16% 135px 16%;
+  }
+}
+
+@media (max-width:460px) {
+  .form {
+    padding: 90px 5% 135px 5%;
+  }
+}

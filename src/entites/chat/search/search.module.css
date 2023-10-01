@@ -1,0 +1,29 @@
+.search {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  padding: 0 24px;
+}
+
+.input {
+  font-size: 1.6rem;
+  padding: 14px 40px;
+  border: 1px solid #cccfd05c;
+  border-radius: 12px;
+  background: var(--color-bg-main);
+  color: var(--color-white);
+  width: 100%;
+}
+
+.search::after {
+  content: url('./search-icon.svg');
+  position: absolute;
+  left: 39px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18.3px;
+  height: 18.3px;
+  z-index: 10;
+}
