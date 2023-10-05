@@ -1,13 +1,11 @@
 import { Button, FormInput, FormTitle } from '@/shared/ui'
-import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import classes from './authorization.module.css'
-import { IData, IStateProfile, IUser } from '../types'
+import { IData, IUser } from '../types'
 import { signInUserFirebase } from '@/firebase'
 import { setUser } from '@/shared/store/profile'
-import { getUser } from '@/firebase/fireStore'
 import { useAppDispatch } from '@shared/hooks'
-import { getUsers } from '@shared/store/users'
 
 export const Authorization: React.FC = () => {
   const [email, setEmail] = useState<string>('')
@@ -25,12 +23,11 @@ export const Authorization: React.FC = () => {
   const handlerBtnLogin = () => {
     signInUserFirebase(email, password)
       .then((data: IData): IUser => data.user)
-      .then(({ emailVerified }: IUser): void => {
-        dispatch(setUser({ emailVerified }))
+      .then((user: IUser): void => {
+        dispatch(setUser({ email: user.email, userName: user.userName, emailVerified: user.emailVerified }))
       })
-      .then(() => getUser(email))
-      .then((user) => dispatch(setUser({ ...user })))
-      .then(() => dispatch(getUsers(email)))
+      // .then(() => getUser(email))
+      // .then((user) => dispatch(setUser(user)))
       .catch((err) => {
         console.log(err.message)
       })

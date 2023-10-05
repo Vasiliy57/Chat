@@ -1,5 +1,7 @@
 export interface ISelectedUser {
-  name: string
-  status: string
+  currentDialogUser: {
+    userName: string | null
+    email: string | null
+  }
 
 }

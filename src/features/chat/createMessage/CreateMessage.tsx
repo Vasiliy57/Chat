@@ -2,9 +2,10 @@
 import { Button, ButtonIcon } from '@shared/ui'
 
 import classes from './createMessage.module.css'
+import { ICreateMessage } from './types'
 
 
-export const CreateMessage: React.FC = () => {
+export const CreateMessage: React.FC<ICreateMessage> = ({ currentDialogUser }) => {
 
   const styleBtnSend = {
     display: 'flex',
@@ -15,15 +16,25 @@ export const CreateMessage: React.FC = () => {
     lineHeight: 1,
   }
 
+  const currentUser = currentDialogUser.email || null
+
   return (
     <div className={classes.TypeMessage}>
-      <input className={classes.input} type='text' placeholder='Type message...' />
-      <span className={classes.smile}><ButtonIcon name='smile' onClick={() => { }} /></span>
-      <div className={classes.buttons}>
-        <ButtonIcon name='voice' onClick={() => { }} />
-        <ButtonIcon name='attach' onClick={() => { }} />
-        <Button name='Send' onClick={() => { }} style={styleBtnSend} />
-      </div>
+      {
+        currentUser
+          ?
+          <>
+            <input className={classes.input} type='text' placeholder='Type message...' />
+            <span className={classes.smile}><ButtonIcon name='smile' onClick={() => { }} /></span>
+            <div className={classes.buttons}>
+              <ButtonIcon name='voice' onClick={() => { }} />
+              <ButtonIcon name='attach' onClick={() => { }} />
+              <Button name='Send' onClick={() => { }} style={styleBtnSend} />
+            </div>
+          </>
+          : null
+      }
+
     </div>
   )
 }

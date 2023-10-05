@@ -1,10 +1,11 @@
 
 
 export interface IUser {
-  name?: string
-  email?: string
+  userName: string | null
+  email: string | null
   img?: string
   key?: string | number
   selectedUserEmail?: string | null
-  onSelectUser: (name?: string, email?: string) => void
+  selectDialog: (name: string | null, email: string | null) => void
+  currentDialogUser: { userName: string | null, email: string | null }
 }

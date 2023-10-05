@@ -1,6 +1,5 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { ProfileReducer } from '@shared/store/profile'
-import { UsersSlice } from '@shared/store/users'
 
 
 import {
@@ -24,7 +23,6 @@ const persistConfig = {
 
 export const rootReducer = combineReducers({
   ProfileReducer,
-  UsersSlice,
 });
 
 

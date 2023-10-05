@@ -4,10 +4,10 @@ import userImg from './user-img.jpg'
 import classes from './user.module.css'
 
 
-export const User: React.FC<IUser> = ({ name, email, img, selectedUserEmail, onSelectUser }) => {
-  const currentClassName = selectedUserEmail === email ? 'user-select' : 'user'
+export const User: React.FC<IUser> = ({ userName, email, img, currentDialogUser, selectDialog }) => {
+  const currentClassName = currentDialogUser.email === email ? 'user-select' : 'user'
   const onHandlerClick = () => {
-    onSelectUser(email, name)
+    selectDialog(email, userName)
   }
   return (
     <div className={classes[currentClassName]} onClick={onHandlerClick}>
@@ -21,7 +21,7 @@ export const User: React.FC<IUser> = ({ name, email, img, selectedUserEmail, onS
       <div className={classes.info}>
 
         <div className={classes.row}>
-          <div className={classes.name}>{name}</div>
+          <div className={classes.name}>{userName}</div>
           <div className={classes.lastMessage}>Hey, how's it going?</div>
         </div>
 

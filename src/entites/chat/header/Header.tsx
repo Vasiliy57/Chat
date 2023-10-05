@@ -1,17 +1,18 @@
 
-import { useAppSelector } from '@shared/hooks'
 import { SelectedUser } from '../selectedUser/SelectedUser'
 import classes from './header.module.css'
 import { ButtonIcon } from '@/shared/ui'
-export const Header: React.FC = () => {
-  const selectedUserEmail = useAppSelector(state => state.ProfileReducer.selectedUser.email)
+import { IHeader } from './types'
+
+export const Header: React.FC<IHeader> = ({ currentDialogUser }) => {
+  const currentUser = currentDialogUser.email || null
   return (
     <div className={classes.header}>
       {
-        selectedUserEmail
+        currentUser
           ?
           <>
-            <SelectedUser />
+            <SelectedUser currentDialogUser={currentDialogUser} />
             <div className={classes.row}>
               <ButtonIcon name='phone' onClick={() => { }} />
               <ButtonIcon name='video' onClick={() => { }} />

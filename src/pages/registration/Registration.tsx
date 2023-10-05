@@ -1,15 +1,12 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import classes from './registration.module.css'
 import { createNewUserFirebase } from '@/firebase'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Button, FormInput, FormTitle } from '@/shared/ui'
-import { IData, IStateProfile, IUser } from '../types'
+import { IData, IUser } from '../types'
 import { setUser } from '@/shared/store/profile'
-import { saveUser } from '@/firebase/fireStore'
-import { getUsers } from '@shared/store/users'
 import { useAppDispatch } from '@shared/hooks'
-
-
+import { saveUser } from '@/firebase/users'
 
 export const Registration: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -39,7 +36,6 @@ export const Registration: React.FC = () => {
           dispatch(setUser({ email, emailVerified, userName }))
         })
         .then(() => saveUser(email, userName))
-        .then(() => dispatch(getUsers(email)))
         .catch((err) => {
           console.log(err.message)
         })

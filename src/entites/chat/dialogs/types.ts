@@ -1,8 +1,8 @@
 import React from "react"
 
 interface IUser {
-  userName?: string
-  email?: string
+  userName: string | null
+  email: string | null
   img?: string
   key?: string | number
 }
@@ -10,4 +10,6 @@ interface IUser {
 export interface IFriendsProps {
   data: Array<IUser>
   renderDialog?: React.ReactNode
+  selectDialog: (email: string | null, userName: string | null) => void
+  currentDialogUser: IUser
 }
