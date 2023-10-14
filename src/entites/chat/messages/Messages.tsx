@@ -14,8 +14,6 @@ export const Messages: React.FC<IMessages> = ({ currentDialogUser }) => {
           ?
           <>
             {/* messages list */}
-            <Message myMessage={false} />
-            <Message myMessage={true} />
           </>
           : null
       }

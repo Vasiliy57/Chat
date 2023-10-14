@@ -1,11 +1,12 @@
 import { doc, setDoc } from "firebase/firestore"
 import { usersRef } from "../fireStore"
 
-export const saveUser = async (email: string, userName: string) => {
+export const saveUser = async (email: string, userName: string, userId: string) => {
   try {
-    setDoc(doc(usersRef, email), {
+    setDoc(doc(usersRef, userId), {
       email,
       userName,
+      userId
     })
 
   } catch (e) {

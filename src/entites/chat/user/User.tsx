@@ -1,13 +1,13 @@
 
-import { IUser } from './types'
+import { UserProps } from './types'
 import userImg from './user-img.jpg'
 import classes from './user.module.css'
 
 
-export const User: React.FC<IUser> = ({ userName, email, img, currentDialogUser, selectDialog }) => {
-  const currentClassName = currentDialogUser.email === email ? 'user-select' : 'user'
+export const User: React.FC<UserProps> = ({ userName, email, img, onSelectDialog, userId, isSelected }) => {
+  const currentClassName = isSelected ? 'user-select' : 'user'
   const onHandlerClick = () => {
-    selectDialog(email, userName)
+    onSelectDialog(email, userName, userId)
   }
   return (
     <div className={classes[currentClassName]} onClick={onHandlerClick}>

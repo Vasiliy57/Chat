@@ -24,10 +24,8 @@ export const Authorization: React.FC = () => {
     signInUserFirebase(email, password)
       .then((data: IData): IUser => data.user)
       .then((user: IUser): void => {
-        dispatch(setUser({ email: user.email, userName: user.userName, emailVerified: user.emailVerified }))
+        dispatch(setUser({ email: user.email, userName: user.userName, emailVerified: user.emailVerified, userId: user.userId }))
       })
-      // .then(() => getUser(email))
-      // .then((user) => dispatch(setUser(user)))
       .catch((err) => {
         console.log(err.message)
       })

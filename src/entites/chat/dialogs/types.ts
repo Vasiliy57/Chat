@@ -1,15 +1,16 @@
+import { TypeOnSelectDialog } from "@pages/chat/types"
 import React from "react"
 
-interface IUser {
-  userName: string | null
-  email: string | null
+export interface IUser {
+  userName: string
+  email: string
   img?: string
-  key?: string | number
+  userId: string
 }
 
 export interface IFriendsProps {
-  data: Array<IUser>
+  data: IUser[]
   renderDialog?: React.ReactNode
-  selectDialog: (email: string | null, userName: string | null) => void
-  currentDialogUser: IUser
+  onSelectDialog: TypeOnSelectDialog
+  currentDialogUser: IUser | null
 }

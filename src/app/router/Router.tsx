@@ -1,6 +1,6 @@
 import { Authorization } from '@pages/authorization/Authorization'
 import { Registration } from '@pages/registration/Registration'
-import { Main } from '@pages/main/Main'
+import { Chat } from '@pages/chat/Chat'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { useAppSelector } from '@shared/hooks'
 
@@ -12,8 +12,8 @@ const Router: React.FC = () => {
       {isAuth
         ?
         <Routes>
-          <Route path='/' element={<Main />} />
-          <Route path='/*' element={<Main />} />
+          <Route path='/' element={<Chat />} />
+          <Route path='/*' element={<Chat />} />
         </Routes>
         :
         <Routes>

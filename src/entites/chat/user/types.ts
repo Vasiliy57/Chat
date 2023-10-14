@@ -1,11 +1,12 @@
+import { TypeOnSelectDialog } from "@pages/chat/types"
 
 
-export interface IUser {
-  userName: string | null
-  email: string | null
+export interface UserProps {
+  userName: string
+  email: string
   img?: string
   key?: string | number
-  selectedUserEmail?: string | null
-  selectDialog: (name: string | null, email: string | null) => void
-  currentDialogUser: { userName: string | null, email: string | null }
+  userId: string
+  isSelected: boolean
+  onSelectDialog: TypeOnSelectDialog
 }

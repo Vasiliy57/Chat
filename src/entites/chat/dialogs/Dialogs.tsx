@@ -3,7 +3,7 @@ import { User } from '../user/User'
 import classes from './dialogs.module.css'
 import { IFriendsProps } from './types'
 
-export const Dialogs: React.FC<IFriendsProps> = ({ data, selectDialog, currentDialogUser }) => {
+export const Dialogs: React.FC<IFriendsProps> = ({ data, onSelectDialog, currentDialogUser }) => {
 
   return (
     <div className={classes.friends}>
@@ -13,8 +13,9 @@ export const Dialogs: React.FC<IFriendsProps> = ({ data, selectDialog, currentDi
           key={index}
           userName={user.userName}
           email={user.email}
-          currentDialogUser={currentDialogUser}
-          selectDialog={selectDialog} />
+          userId={user.userId}
+          isSelected={user.email === currentDialogUser?.email}
+          onSelectDialog={onSelectDialog} />
       })}
     </div>
   )
