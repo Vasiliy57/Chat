@@ -7,9 +7,11 @@ import { uniqueId } from '@shared/utils/uniqueId'
 // import { sendMessageDataBase } from '@/firebase/messages/sendMessageDataBase'
 import { useState } from 'react'
 import { useAppSelector } from '@shared/hooks'
+import { addDialog } from '@/firebase/users'
 
-export const CreateMessage: React.FC<ICreateMessage> = ({ currentDialogUser, dialogId }) => {
-  const email = useAppSelector(state => state.ProfileReducer.user.email)
+
+export const CreateMessage: React.FC<ICreateMessage> = ({ currentDialogUser, dialogId, setDialogId }) => {
+  const { email, userId } = useAppSelector(state => state.ProfileReducer.user)
 
   const [textMessage, setTextMessage] = useState<string>(' ')
 
@@ -24,8 +26,19 @@ export const CreateMessage: React.FC<ICreateMessage> = ({ currentDialogUser, dia
 
   const currentUser = currentDialogUser.email || null
 
-  const sendMessage = () => {
+  const onSendMessage = () => {
+
+    if (!dialogId) {
+      addDialog(userId, currentDialogUser.userId)
+        .then(data => console.log(data)
+        )
+      console.log(1);
+
+    }
+    console.log(2);
+
     const messagesId = dialogId
+
     // sendMessageDataBase(messagesId, email, textMessage)
   }
 
@@ -44,7 +57,7 @@ export const CreateMessage: React.FC<ICreateMessage> = ({ currentDialogUser, dia
             <div className={classes.buttons}>
               <ButtonIcon name='voice' onClick={() => { }} />
               <ButtonIcon name='attach' onClick={() => { }} />
-              <Button name='Send' onClick={sendMessage} style={styleBtnSend} />
+              <Button name='Send' onClick={onSendMessage} style={styleBtnSend} />
             </div>
           </>
           : null

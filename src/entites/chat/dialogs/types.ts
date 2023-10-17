@@ -8,9 +8,11 @@ export interface IUser {
   userId: string
 }
 
-export interface IFriendsProps {
-  data: IUser[]
+export interface DialogsProps {
+  myUserId: string | null
+  isMyDialogs: boolean
   renderDialog?: React.ReactNode
   onSelectDialog: TypeOnSelectDialog
   currentDialogUser: IUser | null
+  onSwitchDialogs: (dialogs: boolean) => void
 }
