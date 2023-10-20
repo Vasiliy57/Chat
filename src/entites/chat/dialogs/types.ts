@@ -1,5 +1,3 @@
-import { TypeOnSelectDialog } from "@pages/chat/types"
-import React from "react"
 
 export interface IUser {
   userName: string
@@ -9,10 +7,6 @@ export interface IUser {
 }
 
 export interface DialogsProps {
-  myUserId: string | null
   isMyDialogs: boolean
-  renderDialog?: React.ReactNode
-  onSelectDialog: TypeOnSelectDialog
-  currentDialogUser: IUser | null
   onSwitchDialogs: (dialogs: boolean) => void
 }

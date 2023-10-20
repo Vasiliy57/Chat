@@ -1,13 +1,16 @@
 
+import { useAppDispatch } from '@shared/hooks'
 import { UserProps } from './types'
 import userImg from './user-img.jpg'
 import classes from './user.module.css'
+import { setCurrentDialogUser } from '@shared/store/chat/chat'
 
 
-export const User: React.FC<UserProps> = ({ userName, email, img, onSelectDialog, userId, isSelected }) => {
+export const User: React.FC<UserProps> = ({ userName, email, img, userId, isSelected }) => {
+  const dispatch = useAppDispatch()
   const currentClassName = isSelected ? 'user-select' : 'user'
   const onHandlerClick = () => {
-    onSelectDialog(email, userName, userId)
+    dispatch(setCurrentDialogUser({ email, userName, userId }))
   }
   return (
     <div className={classes[currentClassName]} onClick={onHandlerClick}>

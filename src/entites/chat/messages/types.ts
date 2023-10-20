@@ -7,3 +7,11 @@ export interface IMessages {
   }
   dialogId: string | null
 }
+
+export interface IMessage {
+  type: string
+  content: string
+  date: string
+  email: string
+  userName: string
+}

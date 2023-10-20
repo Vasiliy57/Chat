@@ -1,16 +1,14 @@
 import { Dialogs, Search } from "@/entites/chat"
 import { Logo } from "@shared/components"
-import { MenuDialogsProps } from "./types"
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 import classes from './menuDialogs.module.css'
 
-export const MenuDialogs: React.FC<MenuDialogsProps> = ({ myUserId, onSelectDialog, currentDialogUser }) => {
+export const MenuDialogs: React.FC = () => {
   const [isMyDialogs, setIsMyDialogs] = useState<boolean>(true)
 
   const onSwitchDialogs = (dialogs: boolean) => {
     setIsMyDialogs(dialogs)
-
   }
 
   return (
@@ -18,10 +16,7 @@ export const MenuDialogs: React.FC<MenuDialogsProps> = ({ myUserId, onSelectDial
       <Logo />
       {!isMyDialogs && <Search />}
       <Dialogs
-        myUserId={myUserId}
         isMyDialogs={isMyDialogs}
-        onSelectDialog={onSelectDialog}
-        currentDialogUser={currentDialogUser}
         onSwitchDialogs={onSwitchDialogs}
       />
     </div>

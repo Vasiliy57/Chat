@@ -1,19 +1,39 @@
 
 import { Button, ButtonIcon } from '@shared/ui'
-
-import classes from './createMessage.module.css'
-import { ICreateMessage } from './types'
-import { uniqueId } from '@shared/utils/uniqueId'
-// import { sendMessageDataBase } from '@/firebase/messages/sendMessageDataBase'
 import { useState } from 'react'
-import { useAppSelector } from '@shared/hooks'
+import { useAppDispatch, useAppSelector } from '@shared/hooks'
 import { addDialog } from '@/firebase/users'
+import classes from './createMessage.module.css'
+import { setCurrentDialogId } from '@shared/store/chat/chat'
+import { getCurrentDate } from '@shared/utils/currentDate'
+import { sendMessageDataBase } from '@/firebase/messages/sendMessageDataBase'
+
+export const CreateMessage: React.FC = () => {
+  const dispatch = useAppDispatch()
+  const currentDialogUser = useAppSelector(state => state.chatSlice.currentDialogUser)
+  const currentDialogId = useAppSelector(state => state.chatSlice.currentDialogId)
+  const { email, userId, userName } = useAppSelector(state => state.ProfileReducer.user)
+  const [textMessage, setTextMessage] = useState<string>('')
 
 
-export const CreateMessage: React.FC<ICreateMessage> = ({ currentDialogUser, dialogId, setDialogId }) => {
-  const { email, userId } = useAppSelector(state => state.ProfileReducer.user)
+  const onSendMessage = () => {
+    if (!currentDialogId && textMessage.trim()) {
+      addDialog(userId, currentDialogUser.userId)
+        .then(data => {
+          dispatch(setCurrentDialogId(data))
+          return data
+        })
+        .then((dialogId) => sendMessageDataBase(textMessage, 'text', dialogId, email!, userName!))
+    } else {
+      sendMessageDataBase(textMessage, 'text', currentDialogId!, email!, userName!)
+    }
+    setTextMessage('')
 
-  const [textMessage, setTextMessage] = useState<string>(' ')
+  }
+
+  const onHandlerInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTextMessage(e.target.value)
+  }
 
   const styleBtnSend = {
     display: 'flex',
@@ -24,35 +44,13 @@ export const CreateMessage: React.FC<ICreateMessage> = ({ currentDialogUser, dia
     lineHeight: 1,
   }
 
-  const currentUser = currentDialogUser.email || null
-
-  const onSendMessage = () => {
-
-    if (!dialogId) {
-      addDialog(userId, currentDialogUser.userId)
-        .then(data => console.log(data)
-        )
-      console.log(1);
-
-    }
-    console.log(2);
-
-    const messagesId = dialogId
-
-    // sendMessageDataBase(messagesId, email, textMessage)
-  }
-
-  const onHandlerInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTextMessage(e.target.value)
-  }
-
   return (
     <div className={classes.TypeMessage}>
       {
-        currentUser
+        currentDialogUser.email
           ?
           <>
-            <input className={classes.input} type='text' placeholder='Type message...' onChange={onHandlerInput} />
+            <input className={classes.input} type='text' placeholder='Type message...' onChange={onHandlerInput} value={textMessage} />
             <span className={classes.smile}><ButtonIcon name='smile' onClick={() => { }} /></span>
             <div className={classes.buttons}>
               <ButtonIcon name='voice' onClick={() => { }} />

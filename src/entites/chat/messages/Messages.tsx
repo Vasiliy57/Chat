@@ -1,36 +1,61 @@
-
-
-
-import { Message } from '@/shared/components'
-import classes from './messages.module.css'
-import { IMessages } from './types'
 import { useEffect } from 'react'
 import { onValue, ref } from 'firebase/database'
 import { dbRealTime } from '@/firebase/realTimeDataBase'
+import { useAppSelector } from '@shared/hooks'
+import { useState } from 'react'
+import classes from './messages.module.css'
+import { IMessage } from './types'
+import { Message } from '@shared/components'
+import { useRef } from 'react'
 
-export const Messages: React.FC<IMessages> = ({ currentDialogUser, dialogId }) => {
+export const Messages: React.FC = () => {
+  const messagesEndRef: any = useRef(null)
+
+  const myEmail = useAppSelector(state => state.ProfileReducer.user.email)
+  const currentDialogId = useAppSelector(state => state.chatSlice.currentDialogId)
+  // const currentDialogUser = useAppSelector(state => state.chatSlice.currentDialogUser)
+  const [listMessages, setListMessages] = useState<IMessage[] | null>([])
+
   useEffect(() => {
-    if (dialogId) {
-      const messagesRef = ref(dbRealTime, 'messages/' + dialogId)
+    if (currentDialogId) {
+      const messagesRef = ref(dbRealTime, 'messages/' + currentDialogId)
       onValue(messagesRef, async (snapshot) => {
         const data = await snapshot.val()
-        console.log(data);
+        data ? setListMessages(Object.values(data)) : null
       })
+    } else {
+      setListMessages(null)
     }
-  }, [dialogId])
+  }, [currentDialogId])
 
-  const currentUser = currentDialogUser.email || null
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  })
+
+
   return (
     <div className={classes.messages}>
       {
-        currentUser
+        listMessages
           ?
           <>
-            {/* messages list */}
+            {listMessages.map((message, index) => {
+              return <Message
+                isMyMessage={message.email === myEmail}
+                content={message.content}
+                date={message.date}
+                typeMessage={message.type}
+                userName={message.userName}
+                key={index}
+              />
+            })}
           </>
-          : null
+          :
+          <div className={classes.notMessages}>
+            You don't have any messages yet
+          </div>
       }
-
+      <div ref={messagesEndRef}></div>
     </div>
   )
 }

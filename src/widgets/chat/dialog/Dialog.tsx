@@ -1,20 +1,22 @@
 import { Header, Messages } from "@/entites/chat"
 import { CreateMessage } from "@features/index"
-import { DialogProps } from "./types"
-import { useState, useEffect } from 'react'
-
 import classes from './dialog.module.css'
-import { getDialogId } from "@/firebase/messages/getMessagesDataBase"
-export const Dialog: React.FC<DialogProps> = ({ currentDialogUser, myUserId }) => {
-  const [listDialogs, setListDialogs] = useState([])
-  const [currentMessages, setCurrentMessages] = useState<null | string[]>([])
-  const [dialogId, setDialogId] = useState<null | string>(null)
+import { getDialogId } from "@/firebase/users/getDialogId"
+import { useAppDispatch, useAppSelector } from "@shared/hooks"
+import { setCurrentDialogId } from "@shared/store/chat/chat"
+import { useEffect } from 'react'
 
+export const Dialog: React.FC = () => {
+
+  const dispatch = useAppDispatch()
+
+  const currentDialogUser = useAppSelector(state => state.chatSlice.currentDialogUser)
+  const myUserId = useAppSelector(state => state.ProfileReducer.user.userId)
 
   useEffect(() => {
-    if (currentDialogUser) {
+    if (currentDialogUser?.email) {
       getDialogId(myUserId, currentDialogUser.userId)
-        .then(data => setDialogId(data))
+        .then(data => dispatch(setCurrentDialogId(data)))
     }
   }, [currentDialogUser])
 
@@ -28,9 +30,9 @@ export const Dialog: React.FC<DialogProps> = ({ currentDialogUser, myUserId }) =
   return (
 
     <div className={classes.dialog}>
-      <Header currentDialogUser={currentDialogUser} />
-      <Messages currentDialogUser={currentDialogUser} dialogId={dialogId} />
-      <CreateMessage currentDialogUser={currentDialogUser} dialogId={dialogId} setDialogId={setDialogId} />
+      <Header />
+      <Messages />
+      <CreateMessage />
     </div>
   )
 }

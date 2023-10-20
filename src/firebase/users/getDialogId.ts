@@ -5,7 +5,7 @@ import { getAuth } from "firebase/auth";
 import { dbRealTime } from "../realTimeDataBase";
 
 export const getDialogId = async (myUserId: string | null, userId: string | null) => {
-  let dialogId = null
+  let dialogId: string | null = null
 
   const dbRef = ref(dbRealTime);
 

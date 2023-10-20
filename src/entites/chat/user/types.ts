@@ -1,5 +1,3 @@
-import { TypeOnSelectDialog } from "@pages/chat/types"
-
 
 export interface UserProps {
   userName: string
@@ -8,5 +6,4 @@ export interface UserProps {
   key?: string | number
   userId: string
   isSelected: boolean
-  onSelectDialog: TypeOnSelectDialog
 }
