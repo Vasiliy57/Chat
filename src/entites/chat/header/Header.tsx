@@ -1,28 +1,24 @@
-
+import { useAppSelector } from '@shared/hooks'
 import { SelectedUser } from '../selectedUser/SelectedUser'
 import classes from './header.module.css'
 import { ButtonIcon } from '@/shared/ui'
-import { IHeader } from './types'
 
-export const Header: React.FC<IHeader> = ({ currentDialogUser }) => {
-  const currentUser = currentDialogUser.email || null
+export const Header: React.FC = () => {
+  const currentDialogUser = useAppSelector(
+    (state) => state.chatSlice.currentDialogUser
+  )
   return (
     <div className={classes.header}>
-      {
-        currentUser
-          ?
-          <>
-            <SelectedUser currentDialogUser={currentDialogUser} />
-            <div className={classes.row}>
-              <ButtonIcon name='phone' onClick={() => { }} />
-              <ButtonIcon name='video' onClick={() => { }} />
-              <ButtonIcon name='menu' onClick={() => { }} />
-            </div>
-          </>
-          : null
-      }
-
+      {currentDialogUser?.email ? (
+        <>
+          <SelectedUser currentDialogUser={currentDialogUser} />
+          <div className={classes.row}>
+            <ButtonIcon name="phone" onClick={() => {}} />
+            <ButtonIcon name="video" onClick={() => {}} />
+            <ButtonIcon name="menu" onClick={() => {}} />
+          </div>
+        </>
+      ) : null}
     </div>
   )
 }
-

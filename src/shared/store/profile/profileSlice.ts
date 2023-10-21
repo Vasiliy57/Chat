@@ -6,6 +6,7 @@ const initialState: IState = {
     email: null,
     emailVerified: false,
     userName: null,
+    userId: null
   },
   isAuth: false,
 }

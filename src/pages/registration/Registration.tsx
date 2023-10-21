@@ -6,7 +6,8 @@ import { Button, FormInput, FormTitle } from '@/shared/ui'
 import { IData, IUser } from '../types'
 import { setUser } from '@/shared/store/profile'
 import { useAppDispatch } from '@shared/hooks'
-import { saveUser } from '@/firebase/users'
+import { createDialogs, saveUser } from '@/firebase/users'
+import { uniqueId } from '@shared/utils/uniqueId'
 
 export const Registration: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -15,6 +16,7 @@ export const Registration: React.FC = () => {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [repeatPassword, setRepeatPassword] = useState<string>('')
+
 
   const handlerUserName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserName(e.target.value)
@@ -29,13 +31,15 @@ export const Registration: React.FC = () => {
     setRepeatPassword(e.target.value)
   }
   const handlerBtnReg = () => {
+    const userId = `${userName}---` + uniqueId()
     if (password === repeatPassword) {
       createNewUserFirebase(email, password)
         .then((data: IData): IUser => data.user)
         .then(({ email, emailVerified }: IUser): void => {
-          dispatch(setUser({ email, emailVerified, userName }))
+          dispatch(setUser({ email, emailVerified, userName, userId }))
         })
-        .then(() => saveUser(email, userName))
+        .then(() => saveUser(email, userName, userId))
+        .then(() => createDialogs(userId))
         .catch((err) => {
           console.log(err.message)
         })

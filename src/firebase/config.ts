@@ -13,7 +13,8 @@ const firebaseConfig = {
   storageBucket: "messenger-7a8c6.appspot.com",
   messagingSenderId: "703148053411",
   appId: "1:703148053411:web:122722f31b98f8cace0016",
-  measurementId: "G-FJXV30FWF2"
+  measurementId: "G-FJXV30FWF2",
+  databaseURL: "https://messenger-7a8c6-default-rtdb.europe-west1.firebasedatabase.app"
 }
 
 // Initialize Firebase

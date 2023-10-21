@@ -39,13 +39,13 @@
 }
 
 
-.MyMessage {
+.myMessage {
   position: relative;
   padding-right: 64px;
   align-self: flex-end;
 }
 
-.MyImg {
+.myImg {
   position: absolute;
   right: 0;
   top: 0;
@@ -55,19 +55,19 @@
   /* margin-right: 20px; */
 }
 
-.MyName {
+.myName {
   font-size: 1.6rem;
   color: var(--color-user-name);
   text-align: right;
 }
 
-.MyTime {
+.myTime {
   font-size: 1.2rem;
   color: #A0A0A0;
   margin-right: 10px;
 }
 
-.MyText {
+.myText {
   margin-top: 7px;
   font-size: 1.8rem;
   color: var(--color-white);

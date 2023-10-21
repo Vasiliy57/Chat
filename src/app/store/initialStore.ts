@@ -1,5 +1,6 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { ProfileReducer } from '@shared/store/profile'
+import { chatSlice } from '@shared/store/chat'
 
 
 import {
@@ -23,6 +24,7 @@ const persistConfig = {
 
 export const rootReducer = combineReducers({
   ProfileReducer,
+  chatSlice,
 });
 
 
