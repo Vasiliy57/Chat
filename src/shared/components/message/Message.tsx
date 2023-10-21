@@ -4,12 +4,8 @@ import { messageProps } from './type'
 
 
 export const Message: React.FC<messageProps> = ({ isMyMessage, content, date, typeMessage, userName }) => {
-
-
-
   return (
     <>
-
       {
         !isMyMessage
           ?
@@ -33,9 +29,7 @@ export const Message: React.FC<messageProps> = ({ isMyMessage, content, date, ty
             </div>
           </div >
       }
-
     </>
-
   )
 }
 

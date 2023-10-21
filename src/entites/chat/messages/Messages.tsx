@@ -13,8 +13,7 @@ export const Messages: React.FC = () => {
 
   const myEmail = useAppSelector(state => state.ProfileReducer.user.email)
   const currentDialogId = useAppSelector(state => state.chatSlice.currentDialogId)
-  // const currentDialogUser = useAppSelector(state => state.chatSlice.currentDialogUser)
-  const [listMessages, setListMessages] = useState<IMessage[] | null>([])
+  const [listMessages, setListMessages] = useState<IMessage[]>([])
 
   useEffect(() => {
     if (currentDialogId) {
@@ -24,14 +23,13 @@ export const Messages: React.FC = () => {
         data ? setListMessages(Object.values(data)) : null
       })
     } else {
-      setListMessages(null)
+      setListMessages([])
     }
   }, [currentDialogId])
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-  })
-
+  }, [listMessages])
 
   return (
     <div className={classes.messages}>
@@ -55,7 +53,7 @@ export const Messages: React.FC = () => {
             You don't have any messages yet
           </div>
       }
-      <div ref={messagesEndRef}></div>
+      <div ref={messagesEndRef} />
     </div>
   )
 }

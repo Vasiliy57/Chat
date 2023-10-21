@@ -2,12 +2,12 @@ import { Dialog, MenuDialogs } from '@widgets/chat'
 import classes from './main.module.css'
 
 export const Chat: React.FC = () => {
-  return (
-    <div className={classes.main}>
-      <MenuDialogs />
-      <Dialog />
-    </div>
-  )
+    return (
+        <div className={classes.main}>
+            <MenuDialogs />
+            <Dialog />
+        </div>
+    )
 }
 
 // забрать id пользователей из dialogsUsers/myUserId/dialogs получать их при помощи события value
@@ -17,4 +17,4 @@ export const Chat: React.FC = () => {
 // при клике на пользователя с кем у меня диалог получать ключ диалога из dialogsUsers/myUserId/dialogs/userId
 // при помощи ключа dialogID получать сообщения из messages/dialogID
 
-// create chatSlice, replaced in components useState with redux state
+// create chatSlice, replaced in components useState with redux state, Established interaction between user messages
