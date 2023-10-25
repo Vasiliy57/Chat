@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { onValue, ref } from 'firebase/database'
+import { off, onValue, ref } from 'firebase/database'
 import { dbRealTime } from '@/firebase/realTimeDataBase'
 import { useAppSelector } from '@shared/hooks'
 import { useState } from 'react'
@@ -9,15 +9,20 @@ import { Message } from '@shared/components'
 import { useRef } from 'react'
 
 export const Messages: React.FC = () => {
-  const messagesEndRef: any = useRef(null)
+  const messagesEndRef = useRef<HTMLInputElement>(null)
 
-  const myEmail = useAppSelector(state => state.ProfileReducer.user.email)
-  const currentDialogId = useAppSelector(state => state.chatSlice.currentDialogId)
+  const myEmail = useAppSelector((state) => state.ProfileReducer.user.email)
+  const currentDialogId = useAppSelector(
+    (state) => state.chatSlice.currentDialogId
+  )
   const [listMessages, setListMessages] = useState<IMessage[]>([])
 
   useEffect(() => {
+    const messagesRef = ref(
+      dbRealTime,
+      'messages/' + currentDialogId + '/allMessages'
+    )
     if (currentDialogId) {
-      const messagesRef = ref(dbRealTime, 'messages/' + currentDialogId)
       onValue(messagesRef, async (snapshot) => {
         const data = await snapshot.val()
         data ? setListMessages(Object.values(data)) : null
@@ -25,20 +30,23 @@ export const Messages: React.FC = () => {
     } else {
       setListMessages([])
     }
+
+    return () => {
+      off(messagesRef)
+    }
   }, [currentDialogId])
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [listMessages])
 
   return (
     <div className={classes.messages}>
-      {
-        listMessages
-          ?
-          <>
-            {listMessages.map((message, index) => {
-              return <Message
+      {listMessages ? (
+        <>
+          {listMessages.map((message, index) => {
+            return (
+              <Message
                 isMyMessage={message.email === myEmail}
                 content={message.content}
                 date={message.date}
@@ -46,15 +54,15 @@ export const Messages: React.FC = () => {
                 userName={message.userName}
                 key={index}
               />
-            })}
-          </>
-          :
-          <div className={classes.notMessages}>
-            You don't have any messages yet
-          </div>
-      }
+            )
+          })}
+        </>
+      ) : (
+        <div className={classes.notMessages}>
+          You dont have any messages yet
+        </div>
+      )}
       <div ref={messagesEndRef} />
     </div>
   )
 }
-

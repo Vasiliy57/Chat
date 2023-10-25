@@ -61,6 +61,7 @@ export const Dialogs: React.FC<DialogsProps> = ({
             email={user.email}
             userId={user.userId}
             isSelected={user.email === currentDialogUser?.email}
+            myUserId={myUserId}
           />
         )
       })}
