@@ -1,8 +1,13 @@
 import { useAppDispatch } from '@shared/hooks'
-import { UserProps } from './types'
+import { ILastMessage, UserProps } from './types'
 import userImg from './user-img.jpg'
 import classes from './user.module.css'
 import { setCurrentDialogUser } from '@shared/store/chat/chat'
+import { getDialogId } from '@/firebase/users/getDialogId'
+import { useEffect } from 'react'
+import { onValue, ref } from 'firebase/database'
+import { dbRealTime } from '@/firebase/realTimeDataBase'
+import { useState } from 'react'
 
 export const User: React.FC<UserProps> = ({
   userName,
@@ -10,7 +15,27 @@ export const User: React.FC<UserProps> = ({
   img,
   userId,
   isSelected,
+  myUserId,
 }) => {
+  const [lastMessage, setLastMessage] = useState<ILastMessage | null>(null)
+  const [isDialogId, setIsDialogId] = useState<boolean>(false)
+
+  useEffect(() => {
+    getDialogId(myUserId, userId).then((dialogId) => {
+      if (dialogId && !isDialogId) {
+        const messagesRef = ref(
+          dbRealTime,
+          'messages/' + dialogId + '/lastMessage'
+        )
+        onValue(messagesRef, async (snapshot) => {
+          const data = await snapshot.val()
+          setLastMessage(data)
+          setIsDialogId(true)
+        })
+      }
+    })
+  })
+
   const dispatch = useAppDispatch()
   const currentClassName = isSelected ? 'user-select' : 'user'
   const onHandlerClick = () => {
@@ -22,11 +47,16 @@ export const User: React.FC<UserProps> = ({
       <div className={classes.info}>
         <div className={classes.row}>
           <div className={classes.name}>{userName}</div>
-          <div className={classes.lastMessage}>Hey, it going?</div>
+          <div className={classes.lastMessage}>
+            {lastMessage ? lastMessage.content : null}
+          </div>
         </div>
         <div className={classes.right}>
-          <div className={classes.time}>10:30 AM</div>
-          <div className={classes.count}> 3 </div>
+          <div className={classes.time}>
+            {' '}
+            {lastMessage ? lastMessage.date : null}
+          </div>
+          {/* <div className={classes.count}> </div> */}
         </div>
       </div>
     </div>

@@ -2,7 +2,6 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { ProfileReducer } from '@shared/store/profile'
 import { chatSlice } from '@shared/store/chat'
 
-
 import {
   FLUSH,
   REHYDRATE,
@@ -19,21 +18,20 @@ import storage from 'redux-persist/lib/storage'
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: [],
-};
+  blacklist: ['chatSlice'],
+}
 
 export const rootReducer = combineReducers({
   ProfileReducer,
   chatSlice,
-});
+})
 
-
-const _persistedReducer = persistReducer(persistConfig, rootReducer);
+const _persistedReducer = persistReducer(persistConfig, rootReducer)
 
 export const setupStore = () => {
   return configureStore({
     reducer: _persistedReducer,
-    middleware: getDefaultMiddleware =>
+    middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
         immutableCheck: false,
         serializableCheck: {
@@ -43,15 +41,15 @@ export const setupStore = () => {
           serializableCheck: false,
         },
       }),
-  });
-};
+  })
+}
 
-const store = setupStore();
-const persistor = persistStore(store);
+const store = setupStore()
+const persistor = persistStore(store)
 
-export { store, persistor };
+export { store, persistor }
 
-export type RootState = ReturnType<typeof rootReducer>;
+export type RootState = ReturnType<typeof rootReducer>
 
-export type AppStore = ReturnType<typeof setupStore>;
-export type AppDispatch = AppStore['dispatch'];
+export type AppStore = ReturnType<typeof setupStore>
+export type AppDispatch = AppStore['dispatch']
