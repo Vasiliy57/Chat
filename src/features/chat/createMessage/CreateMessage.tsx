@@ -20,7 +20,6 @@ export const CreateMessage: React.FC = () => {
   const [textMessage, setTextMessage] = useState<string>('')
 
   const onSendMessage = () => {
-    console.log(textMessage, 'text', currentDialogId, email!, userName!)
     if (!currentDialogId && textMessage.trim()) {
       addDialog(userId, currentDialogUser.userId)
         .then((data) => {
@@ -39,7 +38,6 @@ export const CreateMessage: React.FC = () => {
         email!,
         userName!
       )
-      console.log(textMessage, 'text', currentDialogId, email!, userName!)
     }
     setTextMessage('')
   }

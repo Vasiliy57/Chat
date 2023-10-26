@@ -19,7 +19,8 @@
 
 .messages::-webkit-scrollbar {
   width: 5px;
-  background-color: var(--color-bg-main);
+  /* background-color: var(--color-bg-main); */
+  background-color: #181818;
 }
 
 .messages::-webkit-scrollbar-thumb {
@@ -29,5 +30,6 @@
 
 .messages::-webkit-scrollbar-track {
   border-radius: 5px;
-  background-color: var(--color-bg-main);
+  /* background-color: var(--color-bg-main); */
+  background-color: #181818;
 }

@@ -37,7 +37,7 @@ export const Messages: React.FC = () => {
   }, [currentDialogId])
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    messagesEndRef.current?.scrollIntoView()
   }, [listMessages])
 
   return (
