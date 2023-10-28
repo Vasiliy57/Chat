@@ -4,6 +4,7 @@ import { Chat } from '@pages/chat/Chat'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { useAppSelector } from '@shared/hooks'
 import { Profile } from '@pages/profile/Profile'
+import { Routing } from '@shared/constants'
 
 const Router: React.FC = () => {
   const isAuth = useAppSelector((state) => state.ProfileReducer.isAuth)
@@ -11,14 +12,14 @@ const Router: React.FC = () => {
     <BrowserRouter>
       {isAuth ? (
         <Routes>
-          <Route path="/" element={<Chat />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path={Routing.CHAT} element={<Chat />} />
+          <Route path={Routing.PROFILE} element={<Profile />} />
           <Route path="/*" element={<Chat />} />
         </Routes>
       ) : (
         <Routes>
-          <Route path="/authorization" element={<Authorization />} />
-          <Route path="/registration" element={<Registration />} />
+          <Route path={Routing.AUTHORIZATION} element={<Authorization />} />
+          <Route path={Routing.REGISTRATION} element={<Registration />} />
           <Route path="/*" element={<Authorization />} />
         </Routes>
       )}

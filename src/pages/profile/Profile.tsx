@@ -2,16 +2,30 @@ import { useAppDispatch, useAppSelector } from '@shared/hooks'
 import classes from './style.module.css'
 import img from './user-img.jpg'
 import { logOut } from '@shared/store/profile/profileSlice'
+import { useNavigate } from 'react-router-dom'
+import { Routing } from '@shared/constants'
+import back from './icons/back.svg'
 export const Profile: React.FC = () => {
   const { userName, email } = useAppSelector(
     (state) => state.ProfileReducer.user
   )
+  const navigation = useNavigate()
   const dispatch = useAppDispatch()
   const onHandlerBtn = () => {
     dispatch(logOut())
+    navigation(Routing.AUTHORIZATION)
+  }
+  const onGoBack = () => {
+    navigation(-1)
   }
   return (
     <div className={classes.profile}>
+      <img
+        onClick={onGoBack}
+        className={classes.back}
+        src={back}
+        alt="back icon"
+      />
       <div className={classes.info}>
         <div className={classes.img}>
           <img src={img} alt="avatar" />
