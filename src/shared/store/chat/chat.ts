@@ -6,8 +6,9 @@ const initialState: IChat = {
     userName: null,
     email: null,
     userId: null,
+    avatar: null,
   },
-  currentDialogId: null
+  currentDialogId: null,
 }
 
 export const chat = createSlice({
@@ -19,7 +20,7 @@ export const chat = createSlice({
     },
     setCurrentDialogId: (state, action: PayloadAction<string | null>) => {
       state.currentDialogId = action.payload
-    }
+    },
   },
 })
 

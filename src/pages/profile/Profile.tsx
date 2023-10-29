@@ -1,28 +1,45 @@
 import { useAppDispatch, useAppSelector } from '@shared/hooks'
 import classes from './style.module.css'
-import img from './user-img.jpg'
-import { logOut } from '@shared/store/profile/profileSlice'
+import defaultImg from './user-img.jpg'
+import { logOut, setUser } from '@shared/store/profile/profileSlice'
 import { useNavigate } from 'react-router-dom'
 import { Routing } from '@shared/constants'
 import backIcon from './icons/back.svg'
 import editIcon from './icons/edit.svg'
 import downloadIcon from './icons/download.svg'
-import { useState, useEffect } from 'react'
-import { savaImage } from '@/firebase/storageImages/saveImage'
-import { getUserAvatar } from '@/firebase/storageImages/getUserAvatar'
+import { useEffect, useState } from 'react'
+import { saveImage } from '@/firebase/storageImages/saveImage'
+import { getUser, updateUser } from '@/firebase/users'
 export const Profile: React.FC = () => {
-  const myUserId = useAppSelector((state) => state.ProfileReducer.user.userId)
+  const {
+    userName,
+    email,
+    avatar,
+    userId: myUserId,
+    infoAboutMe,
+    address,
+    number,
+  } = useAppSelector((state) => state.ProfileReducer.user)
+
+  const [editInfoAboutMe, setEditInfoAboutMe] = useState<string>('')
   const [currentImg, setCurrentImg] = useState<any>(null)
   const [isEdit, setIsEdit] = useState<boolean>(false)
-  const { userName, email } = useAppSelector(
-    (state) => state.ProfileReducer.user
-  )
+  const [editNumber, setEditNumber] = useState<string>('')
+  const [editAddress, setEditAddress] = useState<string>('')
+
   const navigation = useNavigate()
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    getUserAvatar(myUserId!)
-  }, [])
+    setEditInfoAboutMe(infoAboutMe || 'Write information about yourself')
+    setEditNumber(number || 'write your number')
+    setEditAddress(address || 'write your address')
+    setCurrentImg(avatar)
+  }, [infoAboutMe])
+
+  const onHandlerInfoAboutMe = (e: React.FormEvent<HTMLTextAreaElement>) => {
+    setEditInfoAboutMe(e.currentTarget.value)
+  }
 
   const onHandlerLogOut = () => {
     dispatch(logOut())
@@ -56,8 +73,26 @@ export const Profile: React.FC = () => {
       alert('An error occurred while reading the file')
     }
   }
-  const onSaveEdit = () => {
-    savaImage(currentImg, myUserId!)
+  const onSaveEdit = async () => {
+    if (currentImg) {
+      saveImage(currentImg, myUserId!)
+    }
+    await updateUser(
+      myUserId!,
+      currentImg,
+      editInfoAboutMe,
+      editNumber || '',
+      editAddress || ''
+    )
+    const newUser = await getUser(myUserId!)
+    dispatch(setUser(newUser!))
+  }
+
+  const onHandlerAddress = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditAddress(e.currentTarget.value)
+  }
+  const onHandlerNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditNumber(e.currentTarget.value)
   }
 
   if (isEdit) {
@@ -86,7 +121,7 @@ export const Profile: React.FC = () => {
           <div className={classes.img}>
             <img
               className={classes.avatar}
-              src={currentImg || img}
+              src={currentImg ? currentImg : avatar ? avatar : defaultImg}
               alt="avatar"
             />
           </div>
@@ -94,17 +129,32 @@ export const Profile: React.FC = () => {
         </div>
         <div className={classes.aboutMe}>
           <h4 className={classes.title}>Info About Me</h4>
-          {/* <textarea className={classes.textarea}>
-            5
-          </textarea> */}
+          <textarea
+            maxLength={700}
+            className={classes.textarea}
+            value={editInfoAboutMe}
+            onChange={onHandlerInfoAboutMe}
+          ></textarea>
         </div>
         <div className={classes.contacts}>
           <h4 className={classes.title}>Contacts</h4>
           <div className={classes.column}>
-            <div className={classes.number}></div>
-            <div className={classes.email}></div>
+            <div className={classes.number}>
+              <input
+                maxLength={12}
+                value={editNumber!}
+                onChange={onHandlerNumber}
+              />
+            </div>
 
-            <div className={classes.address}></div>
+            <div className={classes.email}>{email}</div>
+            <div className={classes.address}>
+              <input
+                maxLength={120}
+                value={editAddress!}
+                onChange={onHandlerAddress}
+              />
+            </div>
           </div>
         </div>
         <button className={classes.btnSave} onClick={onSaveEdit}>
@@ -124,29 +174,21 @@ export const Profile: React.FC = () => {
       <img onClick={onHandlerEdit} src={editIcon} className={classes.edit} />
       <div className={classes.info}>
         <div className={classes.img}>
-          <img src={img} alt="avatar" />
+          <img src={avatar || defaultImg} alt="avatar" />
         </div>
         <div className={classes.name}>{userName}</div>
       </div>
       <div className={classes.aboutMe}>
         <h4 className={classes.title}>Info About Me</h4>
-        <p className={classes.text}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Error,
-          distinctio! Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          Quo voluptas id culpa tenetur illo exercitationem similique,
-          repellendus dicta recusandae delectus quae ex labore, consectetur
-          eveniet omnis facilis voluptatibus? Deserunt saepe cum fugiat enim,
-          explicabo quos assumenda cumque rerum beatae facere.
-        </p>
+        <p className={classes.text}>{infoAboutMe}</p>
       </div>
       <div className={classes.contacts}>
         <h4 className={classes.title}>Contacts</h4>
         <div className={classes.column}>
-          <div className={classes.number}>+92 1234567890</div>
-          <div className={classes.email}>{email}</div>
-
+          <div className={classes.number}>{number || 'Write your number'}</div>
+          <div className={classes.email}>{email || 'Write your email'}</div>
           <div className={classes.address}>
-            Street 2, house #05, Motarway Route Road
+            {address || 'Write your address'}
           </div>
         </div>
       </div>

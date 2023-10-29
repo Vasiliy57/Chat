@@ -5,6 +5,11 @@ interface IUser {
   email: string | null
   userName: string | null
   userId: string
+  avatar: string | null
+  infoAboutMe: string | null
+  number: string | null
+  address: string | null
+  emailVerified: boolean
 }
 
 export const getUser = async (userId: string): Promise<IUser | null> => {

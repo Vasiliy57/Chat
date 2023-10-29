@@ -7,6 +7,10 @@ const initialState: IState = {
     emailVerified: false,
     userName: null,
     userId: null,
+    avatar: null,
+    infoAboutMe: null,
+    number: null,
+    address: null,
   },
   isAuth: false,
 }

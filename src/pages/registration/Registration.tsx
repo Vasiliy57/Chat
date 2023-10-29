@@ -6,7 +6,7 @@ import { Button, FormInput, FormTitle } from '@/shared/ui'
 import { IData, IUser } from '../types'
 import { setUser } from '@/shared/store/profile'
 import { useAppDispatch } from '@shared/hooks'
-import { createDialogs, saveUser } from '@/firebase/users'
+import { createDialogs, registrationUser } from '@/firebase/users'
 
 export const Registration: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -33,7 +33,7 @@ export const Registration: React.FC = () => {
       createNewUserFirebase(email, password)
         .then((data: IData): IUser => data.user)
         .then(async (user: IUser) => {
-          await saveUser(email, userName, user.uid)
+          await registrationUser(email, userName, user.uid, user.emailVerified)
           await createDialogs(user.uid)
           dispatch(
             setUser({
@@ -41,6 +41,10 @@ export const Registration: React.FC = () => {
               emailVerified: user.emailVerified,
               userName,
               userId: user.uid,
+              avatar: null,
+              infoAboutMe: null,
+              number: null,
+              address: null,
             })
           )
         })

@@ -24,28 +24,24 @@ export const Authorization: React.FC = () => {
     try {
       const userData = await signInUserFirebase(email, password)
       const data = await getUser(userData.user.uid)
-      dispatch(
-        setUser({
-          email: userData.user.email,
-          emailVerified: userData.user.emailVerified,
-          userId: userData.user.uid,
-          userName: data?.userName,
-        })
-      )
+      if (data) {
+        dispatch(
+          setUser({
+            email: userData.user.email,
+            emailVerified: userData.user.emailVerified,
+            userId: userData.user.uid,
+            userName: data.userName,
+            avatar: data.avatar,
+            infoAboutMe: data.infoAboutMe,
+            number: data.number,
+            address: data.address,
+          })
+        )
+      }
     } catch (err) {
       console.log(err)
     }
 
-    // .then((data: IData): IUser => data.user)
-    // .then((user: IUser): void => {
-    //   dispatch(
-    //     setUser({
-    //       email: user.email,
-    //       emailVerified: user.emailVerified,
-    //       userId: user.uid,
-    //     })
-    //   )
-    // })
     setEmail('')
     setPassword('')
   }
