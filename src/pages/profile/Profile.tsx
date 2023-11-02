@@ -3,13 +3,15 @@ import classes from './style.module.css'
 import defaultImg from './user-img.jpg'
 import { logOut, setUser } from '@shared/store/profile/profileSlice'
 import { useNavigate } from 'react-router-dom'
-import { Routing } from '@shared/constants'
+import { Routing, infoString } from '@shared/constants'
 import backIcon from './icons/back.svg'
 import editIcon from './icons/edit.svg'
 import downloadIcon from './icons/download.svg'
 import { useEffect, useState } from 'react'
 import { saveImage } from '@/firebase/storageImages/saveImage'
 import { getUser, updateUser } from '@/firebase/users'
+import { InfoString } from './components/InfoString/InfoString'
+import { AboutMe } from './components/AboutMe/AboutMe'
 export const Profile: React.FC = () => {
   const {
     userName,
@@ -22,7 +24,7 @@ export const Profile: React.FC = () => {
   } = useAppSelector((state) => state.ProfileReducer.user)
 
   const [editInfoAboutMe, setEditInfoAboutMe] = useState<string>('')
-  const [currentImg, setCurrentImg] = useState<any>(null)
+  const [currentImg, setCurrentImg] = useState<string | null>(null)
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const [editNumber, setEditNumber] = useState<string>('')
   const [editAddress, setEditAddress] = useState<string>('')
@@ -48,6 +50,10 @@ export const Profile: React.FC = () => {
   const onGoBack = () => {
     if (isEdit) {
       setIsEdit(false)
+      setEditInfoAboutMe(infoAboutMe || 'Write information about yourself')
+      setEditNumber(number || 'write your number')
+      setEditAddress(address || 'write your address')
+      setCurrentImg(avatar)
     } else {
       navigation(-1)
     }
@@ -67,7 +73,7 @@ export const Profile: React.FC = () => {
     reader.readAsDataURL(fileImg)
 
     reader.onload = () => {
-      setCurrentImg(reader.result)
+      setCurrentImg(reader.result as string)
     }
     reader.onerror = () => {
       alert('An error occurred while reading the file')
@@ -94,75 +100,6 @@ export const Profile: React.FC = () => {
   const onHandlerNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditNumber(e.currentTarget.value)
   }
-
-  if (isEdit) {
-    return (
-      <div className={classes.profile}>
-        <img
-          onClick={onGoBack}
-          className={classes.back}
-          src={backIcon}
-          alt="back icon"
-        />
-        <div className={classes.info}>
-          <input
-            className={classes.inputFile}
-            type="file"
-            id="down"
-            onChange={(e) => onHandlerInputFile(e)}
-          />
-          <label htmlFor="down">
-            <img
-              className={classes.download}
-              src={downloadIcon}
-              alt="download"
-            />
-          </label>
-          <div className={classes.img}>
-            <img
-              className={classes.avatar}
-              src={currentImg ? currentImg : avatar ? avatar : defaultImg}
-              alt="avatar"
-            />
-          </div>
-          <div className={classes.name}>{userName}</div>
-        </div>
-        <div className={classes.aboutMe}>
-          <h4 className={classes.title}>Info About Me</h4>
-          <textarea
-            maxLength={700}
-            className={classes.textarea}
-            value={editInfoAboutMe}
-            onChange={onHandlerInfoAboutMe}
-          ></textarea>
-        </div>
-        <div className={classes.contacts}>
-          <h4 className={classes.title}>Contacts</h4>
-          <div className={classes.column}>
-            <div className={classes.number}>
-              <input
-                maxLength={12}
-                value={editNumber!}
-                onChange={onHandlerNumber}
-              />
-            </div>
-
-            <div className={classes.email}>{email}</div>
-            <div className={classes.address}>
-              <input
-                maxLength={120}
-                value={editAddress!}
-                onChange={onHandlerAddress}
-              />
-            </div>
-          </div>
-        </div>
-        <button className={classes.btnSave} onClick={onSaveEdit}>
-          Save
-        </button>
-      </div>
-    )
-  }
   return (
     <div className={classes.profile}>
       <img
@@ -171,30 +108,86 @@ export const Profile: React.FC = () => {
         src={backIcon}
         alt="back icon"
       />
-      <img onClick={onHandlerEdit} src={editIcon} className={classes.edit} />
-      <div className={classes.info}>
-        <div className={classes.img}>
-          <img src={avatar || defaultImg} alt="avatar" />
-        </div>
-        <div className={classes.name}>{userName}</div>
-      </div>
+      {/* Подумать как можно сократить */}
+      {isEdit ? (
+        <>
+          <div className={classes.info}>
+            <input
+              className={classes.inputFile}
+              type="file"
+              id="down"
+              onChange={(e) => onHandlerInputFile(e)}
+            />
+            <label htmlFor="down">
+              <img
+                className={classes.download}
+                src={downloadIcon}
+                alt="download"
+              />
+            </label>
+            <div className={classes.img}>
+              <img
+                className={classes.avatar}
+                src={currentImg ? currentImg : avatar ? avatar : defaultImg}
+                alt="avatar"
+              />
+            </div>
+            <div className={classes.name}>{userName}</div>
+          </div>
+        </>
+      ) : (
+        <>
+          <img
+            onClick={onHandlerEdit}
+            src={editIcon}
+            className={classes.edit}
+          />
+          <div className={classes.info}>
+            <div className={classes.img}>
+              <img src={avatar || defaultImg} alt="avatar" />
+            </div>
+            <div className={classes.name}>{userName}</div>
+          </div>
+        </>
+      )}
+      {/* ************************************************** */}
+
       <div className={classes.aboutMe}>
         <h4 className={classes.title}>Info About Me</h4>
-        <p className={classes.text}>{infoAboutMe}</p>
+        <AboutMe
+          content={editInfoAboutMe}
+          onHandlerTextarea={onHandlerInfoAboutMe}
+          isEdit={isEdit}
+        />
       </div>
       <div className={classes.contacts}>
         <h4 className={classes.title}>Contacts</h4>
         <div className={classes.column}>
-          <div className={classes.number}>{number || 'Write your number'}</div>
-          <div className={classes.email}>{email || 'Write your email'}</div>
-          <div className={classes.address}>
-            {address || 'Write your address'}
-          </div>
+          <InfoString
+            type={infoString.NUMBER}
+            content={editNumber}
+            isEdit={isEdit}
+            onHandlerInput={onHandlerNumber}
+          />
+          <InfoString type={infoString.EMAIL} content={email} isEdit={isEdit} />
+          <InfoString
+            type={infoString.ADDRESS}
+            content={editAddress}
+            isEdit={isEdit}
+            onHandlerInput={onHandlerAddress}
+          />
         </div>
       </div>
-      <button className={classes.btn} onClick={onHandlerLogOut}>
-        Log out
-      </button>
+      {/* Сделать кнопку универсальной */}
+      {isEdit ? (
+        <button className={classes.btnSave} onClick={onSaveEdit}>
+          Save
+        </button>
+      ) : (
+        <button className={classes.btn} onClick={onHandlerLogOut}>
+          Log out
+        </button>
+      )}
     </div>
   )
 }

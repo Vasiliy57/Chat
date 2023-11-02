@@ -4,9 +4,9 @@ export interface ISetUser {
   userName?: string | null
   userId: string | null
   avatar: null | string
-  infoAboutMe: null | string | undefined
-  number: null | string | undefined
-  address: null | string | undefined
+  infoAboutMe: null | string
+  number: null | string
+  address: null | string
 }
 
 export interface IState {
