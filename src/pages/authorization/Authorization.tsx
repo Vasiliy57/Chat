@@ -2,10 +2,10 @@ import { Button, FormInput, FormTitle } from '@/shared/ui'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import classes from './authorization.module.css'
-import { IData, IUser } from '../types'
 import { signInUserFirebase } from '@/firebase'
 import { setUser } from '@/shared/store/profile'
 import { useAppDispatch } from '@shared/hooks'
+import { getUser } from '@/firebase/users'
 
 export const Authorization: React.FC = () => {
   const [email, setEmail] = useState<string>('')
@@ -20,22 +20,28 @@ export const Authorization: React.FC = () => {
     setPassword(e.target.value)
   }
 
-  const handlerBtnLogin = () => {
-    signInUserFirebase(email, password)
-      .then((data: IData): IUser => data.user)
-      .then((user: IUser): void => {
+  const handlerBtnLogin = async () => {
+    try {
+      const userData = await signInUserFirebase(email, password)
+      const data = await getUser(userData.user.uid)
+      if (data) {
         dispatch(
           setUser({
-            email: user.email,
-            userName: user.userName,
-            emailVerified: user.emailVerified,
-            userId: user.uid,
+            email: userData.user.email,
+            emailVerified: userData.user.emailVerified,
+            userId: userData.user.uid,
+            userName: data.userName,
+            avatar: data.avatar,
+            infoAboutMe: data.infoAboutMe,
+            number: data.number,
+            address: data.address,
           })
         )
-      })
-      .catch((err) => {
-        console.log(err.message)
-      })
+      }
+    } catch (err) {
+      console.log(err)
+    }
+
     setEmail('')
     setPassword('')
   }
