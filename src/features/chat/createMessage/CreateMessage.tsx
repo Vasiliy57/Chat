@@ -1,10 +1,12 @@
-import { Button, ButtonIcon } from '@shared/ui'
+import { Button } from '@shared/ui'
 import { useState } from 'react'
 import { useAppDispatch, useAppSelector } from '@shared/hooks'
 import { addDialog } from '@/firebase/users'
 import classes from './createMessage.module.css'
 import { setCurrentDialogId } from '@shared/store/chat/chat'
 import { sendMessageDataBase } from '@/firebase/messages/sendMessageDataBase'
+import { buttonTypes, classNamesBtn } from '@shared/constants/button'
+import { icons } from '@shared/constants/icons'
 
 export const CreateMessage: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -46,15 +48,6 @@ export const CreateMessage: React.FC = () => {
     setTextMessage(e.target.value)
   }
 
-  const styleBtnSend = {
-    display: 'flex',
-    gap: '10px',
-    fontSize: '2rem',
-    fontWeight: 400,
-    padding: '15px 18px',
-    lineHeight: 1,
-  }
-
   return (
     <div className={classes.TypeMessage}>
       {currentDialogUser.email ? (
@@ -67,12 +60,32 @@ export const CreateMessage: React.FC = () => {
             value={textMessage}
           />
           <span className={classes.smile}>
-            <ButtonIcon name="smile" onClick={() => {}} />
+            <Button
+              onClick={() => {}}
+              type={buttonTypes.ICON}
+              iconName={icons.SMILE}
+            />
           </span>
           <div className={classes.buttons}>
-            <ButtonIcon name="voice" onClick={() => {}} />
-            <ButtonIcon name="attach" onClick={() => {}} />
-            <Button name="Send" onClick={onSendMessage} style={styleBtnSend} />
+            <Button
+              onClick={() => {}}
+              type={buttonTypes.ICON}
+              iconName={icons.VOICE}
+            />
+            <Button
+              onClick={() => {}}
+              type={buttonTypes.ICON}
+              iconName={icons.ATTACH}
+            />
+            <Button
+              type={buttonTypes.BUTTON_ICON}
+              content="Send"
+              onClick={onSendMessage}
+              iconName={icons.SEND}
+              classNameBtn={classNamesBtn.SEND}
+              widthIcon="18px"
+              heightIcon="18px"
+            />
           </div>
         </>
       ) : null}

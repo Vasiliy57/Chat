@@ -1,8 +1,7 @@
 import classes from './style.module.css'
 import { infoString } from '@shared/constants/infoString'
-import emailIcon from '@shared/assets/svg/email.svg'
-import locationIcon from '@shared/assets/svg/location.svg'
-import numberIcon from '@shared/assets/svg/tel.svg'
+import { Icon } from '@shared/assets/Icon/Icon'
+import { icons } from '@shared/constants/icons'
 
 interface InfoStringProps {
   type: keyof typeof infoString
@@ -10,6 +9,7 @@ interface InfoStringProps {
   content: string | null
   onHandlerInput?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
+
 export const InfoString: React.FC<InfoStringProps> = ({
   type,
   content,
@@ -20,14 +20,14 @@ export const InfoString: React.FC<InfoStringProps> = ({
     case infoString.EMAIL:
       return (
         <div className={`${classes.info} ${classes.email}`}>
-          <img src={emailIcon} alt="" />
+          <Icon iconName={icons.EMAIL} />
           {content || 'Write your email'}
         </div>
       )
     case infoString.NUMBER:
       return (
         <div className={`${classes.info} ${classes.number}`}>
-          <img src={numberIcon} alt="" />
+          <Icon iconName={icons.TEL} />
           {isEdit ? (
             <input
               type="text"
@@ -44,7 +44,7 @@ export const InfoString: React.FC<InfoStringProps> = ({
     case infoString.ADDRESS:
       return (
         <div className={`${classes.info} ${classes.address}`}>
-          <img src={locationIcon} alt="" />
+          <Icon iconName={icons.LOCATION} />
           {isEdit ? (
             <input
               type="text"

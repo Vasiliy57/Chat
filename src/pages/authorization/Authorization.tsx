@@ -6,6 +6,7 @@ import { signInUserFirebase } from '@/firebase'
 import { setUser } from '@/shared/store/profile'
 import { useAppDispatch } from '@shared/hooks'
 import { getUser } from '@/firebase/users'
+import { buttonTypes, classNamesBtn } from '@shared/constants/button'
 
 export const Authorization: React.FC = () => {
   const [email, setEmail] = useState<string>('')
@@ -62,7 +63,13 @@ export const Authorization: React.FC = () => {
           type="password"
           value={password}
         />
-        <Button name="LOG IN" onClick={handlerBtnLogin} />
+        <Button
+          type={buttonTypes.BUTTON}
+          content={'Log in'}
+          onClick={handlerBtnLogin}
+          classNameBtn={classNamesBtn.FORM}
+        />
+
         <div className={classes.text}>
           DON’T HAVE AN ACCOUNT ?<span> </span>
           <Link className={classes.link} to="/registration">

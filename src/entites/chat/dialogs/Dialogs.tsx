@@ -6,7 +6,7 @@ import { updateListMyDialogs } from '@/firebase/users/updateListMyDialogs'
 import { getAllUsersFireStore } from '@/firebase/users'
 import { onValue, ref } from 'firebase/database'
 import { dbRealTime } from '@/firebase/realTimeDataBase'
-import { useAppSelector } from '@shared/hooks'
+import { useAppSelector } from '@shared/hooks' 
 
 export const Dialogs: React.FC<DialogsProps> = ({
   isMyDialogs,

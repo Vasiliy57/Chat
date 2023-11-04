@@ -5,8 +5,13 @@ interface IInput extends InputHTMLAttributes<HTMLInputElement> {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-export const FormInput: React.FC<IInput> = ({ onChange, placeholder = '', type = 'text', value, ...props }) => {
-
+export const FormInput: React.FC<IInput> = ({
+  onChange,
+  placeholder = '',
+  type = 'text',
+  value,
+  ...props
+}) => {
   return (
     <input
       className={classes.input}
@@ -18,4 +23,3 @@ export const FormInput: React.FC<IInput> = ({ onChange, placeholder = '', type =
     />
   )
 }
-

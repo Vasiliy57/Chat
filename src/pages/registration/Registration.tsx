@@ -7,6 +7,7 @@ import { IData, IUser } from '../types'
 import { setUser } from '@/shared/store/profile'
 import { useAppDispatch } from '@shared/hooks'
 import { createDialogs, registrationUser } from '@/firebase/users'
+import { buttonTypes, classNamesBtn } from '@shared/constants/button'
 
 export const Registration: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -88,7 +89,12 @@ export const Registration: React.FC = () => {
           type="password"
           value={repeatPassword}
         />
-        <Button name="CREATE USER" onClick={handlerBtnReg} />
+        <Button
+          type={buttonTypes.BUTTON}
+          content={'Create user'}
+          onClick={handlerBtnReg}
+          classNameBtn={classNamesBtn.FORM}
+        />
         <div className={classes.text}>
           ALREADY HAVE AN ACCOUNT ?<span> </span>
           <Link className={classes.link} to="/authorization">

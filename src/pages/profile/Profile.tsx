@@ -4,14 +4,15 @@ import defaultImg from './user-img.jpg'
 import { logOut, setUser } from '@shared/store/profile/profileSlice'
 import { useNavigate } from 'react-router-dom'
 import { Routing, infoString } from '@shared/constants'
-import backIcon from './icons/back.svg'
-import editIcon from './icons/edit.svg'
-import downloadIcon from './icons/download.svg'
 import { useEffect, useState } from 'react'
 import { saveImage } from '@/firebase/storageImages/saveImage'
 import { getUser, updateUser } from '@/firebase/users'
 import { InfoString } from './components/InfoString/InfoString'
 import { AboutMe } from './components/AboutMe/AboutMe'
+import { Button } from '@shared/ui'
+import { buttonTypes, classNamesBtn } from '@shared/constants/button'
+import { icons } from '@shared/constants/icons'
+import { Icon } from '@shared/assets/Icon/Icon'
 export const Profile: React.FC = () => {
   const {
     userName,
@@ -28,6 +29,26 @@ export const Profile: React.FC = () => {
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const [editNumber, setEditNumber] = useState<string>('')
   const [editAddress, setEditAddress] = useState<string>('')
+  const styleBtnEdit = {
+    position: 'absolute',
+    top: '20px',
+    right: '50px',
+  } as const
+
+  const styleBtnBack = {
+    position: 'absolute',
+    top: '20px',
+    left: '50px',
+  } as const
+
+  const styleIconDownload = {
+    position: 'absolute',
+    top: '-10px',
+    right: '-21px',
+    color: '#D9D9D9',
+    width: '30px',
+    height: '30px',
+  } as const
 
   const navigation = useNavigate()
   const dispatch = useAppDispatch()
@@ -100,13 +121,16 @@ export const Profile: React.FC = () => {
   const onHandlerNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditNumber(e.currentTarget.value)
   }
+
   return (
     <div className={classes.profile}>
-      <img
+      <Button
+        styleBtn={styleBtnBack}
+        widthIcon="30px"
+        heightIcon="30px"
         onClick={onGoBack}
-        className={classes.back}
-        src={backIcon}
-        alt="back icon"
+        type={buttonTypes.ICON}
+        iconName={icons.BACK}
       />
       {/* Подумать как можно сократить */}
       {isEdit ? (
@@ -119,11 +143,7 @@ export const Profile: React.FC = () => {
               onChange={(e) => onHandlerInputFile(e)}
             />
             <label htmlFor="down">
-              <img
-                className={classes.download}
-                src={downloadIcon}
-                alt="download"
-              />
+              <Icon iconName={icons.DOWNLOAD} styleIcon={styleIconDownload} />
             </label>
             <div className={classes.img}>
               <img
@@ -137,10 +157,13 @@ export const Profile: React.FC = () => {
         </>
       ) : (
         <>
-          <img
+          <Button
+            styleBtn={styleBtnEdit}
+            widthIcon="22px"
+            heightIcon="22px"
             onClick={onHandlerEdit}
-            src={editIcon}
-            className={classes.edit}
+            type={buttonTypes.ICON}
+            iconName={icons.EDIT}
           />
           <div className={classes.info}>
             <div className={classes.img}>
@@ -178,15 +201,20 @@ export const Profile: React.FC = () => {
           />
         </div>
       </div>
-      {/* Сделать кнопку универсальной */}
       {isEdit ? (
-        <button className={classes.btnSave} onClick={onSaveEdit}>
-          Save
-        </button>
+        <Button
+          onClick={onSaveEdit}
+          type={buttonTypes.BUTTON}
+          content="Save"
+          classNameBtn={classNamesBtn.SAVE}
+        />
       ) : (
-        <button className={classes.btn} onClick={onHandlerLogOut}>
-          Log out
-        </button>
+        <Button
+          onClick={onHandlerLogOut}
+          type={buttonTypes.BUTTON}
+          content="Log out"
+          classNameBtn={classNamesBtn.LOGOUT}
+        />
       )}
     </div>
   )

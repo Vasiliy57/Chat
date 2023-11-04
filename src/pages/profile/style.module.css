@@ -14,23 +14,8 @@
   position: relative;
 }
 
-.back {
-  position: absolute;
-  top: 20px;
-  left: 50px;
-  width: 30px;
-  height: 30px;
-  cursor: pointer;
-}
 
-.edit {
-  position: absolute;
-  top: 20px;
-  right: 50px;
-  width: 22px;
-  height: 22px;
-  cursor: pointer;
-}
+
 
 .info {
   margin-top: 56px;
@@ -111,25 +96,4 @@
   flex-direction: column;
   gap: 21px;
 
-}
-
-
-.btn {
-  margin-top: 30px;
-  width: 100%;
-  padding: 20px 0;
-  border-radius: 10px;
-  background-color: var(--color-bg-main);
-  border: 1px solid #dd5656;
-  color: #dd5656;
-}
-
-.btnSave {
-  margin-top: 30px;
-  width: 100%;
-  padding: 20px 0;
-  border-radius: 10px;
-  background-color: var(--color-bg-main);
-  border: 1px solid #FF9A71;
-  color: #FF9A71;
 }
