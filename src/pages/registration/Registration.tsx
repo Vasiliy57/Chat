@@ -2,12 +2,16 @@ import { useState } from 'react'
 import classes from './registration.module.css'
 import { createNewUserFirebase } from '@/firebase'
 import { Link } from 'react-router-dom'
-import { Button, FormInput, FormTitle } from '@/shared/ui'
+import { Button, FormTitle, Input } from '@/shared/ui'
 import { IData, IUser } from '../types'
 import { setUser } from '@/shared/store/profile'
 import { useAppDispatch } from '@shared/hooks'
 import { createDialogs, registrationUser } from '@/firebase/users'
-import { buttonTypes, classNamesBtn } from '@shared/constants/button'
+import {
+  BUTTON_TYPE,
+  BUTTON_CLASS_NAME,
+  INPUT_CLASS_NAME,
+} from '@shared/constants'
 
 export const Registration: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -66,34 +70,40 @@ export const Registration: React.FC = () => {
     <div className={classes.registration}>
       <form className={classes.form}>
         <FormTitle title="Registration" />
-        <FormInput
+
+        <Input
+          inputClassName={INPUT_CLASS_NAME.FORM}
           placeholder="User Name"
           onChange={handlerUserName}
           value={userName}
         />
-        <FormInput
+        <Input
+          inputClassName={INPUT_CLASS_NAME.FORM}
           placeholder="Email"
           onChange={handlerEmail}
           type="email"
           value={email}
         />
-        <FormInput
+        <Input
+          inputClassName={INPUT_CLASS_NAME.FORM}
           placeholder="Password"
           onChange={handlerPassword}
           type="password"
           value={password}
         />
-        <FormInput
+        <Input
+          inputClassName={INPUT_CLASS_NAME.FORM}
           placeholder="Confirm Password"
           onChange={handlerRepeatPassword}
           type="password"
           value={repeatPassword}
         />
+
         <Button
-          type={buttonTypes.BUTTON}
+          buttonType={BUTTON_TYPE.BUTTON}
           content={'Create user'}
           onClick={handlerBtnReg}
-          classNameBtn={classNamesBtn.FORM}
+          buttonClassName={BUTTON_CLASS_NAME.FORM}
         />
         <div className={classes.text}>
           ALREADY HAVE AN ACCOUNT ?<span> </span>

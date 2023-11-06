@@ -1,4 +1,4 @@
-import { Button, FormInput, FormTitle } from '@/shared/ui'
+import { Button, FormTitle, Input } from '@/shared/ui'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import classes from './authorization.module.css'
@@ -6,7 +6,8 @@ import { signInUserFirebase } from '@/firebase'
 import { setUser } from '@/shared/store/profile'
 import { useAppDispatch } from '@shared/hooks'
 import { getUser } from '@/firebase/users'
-import { buttonTypes, classNamesBtn } from '@shared/constants/button'
+import { BUTTON_TYPE, BUTTON_CLASS_NAME } from '@shared/constants'
+import { INPUT_CLASS_NAME } from '@shared/constants'
 
 export const Authorization: React.FC = () => {
   const [email, setEmail] = useState<string>('')
@@ -51,23 +52,25 @@ export const Authorization: React.FC = () => {
     <div className={classes.authorization}>
       <form className={classes.form}>
         <FormTitle title="Authorization" />
-        <FormInput
-          placeholder="Email"
+        <Input
           onChange={handlerEmail}
+          inputClassName={INPUT_CLASS_NAME.FORM}
+          placeholder="Email"
           type="email"
           value={email}
         />
-        <FormInput
+        <Input
           placeholder="Password"
           onChange={handlerPassword}
           type="password"
           value={password}
+          inputClassName={INPUT_CLASS_NAME.FORM}
         />
         <Button
-          type={buttonTypes.BUTTON}
+          buttonType={BUTTON_TYPE.BUTTON}
           content={'Log in'}
           onClick={handlerBtnLogin}
-          classNameBtn={classNamesBtn.FORM}
+          buttonClassName={BUTTON_CLASS_NAME.FORM}
         />
 
         <div className={classes.text}>

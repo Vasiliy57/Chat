@@ -1,4 +1,4 @@
-import { icons } from '@shared/constants/icons'
+import { ICONS } from '@shared/constants'
 import { SvgProps } from '@shared/types/icon'
 import back from './svg/back.svg'
 import download from './svg/download.svg'
@@ -25,7 +25,7 @@ export const Icon: React.FC<SvgProps> = ({
   heightIcon = 'auto',
 }) => {
   switch (iconName) {
-    case icons.BACK:
+    case ICONS.BACK:
       return (
         <img
           width={widthIcon}
@@ -36,7 +36,7 @@ export const Icon: React.FC<SvgProps> = ({
           alt="icon back"
         />
       )
-    case icons.DOWNLOAD:
+    case ICONS.DOWNLOAD:
       return (
         <img
           width={widthIcon}
@@ -47,7 +47,7 @@ export const Icon: React.FC<SvgProps> = ({
           alt="icon download"
         />
       )
-    case icons.EDIT:
+    case ICONS.EDIT:
       return (
         <img
           width={widthIcon}
@@ -58,7 +58,7 @@ export const Icon: React.FC<SvgProps> = ({
           alt="icon edit"
         />
       )
-    case icons.EMAIL:
+    case ICONS.EMAIL:
       return (
         <img
           width={widthIcon}
@@ -69,7 +69,7 @@ export const Icon: React.FC<SvgProps> = ({
           alt="icon email"
         />
       )
-    case icons.LOCATION:
+    case ICONS.LOCATION:
       return (
         <img
           width={widthIcon}
@@ -80,7 +80,7 @@ export const Icon: React.FC<SvgProps> = ({
           alt="icon location"
         />
       )
-    case icons.SEARCH:
+    case ICONS.SEARCH:
       return (
         <img
           width={widthIcon}
@@ -91,7 +91,7 @@ export const Icon: React.FC<SvgProps> = ({
           alt="icon search"
         />
       )
-    case icons.TEL:
+    case ICONS.TEL:
       return (
         <img
           width={widthIcon}
@@ -102,7 +102,7 @@ export const Icon: React.FC<SvgProps> = ({
           alt="icon tel"
         />
       )
-    case icons.ATTACH:
+    case ICONS.ATTACH:
       return (
         <img
           width={widthIcon}
@@ -113,7 +113,7 @@ export const Icon: React.FC<SvgProps> = ({
           alt="icon attach"
         />
       )
-    case icons.MENU:
+    case ICONS.MENU:
       return (
         <img
           width={widthIcon}
@@ -124,7 +124,7 @@ export const Icon: React.FC<SvgProps> = ({
           alt="icon menu"
         />
       )
-    case icons.PHONE:
+    case ICONS.PHONE:
       return (
         <img
           width={widthIcon}
@@ -135,7 +135,7 @@ export const Icon: React.FC<SvgProps> = ({
           alt="icon phone"
         />
       )
-    case icons.SMILE:
+    case ICONS.SMILE:
       return (
         <img
           width={widthIcon}
@@ -146,7 +146,7 @@ export const Icon: React.FC<SvgProps> = ({
           alt="icon smile"
         />
       )
-    case icons.VIDEO:
+    case ICONS.VIDEO:
       return (
         <img
           width={widthIcon}
@@ -157,7 +157,7 @@ export const Icon: React.FC<SvgProps> = ({
           alt="icon video"
         />
       )
-    case icons.VOICE:
+    case ICONS.VOICE:
       return (
         <img
           width={widthIcon}
@@ -168,7 +168,7 @@ export const Icon: React.FC<SvgProps> = ({
           alt="icon voice"
         />
       )
-    case icons.PLUS:
+    case ICONS.PLUS:
       return (
         <img
           width={widthIcon}
@@ -179,7 +179,7 @@ export const Icon: React.FC<SvgProps> = ({
           alt="icon plus"
         />
       )
-    case icons.SEND:
+    case ICONS.SEND:
       return (
         <img
           width={widthIcon}
@@ -190,7 +190,7 @@ export const Icon: React.FC<SvgProps> = ({
           alt="icon send"
         />
       )
-    case icons.LOGO:
+    case ICONS.LOGO:
       return (
         <img
           width={widthIcon}

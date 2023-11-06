@@ -1,4 +1,4 @@
-export const icons = {
+export const ICONS = {
   BACK: 'back',
   DOWNLOAD: 'download',
   EDIT: 'edit',

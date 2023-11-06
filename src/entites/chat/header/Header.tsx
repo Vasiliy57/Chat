@@ -2,8 +2,8 @@ import { useAppSelector } from '@shared/hooks'
 import { SelectedUser } from '../selectedUser/SelectedUser'
 import classes from './header.module.css'
 import { Button } from '@/shared/ui'
-import { icons } from '@shared/constants/icons'
-import { buttonTypes } from '@shared/constants/button'
+import { ICONS } from '@shared/constants'
+import { BUTTON_TYPE, BUTTON_CLASS_NAME } from '@shared/constants'
 
 export const Header: React.FC = () => {
   const currentDialogUser = useAppSelector(
@@ -17,18 +17,21 @@ export const Header: React.FC = () => {
           <div className={classes.row}>
             <Button
               onClick={() => {}}
-              type={buttonTypes.ICON}
-              iconName={icons.PHONE}
+              buttonType={BUTTON_TYPE.ICON}
+              iconName={ICONS.PHONE}
+              buttonClassName={BUTTON_CLASS_NAME.ICON}
             />
             <Button
               onClick={() => {}}
-              type={buttonTypes.ICON}
-              iconName={icons.VIDEO}
+              buttonType={BUTTON_TYPE.ICON}
+              iconName={ICONS.VIDEO}
+              buttonClassName={BUTTON_CLASS_NAME.ICON}
             />
             <Button
               onClick={() => {}}
-              type={buttonTypes.ICON}
-              iconName={icons.MENU}
+              buttonType={BUTTON_TYPE.ICON}
+              iconName={ICONS.MENU}
+              buttonClassName={BUTTON_CLASS_NAME.ICON}
             />
           </div>
         </>

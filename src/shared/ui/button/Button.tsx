@@ -1,18 +1,7 @@
 import { Icon } from '@shared/assets/Icon/Icon'
-import { SvgProps } from '@shared/types/icon'
-import { buttonTypes, classNamesBtn } from '@shared/constants/button'
+import { BUTTON_TYPE } from '@shared/constants'
 import classes from './style.module.css'
-
-type Keys = keyof typeof classNamesBtn
-type values = (typeof classNamesBtn)[Keys]
-
-interface ButtonProps extends SvgProps {
-  onClick: () => void
-  styleBtn?: React.CSSProperties
-  type: keyof typeof buttonTypes
-  content?: string
-  classNameBtn?: values
-}
+import { ButtonProps } from './type'
 
 export const Button: React.FC<ButtonProps> = ({
   iconName,
@@ -21,27 +10,33 @@ export const Button: React.FC<ButtonProps> = ({
   styleIcon,
   widthIcon,
   heightIcon,
-  type,
+  buttonType,
   content,
-  classNameBtn,
+  buttonClassName = '',
+  ...props
 }) => {
-  const onHandler = (e: React.FormEvent<HTMLButtonElement>) => {
+  const onHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    onClick()
+    if (onClick) {
+      onClick(e)
+    }
   }
 
   return (
     <button
+      {...props}
       className={`${classes.button} ${
-        classNameBtn ? classes[classNameBtn] : ''
+        buttonClassName ? classes[buttonClassName] : ''
       }`}
       onClick={onHandler}
       style={styleBtn}
     >
-      {type === buttonTypes.BUTTON || type === buttonTypes.BUTTON_ICON
+      {buttonType === BUTTON_TYPE.BUTTON ||
+      buttonType === BUTTON_TYPE.BUTTON_ICON
         ? content
         : null}
-      {type === buttonTypes.ICON || type === buttonTypes.BUTTON_ICON ? (
+      {buttonType === BUTTON_TYPE.ICON ||
+      buttonType === BUTTON_TYPE.BUTTON_ICON ? (
         <Icon
           iconName={iconName}
           styleIcon={styleIcon}

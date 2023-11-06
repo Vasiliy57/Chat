@@ -54,14 +54,9 @@
   color: #FF9A71;
 }
 
-.button svg path {
-  transition-duration: .5s;
-}
-
-.button:hover svg {
-  fill: var(--color-light-blue);
-}
-
-.button:hover svg path {
-  fill: var(--color-light-blue);
+.switch {
+  color: #BCBCBC;
+  position: relative;
+  margin-bottom: 10px;
+  background-color: var(--color-bg-main);
 }

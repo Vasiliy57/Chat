@@ -38,15 +38,6 @@
 
 }
 
-.download {
-  position: absolute;
-  width: 30px;
-  height: 30px;
-  top: -10px;
-  right: -21px;
-  cursor: pointer;
-  color: #D9D9D9;
-}
 
 .inputFile {
   display: none;
