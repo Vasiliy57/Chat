@@ -49,12 +49,14 @@ export const Dialogs: React.FC<DialogsProps> = ({
     <div className={isMyDialogs ? classes.dialogs : ''}>
       <div className={classes.btnGroup}>
         <Button
+          styleBtn={isMyDialogs ? { color: '#00A3FF' } : {}}
           onClick={() => onSwitchDialogs(true)}
           buttonType={BUTTON_TYPE.BUTTON}
           buttonClassName={BUTTON_CLASS_NAME.SWITCH}
           content="MY CHATS"
         />
         <Button
+          styleBtn={!isMyDialogs ? { color: '#00A3FF' } : {}}
           onClick={() => onSwitchDialogs(false)}
           buttonType={BUTTON_TYPE.BUTTON}
           buttonClassName={BUTTON_CLASS_NAME.SWITCH}

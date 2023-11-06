@@ -64,8 +64,10 @@
 }
 
 .time {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   color: #E0E0E0;
+  white-space: pre-wrap;
+  max-width: 55px;
 }
 
 .count {
