@@ -1,6 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@shared/hooks'
 import classes from './style.module.css'
-import defaultImg from './user-img.jpg'
 import { logOut, setUser } from '@shared/store/profile/profileSlice'
 import { useNavigate } from 'react-router-dom'
 import { Routing, INFO_STRING } from '@shared/constants'
@@ -12,11 +11,10 @@ import { AboutMe } from './components/AboutMe/AboutMe'
 import { Button } from '@shared/ui'
 import { BUTTON_TYPE, BUTTON_CLASS_NAME } from '@shared/constants'
 import { ICONS } from '@shared/constants/icons'
-import { Icon } from '@shared/assets/Icon/Icon'
+import { Avatar } from './components/Avatar/Avatar'
 
 export const Profile: React.FC = () => {
   const {
-    userName,
     email,
     avatar,
     userId: myUserId,
@@ -30,25 +28,11 @@ export const Profile: React.FC = () => {
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const [editNumber, setEditNumber] = useState<string>('')
   const [editAddress, setEditAddress] = useState<string>('')
-  const styleBtnEdit = {
-    position: 'absolute',
-    top: '20px',
-    right: '50px',
-  } as const
 
   const styleBtnBack = {
     position: 'absolute',
     top: '20px',
     left: '50px',
-  } as const
-
-  const styleIconDownload = {
-    position: 'absolute',
-    top: '-10px',
-    right: '-21px',
-    color: '#D9D9D9',
-    width: '30px',
-    height: '30px',
   } as const
 
   const navigation = useNavigate()
@@ -136,49 +120,13 @@ export const Profile: React.FC = () => {
         iconName={ICONS.BACK}
         buttonClassName={BUTTON_CLASS_NAME.ICON}
       />
-      {/* Подумать как можно сократить */}
-      {isEdit ? (
-        <>
-          <div className={classes.info}>
-            <input
-              className={classes.inputFile}
-              type="file"
-              id="down"
-              onChange={(e) => onHandlerInputFile(e)}
-            />
-            <label htmlFor="down">
-              <Icon iconName={ICONS.DOWNLOAD} styleIcon={styleIconDownload} />
-            </label>
-            <div className={classes.img}>
-              <img
-                className={classes.avatar}
-                src={currentImg ? currentImg : avatar ? avatar : defaultImg}
-                alt="avatar"
-              />
-            </div>
-            <div className={classes.name}>{userName}</div>
-          </div>
-        </>
-      ) : (
-        <>
-          <Button
-            styleBtn={styleBtnEdit}
-            widthIcon="22px"
-            heightIcon="22px"
-            onClick={onHandlerEdit}
-            buttonType={BUTTON_TYPE.ICON}
-            iconName={ICONS.EDIT}
-            buttonClassName={BUTTON_CLASS_NAME.ICON}
-          />
-          <div className={classes.info}>
-            <div className={classes.img}>
-              <img src={avatar || defaultImg} alt="avatar" />
-            </div>
-            <div className={classes.name}>{userName}</div>
-          </div>
-        </>
-      )}
-      {/* ************************************************** */}
+
+      <Avatar
+        isEdit={isEdit}
+        onHandlerInputFile={onHandlerInputFile}
+        currentImg={currentImg}
+        onHandlerEdit={onHandlerEdit}
+      />
 
       <div className={classes.aboutMe}>
         <h4 className={classes.title}>Info About Me</h4>
