@@ -1,0 +1,24 @@
+import { Textarea } from '@shared/ui'
+import { TEXTAREA_CLASS_NAME } from '@shared/constants'
+
+interface AboutMeProps {
+  content: string
+  onHandlerTextarea: (e: React.FormEvent<HTMLTextAreaElement>) => void
+  isEdit: boolean
+}
+
+export const AboutMe: React.FC<AboutMeProps> = ({
+  content,
+  onHandlerTextarea,
+  isEdit,
+}) => {
+  return (
+    <Textarea 
+      maxLength={700}
+      textareaClassName={TEXTAREA_CLASS_NAME.ABOUT_ME}
+      value={content}
+      onChange={onHandlerTextarea}
+      disabled={!isEdit}
+    ></Textarea>
+  )
+}

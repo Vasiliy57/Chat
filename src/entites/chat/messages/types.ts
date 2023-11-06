@@ -5,4 +5,13 @@ export interface IMessages {
     email: string | null
     userName: string | null
   }
+  dialogId: string | null
+}
+
+export interface IMessage {
+  type: string
+  content: string
+  date: string
+  email: string
+  userName: string
 }

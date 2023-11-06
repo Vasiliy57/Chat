@@ -1,47 +1,34 @@
-
-
 import img from './user-img.jpg'
 import classes from './message.module.css'
+import { messageProps } from './type'
 
-interface IMessage {
-  img?: string
-  name?: string
-  time?: string
-  text?: string
-  myMessage?: boolean
-  doubleMessage?: boolean
-}
 
-export const Message: React.FC<IMessage> = ({ myMessage }) => {
+export const Message: React.FC<messageProps> = ({ isMyMessage, content, date, typeMessage, userName }) => {
   return (
-
-    <>{
-      myMessage
-        ? <div className={classes.MyMessage}>
-          <img src={img} className={classes.MyImg} />
-          <div className={classes.MyName}>
-            <span className={classes.MyTime}>10:30 AM</span> Grace Miller
-          </div>
-          <div className={classes.MyText}>
-            Absolutely! I'm thinking of going for a hike on Saturday. How
-            about you?
-            Absolutely! I'm thinking of going for a hike on Saturday. How
-            about you?
-          </div>
-        </div>
-        : <div className={classes.message}>
-          <img src={img} className={classes.img} />
-          <div className={classes.name}>
-            Grace Miller <span className={classes.time}>10:30 AM</span>
-          </div>
-          <div className={classes.text}>
-            Absolutely! I'm thinking of going for a hike on Saturday. How
-            about you?
-            Absolutely! I'm thinking of going for a hike on Saturday. How
-            about you?
-          </div>
-        </div>
-    }
+    <>
+      {
+        !isMyMessage
+          ?
+          <div className={classes.message} >
+            <img src={img} className={classes.img} />
+            <div className={classes.name}>
+              {userName} <span className={classes.time}>{date}</span>
+            </div>
+            <div className={classes.text}>
+              {content}
+            </div>
+          </div >
+          :
+          <div className={classes.myMessage} >
+            <img src={img} className={classes.myImg} />
+            <div className={classes.myName}>
+              {userName} <span className={classes.myTime}>{date}</span>
+            </div>
+            <div className={classes.myText}>
+              {content}
+            </div>
+          </div >
+      }
     </>
   )
 }

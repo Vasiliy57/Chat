@@ -1,11 +1,17 @@
-
-
-export interface IUser {
-  userName: string | null
-  email: string | null
-  img?: string
+export interface UserProps {
+  userName: string
+  email: string
   key?: string | number
-  selectedUserEmail?: string | null
-  selectDialog: (name: string | null, email: string | null) => void
-  currentDialogUser: { userName: string | null, email: string | null }
+  userId: string
+  isSelected: boolean
+  myUserId: string | null
+  avatar: null | string
+}
+
+export interface ILastMessage {
+  content: string
+  date: string
+  email: string
+  type: string
+  userName: string
 }

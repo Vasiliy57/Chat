@@ -1,6 +1,6 @@
-import { FormInput } from './formInput/FormInput'
 import { FormTitle } from './formTitle/FormTitle'
-import { Button } from './button/Button'
-import { ButtonIcon } from './buttonIcon/ButtonIcon'
+import { Button } from './Button/Button'
+import { Input } from './Input/Input'
+import { Textarea } from './Textarea/Textarea'
 
-export { FormInput, FormTitle, Button, ButtonIcon }
+export { FormTitle, Button, Input, Textarea }

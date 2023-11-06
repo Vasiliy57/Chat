@@ -1,11 +1,13 @@
-import { Button, FormInput, FormTitle } from '@/shared/ui'
+import { Button, FormTitle, Input } from '@/shared/ui'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import classes from './authorization.module.css'
-import { IData, IUser } from '../types'
 import { signInUserFirebase } from '@/firebase'
 import { setUser } from '@/shared/store/profile'
 import { useAppDispatch } from '@shared/hooks'
+import { getUser } from '@/firebase/users'
+import { BUTTON_TYPE, BUTTON_CLASS_NAME } from '@shared/constants'
+import { INPUT_CLASS_NAME } from '@shared/constants'
 
 export const Authorization: React.FC = () => {
   const [email, setEmail] = useState<string>('')
@@ -20,17 +22,28 @@ export const Authorization: React.FC = () => {
     setPassword(e.target.value)
   }
 
-  const handlerBtnLogin = () => {
-    signInUserFirebase(email, password)
-      .then((data: IData): IUser => data.user)
-      .then((user: IUser): void => {
-        dispatch(setUser({ email: user.email, userName: user.userName, emailVerified: user.emailVerified }))
-      })
-      // .then(() => getUser(email))
-      // .then((user) => dispatch(setUser(user)))
-      .catch((err) => {
-        console.log(err.message)
-      })
+  const handlerBtnLogin = async () => {
+    try {
+      const userData = await signInUserFirebase(email, password)
+      const data = await getUser(userData.user.uid)
+      if (data) {
+        dispatch(
+          setUser({
+            email: userData.user.email,
+            emailVerified: userData.user.emailVerified,
+            userId: userData.user.uid,
+            userName: data.userName,
+            avatar: data.avatar,
+            infoAboutMe: data.infoAboutMe,
+            number: data.number,
+            address: data.address,
+          })
+        )
+      }
+    } catch (err) {
+      console.log(err)
+    }
+
     setEmail('')
     setPassword('')
   }
@@ -38,16 +51,35 @@ export const Authorization: React.FC = () => {
   return (
     <div className={classes.authorization}>
       <form className={classes.form}>
-        <FormTitle title='Authorization' />
-        <FormInput placeholder='Email' onChange={handlerEmail} type='email' value={email} />
-        <FormInput placeholder='Password' onChange={handlerPassword} type='password' value={password} />
-        <Button name='LOG IN' onClick={handlerBtnLogin} />
+        <FormTitle title="Authorization" />
+        <Input
+          onChange={handlerEmail}
+          inputClassName={INPUT_CLASS_NAME.FORM}
+          placeholder="Email"
+          type="email"
+          value={email}
+        />
+        <Input
+          placeholder="Password"
+          onChange={handlerPassword}
+          type="password"
+          value={password}
+          inputClassName={INPUT_CLASS_NAME.FORM}
+        />
+        <Button
+          buttonType={BUTTON_TYPE.BUTTON}
+          content={'Log in'}
+          onClick={handlerBtnLogin}
+          buttonClassName={BUTTON_CLASS_NAME.FORM}
+        />
+
         <div className={classes.text}>
           DON’T HAVE AN ACCOUNT ?<span> </span>
-          <Link className={classes.link} to='/registration'>CREATE ONE </Link>
+          <Link className={classes.link} to="/registration">
+            CREATE ONE{' '}
+          </Link>
         </div>
       </form>
     </div>
   )
 }
-

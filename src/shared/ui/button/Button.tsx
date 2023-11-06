@@ -1,32 +1,49 @@
-import classes from './button.module.css'
-import plus from './plus.svg'
-import iconSend from './send.svg'
+import { Icon } from '@shared/assets/Icon/Icon'
+import { BUTTON_TYPE } from '@shared/constants'
+import classes from './style.module.css'
+import { ButtonProps } from './type'
 
-interface IBtn {
-  onClick: () => void
-  name: string
-  style?: React.CSSProperties
-}
-
-export const Button: React.FC<IBtn> = ({ name, onClick, style }) => {
-
-  const onHandler = (e: React.FormEvent<HTMLButtonElement>) => {
+export const Button: React.FC<ButtonProps> = ({
+  iconName,
+  onClick,
+  styleBtn,
+  styleIcon,
+  widthIcon,
+  heightIcon,
+  buttonType,
+  content,
+  buttonClassName = '',
+  ...props
+}) => {
+  const onHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    onClick()
+    if (onClick) {
+      onClick(e)
+    }
   }
 
   return (
-    <button className={classes.btn} onClick={onHandler} style={style}>
-      {
-        name === '+'
-          ? <img src={plus} alt="Add" />
-          : name === 'Send'
-            ? [name, <img src={iconSend} alt='icon send' key={1} />]
-            : name
-      }
-
-
+    <button
+      {...props}
+      className={`${classes.button} ${
+        buttonClassName ? classes[buttonClassName] : ''
+      }`}
+      onClick={onHandler}
+      style={styleBtn}
+    >
+      {buttonType === BUTTON_TYPE.BUTTON ||
+      buttonType === BUTTON_TYPE.BUTTON_ICON
+        ? content
+        : null}
+      {buttonType === BUTTON_TYPE.ICON ||
+      buttonType === BUTTON_TYPE.BUTTON_ICON ? (
+        <Icon
+          iconName={iconName}
+          styleIcon={styleIcon}
+          widthIcon={widthIcon}
+          heightIcon={heightIcon}
+        />
+      ) : null}
     </button>
   )
 }
-

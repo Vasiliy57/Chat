@@ -1,0 +1,62 @@
+.button {
+  cursor: pointer;
+  background-color: transparent;
+  position: relative;
+}
+
+.form {
+  font-size: var(--fs-description);
+  padding: 15px;
+  background-color: var(--color-light-blue);
+  border-radius: 10px;
+  color: var(--color-white);
+  font-weight: 600;
+  line-height: 1;
+}
+
+.send {
+  display: flex;
+  gap: 10px;
+  font-size: 2rem;
+  font-weight: 400;
+  padding: 15px 18px 15px 30px;
+  line-height: 1;
+  color: var(--color-white);
+  background-color: var(--color-light-blue);
+  border-radius: 10px;
+}
+
+.send img {
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  transform: translateY(-50%);
+}
+
+
+.logOut {
+  margin-top: 30px;
+  width: 100%;
+  padding: 20px 0;
+  border-radius: 10px;
+  background-color: var(--color-bg-main);
+  border: 1px solid #dd5656;
+  color: #dd5656;
+}
+
+.save {
+  margin-top: 30px;
+  width: 100%;
+  padding: 20px 0;
+  border-radius: 10px;
+  background-color: var(--color-bg-main);
+  border: 1px solid #FF9A71;
+  color: #FF9A71;
+}
+
+.switch {
+  color: #BCBCBC;
+  position: relative;
+  margin-bottom: 10px;
+  background-color: var(--color-bg-main);
+}

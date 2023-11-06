@@ -1,0 +1,21 @@
+.info {
+  padding-left: 36px;
+  position: relative;
+}
+
+.info img {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+
+
+.number {}
+
+.email {}
+
+.address {
+  width: 100%;
+}

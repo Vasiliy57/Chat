@@ -6,6 +6,11 @@ const initialState: IState = {
     email: null,
     emailVerified: false,
     userName: null,
+    userId: null,
+    avatar: null,
+    infoAboutMe: null,
+    number: null,
+    address: null,
   },
   isAuth: false,
 }
@@ -18,10 +23,12 @@ export const profileSlice = createSlice({
       state.user = { ...state.user, ...action.payload }
       state.isAuth = true
     },
+    logOut: (state) => {
+      state.isAuth = false
+    },
   },
 })
 
-export const { setUser } = profileSlice.actions
+export const { setUser, logOut } = profileSlice.actions
 
 export default profileSlice.reducer
-

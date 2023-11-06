@@ -1,37 +1,63 @@
-
-import { IUser } from './types'
+import { useAppDispatch } from '@shared/hooks'
+import { ILastMessage, UserProps } from './types'
 import userImg from './user-img.jpg'
 import classes from './user.module.css'
+import { setCurrentDialogUser } from '@shared/store/chat/chat'
+import { getDialogId } from '@/firebase/users/getDialogId'
+import { useEffect } from 'react'
+import { onValue, ref } from 'firebase/database'
+import { dbRealTime } from '@/firebase/realTimeDataBase'
+import { useState } from 'react'
 
+export const User: React.FC<UserProps> = ({
+  userName,
+  email,
+  userId,
+  isSelected,
+  myUserId,
+  avatar,
+}) => {
+  const [lastMessage, setLastMessage] = useState<ILastMessage | null>(null)
+  const [isDialogId, setIsDialogId] = useState<boolean>(false)
 
-export const User: React.FC<IUser> = ({ userName, email, img, currentDialogUser, selectDialog }) => {
-  const currentClassName = currentDialogUser.email === email ? 'user-select' : 'user'
+  useEffect(() => {
+    getDialogId(myUserId, userId).then((dialogId) => {
+      if (dialogId && !isDialogId) {
+        const messagesRef = ref(
+          dbRealTime,
+          'messages/' + dialogId + '/lastMessage'
+        )
+        onValue(messagesRef, async (snapshot) => {
+          const data = await snapshot.val()
+          setLastMessage(data)
+          setIsDialogId(true)
+        })
+      }
+    })
+  })
+
+  const dispatch = useAppDispatch()
+  const currentClassName = isSelected ? 'user-select' : 'user'
   const onHandlerClick = () => {
-    selectDialog(email, userName)
+    dispatch(setCurrentDialogUser({ email, userName, userId, avatar }))
   }
   return (
     <div className={classes[currentClassName]} onClick={onHandlerClick}>
-      {
-        img
-          ? <img className={classes.img} src={img} alt="User avatar" />
-          : <img className={classes.img} src={userImg} alt="User icon" />
-      }
-
-
+      <img className={classes.img} src={avatar ?? userImg} alt="User avatar" />
       <div className={classes.info}>
-
         <div className={classes.row}>
           <div className={classes.name}>{userName}</div>
-          <div className={classes.lastMessage}>Hey, how's it going?</div>
+          <div className={classes.lastMessage}>
+            {lastMessage ? lastMessage.content : null}
+          </div>
         </div>
-
         <div className={classes.right}>
-          <div className={classes.time}>10:30 AM</div>
-          <div className={classes.count}> 3 </div>
+          <div className={classes.time}>
+            {' '}
+            {lastMessage ? lastMessage.date : null}
+          </div>
         </div>
-
       </div>
     </div>
   )
 }
-

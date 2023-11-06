@@ -2,11 +2,16 @@ import { useState } from 'react'
 import classes from './registration.module.css'
 import { createNewUserFirebase } from '@/firebase'
 import { Link } from 'react-router-dom'
-import { Button, FormInput, FormTitle } from '@/shared/ui'
+import { Button, FormTitle, Input } from '@/shared/ui'
 import { IData, IUser } from '../types'
 import { setUser } from '@/shared/store/profile'
 import { useAppDispatch } from '@shared/hooks'
-import { saveUser } from '@/firebase/users'
+import { createDialogs, registrationUser } from '@/firebase/users'
+import {
+  BUTTON_TYPE,
+  BUTTON_CLASS_NAME,
+  INPUT_CLASS_NAME,
+} from '@shared/constants'
 
 export const Registration: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -32,10 +37,22 @@ export const Registration: React.FC = () => {
     if (password === repeatPassword) {
       createNewUserFirebase(email, password)
         .then((data: IData): IUser => data.user)
-        .then(({ email, emailVerified }: IUser): void => {
-          dispatch(setUser({ email, emailVerified, userName }))
+        .then(async (user: IUser) => {
+          await registrationUser(email, userName, user.uid, user.emailVerified)
+          await createDialogs(user.uid)
+          dispatch(
+            setUser({
+              email: user.email,
+              emailVerified: user.emailVerified,
+              userName,
+              userId: user.uid,
+              avatar: null,
+              infoAboutMe: null,
+              number: null,
+              address: null,
+            })
+          )
         })
-        .then(() => saveUser(email, userName))
         .catch((err) => {
           console.log(err.message)
         })
@@ -45,27 +62,56 @@ export const Registration: React.FC = () => {
       setRepeatPassword('')
       setUserName('')
     } else {
-      alert('Passwords don\'t match !!!')
+      alert("Passwords don't match !!!")
     }
   }
 
   return (
     <div className={classes.registration}>
       <form className={classes.form}>
-        <FormTitle title='Registration' />
-        <FormInput placeholder='User Name' onChange={handlerUserName} value={userName} />
-        <FormInput placeholder='Email' onChange={handlerEmail} type='email' value={email} />
-        <FormInput placeholder='Password' onChange={handlerPassword} type='password' value={password} />
-        <FormInput placeholder='Confirm Password' onChange={handlerRepeatPassword} type='password' value={repeatPassword} />
-        <Button name='CREATE USER' onClick={handlerBtnReg} />
+        <FormTitle title="Registration" />
+
+        <Input
+          inputClassName={INPUT_CLASS_NAME.FORM}
+          placeholder="User Name"
+          onChange={handlerUserName}
+          value={userName}
+        />
+        <Input
+          inputClassName={INPUT_CLASS_NAME.FORM}
+          placeholder="Email"
+          onChange={handlerEmail}
+          type="email"
+          value={email}
+        />
+        <Input
+          inputClassName={INPUT_CLASS_NAME.FORM}
+          placeholder="Password"
+          onChange={handlerPassword}
+          type="password"
+          value={password}
+        />
+        <Input
+          inputClassName={INPUT_CLASS_NAME.FORM}
+          placeholder="Confirm Password"
+          onChange={handlerRepeatPassword}
+          type="password"
+          value={repeatPassword}
+        />
+
+        <Button
+          buttonType={BUTTON_TYPE.BUTTON}
+          content={'Create user'}
+          onClick={handlerBtnReg}
+          buttonClassName={BUTTON_CLASS_NAME.FORM}
+        />
         <div className={classes.text}>
           ALREADY HAVE AN ACCOUNT ?<span> </span>
-          <Link className={classes.link} to='/authorization'>LOGIN</Link>
+          <Link className={classes.link} to="/authorization">
+            LOGIN
+          </Link>
         </div>
       </form>
     </div>
   )
 }
-
-
-
