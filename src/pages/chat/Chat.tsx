@@ -4,10 +4,13 @@ import { MyUser } from '@/entites/chat'
 
 export const Chat: React.FC = () => {
   return (
-    <div className={classes.main}>
-      <MenuDialogs />
-      <Dialog />
-      <MyUser />
+    <div className={classes.wrap}>
+      <div className={classes.main}>
+        <MenuDialogs />
+        <Dialog />
+        <MyUser />
+      </div>
     </div>
   )
 }
+// показать компонент MenuDialogs
