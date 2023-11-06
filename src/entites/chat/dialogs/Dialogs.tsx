@@ -7,6 +7,8 @@ import { getAllUsersFireStore } from '@/firebase/users'
 import { onValue, ref } from 'firebase/database'
 import { dbRealTime } from '@/firebase/realTimeDataBase'
 import { useAppSelector } from '@shared/hooks'
+import { Button } from '@shared/ui'
+import { BUTTON_CLASS_NAME, BUTTON_TYPE } from '@shared/constants'
 
 export const Dialogs: React.FC<DialogsProps> = ({
   isMyDialogs,
@@ -46,12 +48,18 @@ export const Dialogs: React.FC<DialogsProps> = ({
   return (
     <div className={isMyDialogs ? classes.dialogs : ''}>
       <div className={classes.btnGroup}>
-        <button onClick={() => onSwitchDialogs(true)} className={classes.btn}>
-          MY CHATS
-        </button>
-        <button onClick={() => onSwitchDialogs(false)} className={classes.btn}>
-          SEARCH CHATS
-        </button>
+        <Button
+          onClick={() => onSwitchDialogs(true)}
+          buttonType={BUTTON_TYPE.BUTTON}
+          buttonClassName={BUTTON_CLASS_NAME.SWITCH}
+          content="MY CHATS"
+        />
+        <Button
+          onClick={() => onSwitchDialogs(false)}
+          buttonType={BUTTON_TYPE.BUTTON}
+          buttonClassName={BUTTON_CLASS_NAME.SWITCH}
+          content="SEARCH CHATS"
+        />
       </div>
       {userList.map((user, index) => {
         return (

@@ -1,4 +1,5 @@
-import classes from './style.module.css'
+import { Textarea } from '@shared/ui'
+import { TEXTAREA_CLASS_NAME } from '@shared/constants'
 
 interface AboutMeProps {
   content: string
@@ -12,12 +13,12 @@ export const AboutMe: React.FC<AboutMeProps> = ({
   isEdit,
 }) => {
   return (
-    <textarea
+    <Textarea 
       maxLength={700}
-      className={classes.textarea}
+      textareaClassName={TEXTAREA_CLASS_NAME.ABOUT_ME}
       value={content}
       onChange={onHandlerTextarea}
       disabled={!isEdit}
-    ></textarea>
+    ></Textarea>
   )
 }

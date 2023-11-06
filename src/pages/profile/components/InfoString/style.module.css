@@ -10,18 +10,12 @@
   transform: translateY(-50%);
 }
 
-.info input {
-  background-color: #181818;
-  color: #D9D9D9;
-  line-height: 142%;
-  letter-spacing: .5%;
-  font-size: 1.2rem;
-  border-bottom: 1px solid #D9D9D9;
-  width: 100%;
-}
+
 
 .number {}
 
 .email {}
 
-.address {}
+.address {
+  width: 100%;
+}

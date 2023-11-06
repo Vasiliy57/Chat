@@ -3,15 +3,17 @@ import classes from './style.module.css'
 import defaultImg from './user-img.jpg'
 import { logOut, setUser } from '@shared/store/profile/profileSlice'
 import { useNavigate } from 'react-router-dom'
-import { Routing, infoString } from '@shared/constants'
-import backIcon from './icons/back.svg'
-import editIcon from './icons/edit.svg'
-import downloadIcon from './icons/download.svg'
+import { Routing, INFO_STRING } from '@shared/constants'
 import { useEffect, useState } from 'react'
 import { saveImage } from '@/firebase/storageImages/saveImage'
 import { getUser, updateUser } from '@/firebase/users'
 import { InfoString } from './components/InfoString/InfoString'
 import { AboutMe } from './components/AboutMe/AboutMe'
+import { Button } from '@shared/ui'
+import { BUTTON_TYPE, BUTTON_CLASS_NAME } from '@shared/constants'
+import { ICONS } from '@shared/constants/icons'
+import { Icon } from '@shared/assets/Icon/Icon'
+
 export const Profile: React.FC = () => {
   const {
     userName,
@@ -28,6 +30,26 @@ export const Profile: React.FC = () => {
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const [editNumber, setEditNumber] = useState<string>('')
   const [editAddress, setEditAddress] = useState<string>('')
+  const styleBtnEdit = {
+    position: 'absolute',
+    top: '20px',
+    right: '50px',
+  } as const
+
+  const styleBtnBack = {
+    position: 'absolute',
+    top: '20px',
+    left: '50px',
+  } as const
+
+  const styleIconDownload = {
+    position: 'absolute',
+    top: '-10px',
+    right: '-21px',
+    color: '#D9D9D9',
+    width: '30px',
+    height: '30px',
+  } as const
 
   const navigation = useNavigate()
   const dispatch = useAppDispatch()
@@ -94,19 +116,25 @@ export const Profile: React.FC = () => {
     dispatch(setUser(newUser!))
   }
 
-  const onHandlerAddress = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onHandlerAddress = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setEditAddress(e.currentTarget.value)
   }
   const onHandlerNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEditNumber(e.currentTarget.value)
+    let value = e.currentTarget.value
+    if (value.length > 12) value = value.slice(0, 12)
+    setEditNumber(value)
   }
+
   return (
     <div className={classes.profile}>
-      <img
+      <Button
+        styleBtn={styleBtnBack}
+        widthIcon="30px"
+        heightIcon="30px"
         onClick={onGoBack}
-        className={classes.back}
-        src={backIcon}
-        alt="back icon"
+        buttonType={BUTTON_TYPE.ICON}
+        iconName={ICONS.BACK}
+        buttonClassName={BUTTON_CLASS_NAME.ICON}
       />
       {/* Подумать как можно сократить */}
       {isEdit ? (
@@ -119,11 +147,7 @@ export const Profile: React.FC = () => {
               onChange={(e) => onHandlerInputFile(e)}
             />
             <label htmlFor="down">
-              <img
-                className={classes.download}
-                src={downloadIcon}
-                alt="download"
-              />
+              <Icon iconName={ICONS.DOWNLOAD} styleIcon={styleIconDownload} />
             </label>
             <div className={classes.img}>
               <img
@@ -137,10 +161,14 @@ export const Profile: React.FC = () => {
         </>
       ) : (
         <>
-          <img
+          <Button
+            styleBtn={styleBtnEdit}
+            widthIcon="22px"
+            heightIcon="22px"
             onClick={onHandlerEdit}
-            src={editIcon}
-            className={classes.edit}
+            buttonType={BUTTON_TYPE.ICON}
+            iconName={ICONS.EDIT}
+            buttonClassName={BUTTON_CLASS_NAME.ICON}
           />
           <div className={classes.info}>
             <div className={classes.img}>
@@ -164,29 +192,39 @@ export const Profile: React.FC = () => {
         <h4 className={classes.title}>Contacts</h4>
         <div className={classes.column}>
           <InfoString
-            type={infoString.NUMBER}
+            type={INFO_STRING.NUMBER}
             content={editNumber}
             isEdit={isEdit}
             onHandlerInput={onHandlerNumber}
           />
-          <InfoString type={infoString.EMAIL} content={email} isEdit={isEdit} />
           <InfoString
-            type={infoString.ADDRESS}
+            type={INFO_STRING.EMAIL}
+            content={email}
+            isEdit={isEdit}
+            onHandlerInput={() => {}}
+          />
+          <InfoString
+            type={INFO_STRING.ADDRESS}
             content={editAddress}
             isEdit={isEdit}
-            onHandlerInput={onHandlerAddress}
+            onHandlerTextarea={onHandlerAddress}
           />
         </div>
       </div>
-      {/* Сделать кнопку универсальной */}
       {isEdit ? (
-        <button className={classes.btnSave} onClick={onSaveEdit}>
-          Save
-        </button>
+        <Button
+          onClick={onSaveEdit}
+          buttonType={BUTTON_TYPE.BUTTON}
+          content="Save"
+          buttonClassName={BUTTON_CLASS_NAME.SAVE}
+        />
       ) : (
-        <button className={classes.btn} onClick={onHandlerLogOut}>
-          Log out
-        </button>
+        <Button
+          onClick={onHandlerLogOut}
+          buttonType={BUTTON_TYPE.BUTTON}
+          content="Log out"
+          buttonClassName={BUTTON_CLASS_NAME.LOGOUT}
+        />
       )}
     </div>
   )

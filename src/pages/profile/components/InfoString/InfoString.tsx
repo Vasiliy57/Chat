@@ -1,38 +1,54 @@
 import classes from './style.module.css'
-import { infoString } from '@shared/constants/infoString'
-import emailIcon from '@shared/assets/svg/email.svg'
-import locationIcon from '@shared/assets/svg/location.svg'
-import numberIcon from '@shared/assets/svg/tel.svg'
+import { INFO_STRING } from '@shared/constants'
+import { Icon } from '@shared/assets/Icon/Icon'
+import { ICONS } from '@shared/constants/icons'
+import { Input, Textarea } from '@shared/ui'
+import { INPUT_CLASS_NAME, TEXTAREA_CLASS_NAME } from '@shared/constants'
 
 interface InfoStringProps {
-  type: keyof typeof infoString
+  type: keyof typeof INFO_STRING
   isEdit: boolean
   content: string | null
   onHandlerInput?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onHandlerTextarea?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
 }
+
 export const InfoString: React.FC<InfoStringProps> = ({
   type,
   content,
   isEdit,
   onHandlerInput,
+  onHandlerTextarea,
 }) => {
+  const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (onHandlerInput) {
+      onHandlerInput(e)
+    }
+  }
+  const onChangeTextarea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    if (onHandlerTextarea) {
+      onHandlerTextarea(e)
+    }
+  }
+
   switch (type) {
-    case infoString.EMAIL:
+    case INFO_STRING.EMAIL:
       return (
         <div className={`${classes.info} ${classes.email}`}>
-          <img src={emailIcon} alt="" />
+          <Icon iconName={ICONS.EMAIL} />
           {content || 'Write your email'}
         </div>
       )
-    case infoString.NUMBER:
+    case INFO_STRING.NUMBER:
       return (
         <div className={`${classes.info} ${classes.number}`}>
-          <img src={numberIcon} alt="" />
+          <Icon iconName={ICONS.TEL} />
           {isEdit ? (
-            <input
-              type="text"
+            <Input
+              inputClassName={INPUT_CLASS_NAME.EDIT}
+              type="number"
               maxLength={12}
-              onChange={onHandlerInput}
+              onChange={onChangeInput}
               value={content!}
             />
           ) : (
@@ -41,15 +57,15 @@ export const InfoString: React.FC<InfoStringProps> = ({
         </div>
       )
 
-    case infoString.ADDRESS:
+    case INFO_STRING.ADDRESS:
       return (
         <div className={`${classes.info} ${classes.address}`}>
-          <img src={locationIcon} alt="" />
+          <Icon iconName={ICONS.LOCATION} />
           {isEdit ? (
-            <input
-              type="text"
+            <Textarea
+              textareaClassName={TEXTAREA_CLASS_NAME.INFO_STRING}
               maxLength={120}
-              onChange={onHandlerInput}
+              onChange={onChangeTextarea}
               value={content!}
             />
           ) : (

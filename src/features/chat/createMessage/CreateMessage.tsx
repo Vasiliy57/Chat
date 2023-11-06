@@ -1,10 +1,16 @@
-import { Button, ButtonIcon } from '@shared/ui'
+import { Button, Textarea } from '@shared/ui'
 import { useState } from 'react'
 import { useAppDispatch, useAppSelector } from '@shared/hooks'
 import { addDialog } from '@/firebase/users'
 import classes from './createMessage.module.css'
 import { setCurrentDialogId } from '@shared/store/chat/chat'
 import { sendMessageDataBase } from '@/firebase/messages/sendMessageDataBase'
+import {
+  BUTTON_TYPE,
+  BUTTON_CLASS_NAME,
+  TEXTAREA_CLASS_NAME,
+} from '@shared/constants'
+import { ICONS } from '@shared/constants/icons'
 
 export const CreateMessage: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -42,37 +48,50 @@ export const CreateMessage: React.FC = () => {
     setTextMessage('')
   }
 
-  const onHandlerInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onHandlerInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTextMessage(e.target.value)
   }
 
-  const styleBtnSend = {
-    display: 'flex',
-    gap: '10px',
-    fontSize: '2rem',
-    fontWeight: 400,
-    padding: '15px 18px',
-    lineHeight: 1,
-  }
-
   return (
-    <div className={classes.TypeMessage}>
+    <div className={classes.typeMessage}>
       {currentDialogUser.email ? (
         <>
-          <input
-            className={classes.input}
-            type="text"
-            placeholder="Type message..."
-            onChange={onHandlerInput}
-            value={textMessage}
+          <Button
+            onClick={() => {}}
+            buttonType={BUTTON_TYPE.ICON}
+            iconName={ICONS.SMILE}
+            buttonClassName={BUTTON_CLASS_NAME.ICON}
+            styleBtn={{ height: '50px' }}
           />
-          <span className={classes.smile}>
-            <ButtonIcon name="smile" onClick={() => {}} />
-          </span>
+          <Textarea
+            onChange={onHandlerInput}
+            textareaClassName={TEXTAREA_CLASS_NAME.MESSAGE}
+            value={textMessage}
+            placeholder="Type message..."
+          />
+
           <div className={classes.buttons}>
-            <ButtonIcon name="voice" onClick={() => {}} />
-            <ButtonIcon name="attach" onClick={() => {}} />
-            <Button name="Send" onClick={onSendMessage} style={styleBtnSend} />
+            <Button
+              onClick={() => {}}
+              buttonType={BUTTON_TYPE.ICON}
+              iconName={ICONS.VOICE}
+              buttonClassName={BUTTON_CLASS_NAME.ICON}
+            />
+            <Button
+              onClick={() => {}}
+              buttonType={BUTTON_TYPE.ICON}
+              iconName={ICONS.ATTACH}
+              buttonClassName={BUTTON_CLASS_NAME.ICON}
+            />
+            <Button
+              buttonType={BUTTON_TYPE.BUTTON_ICON}
+              content="Send"
+              onClick={onSendMessage}
+              iconName={ICONS.SEND}
+              buttonClassName={BUTTON_CLASS_NAME.SEND}
+              widthIcon="18px"
+              heightIcon="18px"
+            />
           </div>
         </>
       ) : null}

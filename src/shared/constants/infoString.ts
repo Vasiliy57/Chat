@@ -1,4 +1,4 @@
-export const infoString = {
+export const INFO_STRING = {
   EMAIL: 'EMAIL',
   NUMBER: 'NUMBER',
   ADDRESS: 'ADDRESS',

@@ -56,7 +56,6 @@ export const User: React.FC<UserProps> = ({
             {' '}
             {lastMessage ? lastMessage.date : null}
           </div>
-          {/* <div className={classes.count}> </div> */}
         </div>
       </div>
     </div>
