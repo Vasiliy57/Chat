@@ -48,7 +48,7 @@ export const Profile: React.FC = () => {
   const onHandlerInfoAboutMe = (e: React.FormEvent<HTMLTextAreaElement>) => {
     setEditInfoAboutMe(e.currentTarget.value)
   }
-
+  //
   const onHandlerLogOut = () => {
     dispatch(logOut())
     navigation(Routing.AUTHORIZATION)
