@@ -1,5 +1,6 @@
 import { useAppDispatch } from '@shared/hooks'
 import { ILastMessage, UserProps } from './types'
+import moment from 'moment'
 import userImg from './user-img.jpg'
 import classes from './user.module.css'
 import { setCurrentDialogUser } from '@shared/store/chat/chat'
@@ -19,6 +20,9 @@ export const User: React.FC<UserProps> = ({
 }) => {
   const [lastMessage, setLastMessage] = useState<ILastMessage | null>(null)
   const [isDialogId, setIsDialogId] = useState<boolean>(false)
+
+  const time =
+    lastMessage && moment(+lastMessage.date * 1000).format('DD.MM.YY HH:mm')
 
   useEffect(() => {
     getDialogId(myUserId, userId).then((dialogId) => {
@@ -47,15 +51,10 @@ export const User: React.FC<UserProps> = ({
       <div className={classes.info}>
         <div className={classes.row}>
           <div className={classes.name}>{userName}</div>
-          <div className={classes.lastMessage}>
-            {lastMessage ? lastMessage.content : null}
-          </div>
+          <div className={classes.lastMessage}>{lastMessage?.content}</div>
         </div>
         <div className={classes.right}>
-          <div className={classes.time}>
-            {' '}
-            {lastMessage ? lastMessage.date : null}
-          </div>
+          <div className={classes.time}>{time}</div>
         </div>
       </div>
     </div>

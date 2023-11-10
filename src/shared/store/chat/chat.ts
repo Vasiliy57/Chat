@@ -2,12 +2,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { IChat, IUser } from './types'
 
 const initialState: IChat = {
-  currentDialogUser: {
-    userName: null,
-    email: null,
-    userId: null,
-    avatar: null,
-  },
+  currentDialogUser: null,
   currentDialogId: null,
 }
 
@@ -15,8 +10,8 @@ export const chat = createSlice({
   name: 'chat',
   initialState,
   reducers: {
-    setCurrentDialogUser: (state, action: PayloadAction<IUser>) => {
-      state.currentDialogUser = { ...action.payload }
+    setCurrentDialogUser: (state, action: PayloadAction<IUser | null>) => {
+      state.currentDialogUser = action.payload ? { ...action.payload } : null
     },
     setCurrentDialogId: (state, action: PayloadAction<string | null>) => {
       state.currentDialogId = action.payload

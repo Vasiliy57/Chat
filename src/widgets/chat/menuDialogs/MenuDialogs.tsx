@@ -15,14 +15,7 @@ export const MenuDialogs: React.FC = () => {
 
   const onSwitchDialogs = (dialogs: boolean) => {
     setIsMyDialogs(dialogs)
-    dispatch(
-      setCurrentDialogUser({
-        email: null,
-        userName: null,
-        userId: null,
-        avatar: null,
-      })
-    )
+    dispatch(setCurrentDialogUser(null))
     dispatch(setCurrentDialogId(null))
   }
 
