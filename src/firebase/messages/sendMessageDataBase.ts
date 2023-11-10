@@ -1,4 +1,3 @@
-import { getCurrentDate } from '@shared/utils/currentDate'
 import { ref, child, push, update } from 'firebase/database'
 import { dbRealTime } from '../realTimeDataBase'
 
@@ -12,7 +11,7 @@ export const sendMessageDataBase = (
   const message = {
     type,
     content: textMessage,
-    date: getCurrentDate(),
+    date: Math.floor(new Date().getTime() / 1000),
     email,
     userName,
   }
@@ -23,10 +22,10 @@ export const sendMessageDataBase = (
   ).key
 
   // Write the new post's data simultaneously in the posts list and the user's post list.
-  const updates: any = {}
-  updates['messages/' + dialogId + '/' + 'allMessages/' + newMessageKey] =
-    message
-  updates['messages/' + dialogId + '/' + 'lastMessage'] = message
+  const updates = {
+    ['messages/' + dialogId + '/' + 'allMessages/' + newMessageKey]: message,
+    ['messages/' + dialogId + '/' + 'lastMessage']: message,
+  }
 
   return update(ref(dbRealTime), updates)
 }
