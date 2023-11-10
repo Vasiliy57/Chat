@@ -1,7 +1,7 @@
-import { icons } from '@shared/constants/icons'
+import { ICONS } from '@shared/constants/icons'
 
-type Keys = keyof typeof icons
-type values = (typeof icons)[Keys]
+type Keys = keyof typeof ICONS
+type values = (typeof ICONS)[Keys]
 
 export interface SvgProps {
   iconName?: values
