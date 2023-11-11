@@ -1,4 +1,4 @@
-import { Button, Textarea } from '@shared/ui'
+import { Button, CustomInput, Textarea } from '@shared/ui'
 import { useState } from 'react'
 import { useAppDispatch, useAppSelector } from '@shared/hooks'
 import { addDialog } from '@/firebase/users'
@@ -11,6 +11,8 @@ import {
   TEXTAREA_CLASS_NAME,
 } from '@shared/constants'
 import { ICONS } from '@shared/constants/icons'
+import EmojiPicker, { Categories } from 'emoji-picker-react'
+import { Theme } from 'emoji-picker-react'
 
 export const CreateMessage: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -24,9 +26,10 @@ export const CreateMessage: React.FC = () => {
     (state) => state.ProfileReducer.user
   )
   const [textMessage, setTextMessage] = useState<string>('')
+  const [isEmoji, setIsEmoji] = useState<boolean>(false)
 
   const onSendMessage = () => {
-    if (!currentDialogId && textMessage.trim()) {
+    if (!currentDialogId && textMessage.trim() && currentDialogUser) {
       addDialog(userId, currentDialogUser.userId)
         .then((data) => {
           dispatch(setCurrentDialogId(data))
@@ -34,7 +37,6 @@ export const CreateMessage: React.FC = () => {
         })
         .then((dialogId) => {
           sendMessageDataBase(textMessage, 'text', dialogId, email!, userName!)
-          console.log(textMessage, 'text', dialogId, email!, userName!)
         })
     } else {
       sendMessageDataBase(
@@ -45,56 +47,81 @@ export const CreateMessage: React.FC = () => {
         userName!
       )
     }
+
     setTextMessage('')
+    setIsEmoji(false)
   }
 
-  const onHandlerInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const onHandlerInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTextMessage(e.target.value)
+  }
+  const onIsEmoji = () => {
+    setIsEmoji(!isEmoji)
+  }
+  const onHandlerEmoji = (emoji: { unified: string }) => {
+    setTextMessage((prev) => {
+      return prev + '$#' + emoji.unified + '$'
+    })
   }
 
   return (
-    <div className={classes.typeMessage}>
-      {currentDialogUser.email ? (
-        <>
-          <Button
-            onClick={() => {}}
-            buttonType={BUTTON_TYPE.ICON}
-            iconName={ICONS.SMILE}
-            buttonClassName={BUTTON_CLASS_NAME.ICON}
-            styleBtn={{ height: '50px' }}
-          />
-          <Textarea
-            onChange={onHandlerInput}
-            textareaClassName={TEXTAREA_CLASS_NAME.MESSAGE}
-            value={textMessage}
-            placeholder="Type message..."
-          />
-
-          <div className={classes.buttons}>
+    <div>
+      <div className={classes.typeMessage}>
+        {currentDialogUser?.email ? (
+          <>
             <Button
-              onClick={() => {}}
+              onClick={onIsEmoji}
               buttonType={BUTTON_TYPE.ICON}
-              iconName={ICONS.VOICE}
+              iconName={ICONS.SMILE}
               buttonClassName={BUTTON_CLASS_NAME.ICON}
+              styleBtn={{ height: '50px' }}
             />
-            <Button
-              onClick={() => {}}
-              buttonType={BUTTON_TYPE.ICON}
-              iconName={ICONS.ATTACH}
-              buttonClassName={BUTTON_CLASS_NAME.ICON}
-            />
-            <Button
-              buttonType={BUTTON_TYPE.BUTTON_ICON}
-              content="Send"
-              onClick={onSendMessage}
-              iconName={ICONS.SEND}
-              buttonClassName={BUTTON_CLASS_NAME.SEND}
-              widthIcon="18px"
-              heightIcon="18px"
-            />
-          </div>
-        </>
-      ) : null}
+            <CustomInput onChange={onHandlerInput} value={textMessage} />
+            {/* <Textarea
+              onChange={onHandlerInput}
+              textareaClassName={TEXTAREA_CLASS_NAME.MESSAGE}
+              value={textMessage}
+              placeholder="Type message..."
+            ></Textarea> */}
+            <div className={classes.buttons}>
+              <Button
+                onClick={() => {}}
+                buttonType={BUTTON_TYPE.ICON}
+                iconName={ICONS.VOICE}
+                buttonClassName={BUTTON_CLASS_NAME.ICON}
+              />
+              <Button
+                onClick={() => {}}
+                buttonType={BUTTON_TYPE.ICON}
+                iconName={ICONS.ATTACH}
+                buttonClassName={BUTTON_CLASS_NAME.ICON}
+              />
+              <Button
+                buttonType={BUTTON_TYPE.BUTTON_ICON}
+                content="Send"
+                onClick={onSendMessage}
+                iconName={ICONS.SEND}
+                buttonClassName={BUTTON_CLASS_NAME.SEND}
+                widthIcon="18px"
+                heightIcon="18px"
+              />
+            </div>
+          </>
+        ) : null}
+      </div>
+      {!isEmoji || (
+        <EmojiPicker
+          theme={Theme.DARK}
+          width={'100%'}
+          height={'300px'}
+          lazyLoadEmojis={false}
+          onEmojiClick={onHandlerEmoji}
+          searchDisabled={true}
+          categories={[
+            { category: Categories.SMILEYS_PEOPLE, name: 'Faces...' },
+          ]}
+        />
+      )}
     </div>
   )
 }

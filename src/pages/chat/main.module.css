@@ -5,6 +5,7 @@
   align-items: center;
   height: 700px;
   background-color: var(--color-bg-main);
+  border-radius: 15px;
 }
 
 .wrap {

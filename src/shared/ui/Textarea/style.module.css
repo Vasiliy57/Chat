@@ -27,9 +27,9 @@
   margin-bottom: 10px;
 }
 
-.message:focus {
+/* .message:focus {
   height: 130px;
-}
+} */
 
 .message::-webkit-scrollbar {
   width: 5px;
