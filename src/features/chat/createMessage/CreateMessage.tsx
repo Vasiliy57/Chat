@@ -1,5 +1,5 @@
 import { Button, CustomInput, Textarea } from '@shared/ui'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '@shared/hooks'
 import { addDialog } from '@/firebase/users'
 import classes from './createMessage.module.css'
@@ -15,6 +15,9 @@ import EmojiPicker, { Categories } from 'emoji-picker-react'
 import { Theme } from 'emoji-picker-react'
 
 export const CreateMessage: React.FC = () => {
+  const inputRef = useRef<HTMLInputElement>({})
+  const [emojiInMessage, setEmojiInMessage] = useState<string[]>([])
+
   const dispatch = useAppDispatch()
   const currentDialogUser = useAppSelector(
     (state) => state.chatSlice.currentDialogUser
@@ -60,8 +63,14 @@ export const CreateMessage: React.FC = () => {
   }
   const onHandlerEmoji = (emoji: { unified: string }) => {
     setTextMessage((prev) => {
-      return prev + '$#' + emoji.unified + '$'
+      return prev + '№'
     })
+
+    setEmojiInMessage((prev) => {
+      return [...prev, emoji.unified]
+    })
+
+    inputRef.current.focus()
   }
 
   return (
@@ -76,7 +85,13 @@ export const CreateMessage: React.FC = () => {
               buttonClassName={BUTTON_CLASS_NAME.ICON}
               styleBtn={{ height: '50px' }}
             />
-            <CustomInput onChange={onHandlerInput} value={textMessage} />
+            <CustomInput
+              onChange={onHandlerInput}
+              value={textMessage}
+              inputRef={inputRef}
+              emojiInMessage={emojiInMessage}
+              setEmojiInMessage={setEmojiInMessage}
+            />
             {/* <Textarea
               onChange={onHandlerInput}
               textareaClassName={TEXTAREA_CLASS_NAME.MESSAGE}

@@ -4,11 +4,17 @@ import classes from './style.module.css'
 interface CustomInputProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   value: string
+  inputRef: HTMLInputElement
+  emojiInMessage: string[]
+  setEmojiInMessage: (callback: (prev: string[]) => string[]) => void
 }
 
 export const CustomInput: React.FC<CustomInputProps> = ({
   onChange,
   value,
+  inputRef,
+  emojiInMessage,
+  setEmojiInMessage,
 }) => {
   // const [value, setValue] = useState<string>('')
 
@@ -17,20 +23,28 @@ export const CustomInput: React.FC<CustomInputProps> = ({
   //   setValue(val)
   // }
 
+  const onHandlerClick = () => {
+    inputRef.current.focus()
+  }
+
   return (
     <div className={classes.customInput}>
-      <input
+      <textarea
+        ref={inputRef}
         type="text"
-        className={classes.input}
+        className={classes.textarea}
         onChange={onChange}
         value={value}
-        id="emoji-input"
-      />
-      <label className={classes.label} htmlFor="emoji-input">
-        <div className={classes.content}>
-          <ConvertEmoji text={value} />
-        </div>
-      </label>
+        maxLength={110}
+        placeholder="Type Message..."
+      ></textarea>
+      <div className={classes.content} onClick={onHandlerClick}>
+        <ConvertEmoji
+          text={value}
+          emojiInMessage={emojiInMessage}
+          setEmojiInMessage={setEmojiInMessage}
+        />
+      </div>
     </div>
   )
 }
