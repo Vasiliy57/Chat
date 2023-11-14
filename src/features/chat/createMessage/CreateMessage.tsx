@@ -1,22 +1,17 @@
-import { Button, CustomInput, Textarea } from '@shared/ui'
-import { useEffect, useRef, useState } from 'react'
+import { Button, CustomInput } from '@shared/ui'
+import { useRef, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '@shared/hooks'
 import { addDialog } from '@/firebase/users'
 import classes from './createMessage.module.css'
 import { setCurrentDialogId } from '@shared/store/chat/chat'
 import { sendMessageDataBase } from '@/firebase/messages/sendMessageDataBase'
-import {
-  BUTTON_TYPE,
-  BUTTON_CLASS_NAME,
-  TEXTAREA_CLASS_NAME,
-} from '@shared/constants'
+import { BUTTON_TYPE, BUTTON_CLASS_NAME } from '@shared/constants'
 import { ICONS } from '@shared/constants/icons'
-import EmojiPicker, { Categories } from 'emoji-picker-react'
+import EmojiPicker, { Categories, Emoji } from 'emoji-picker-react'
 import { Theme } from 'emoji-picker-react'
 
 export const CreateMessage: React.FC = () => {
-  const inputRef = useRef<HTMLInputElement>({})
-  const [emojiInMessage, setEmojiInMessage] = useState<string[]>([])
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const dispatch = useAppDispatch()
   const currentDialogUser = useAppSelector(
@@ -55,22 +50,24 @@ export const CreateMessage: React.FC = () => {
     setIsEmoji(false)
   }
 
+  const smileDetector = useRef<Record<string, React.ReactNode>>({})
+
   const onHandlerInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTextMessage(e.target.value)
   }
   const onIsEmoji = () => {
     setIsEmoji(!isEmoji)
   }
-  const onHandlerEmoji = (emoji: { unified: string }) => {
+  const onHandlerEmoji = (emoji: { emoji: string; unified: string }) => {
     setTextMessage((prev) => {
-      return prev + '№'
+      return prev + emoji.emoji
     })
 
-    setEmojiInMessage((prev) => {
-      return [...prev, emoji.unified]
-    })
+    if (!smileDetector.current[emoji.emoji]) {
+      smileDetector.current[emoji.emoji] = emoji.unified
+    }
 
-    inputRef.current.focus()
+    inputRef?.current?.focus()
   }
 
   return (
@@ -89,8 +86,7 @@ export const CreateMessage: React.FC = () => {
               onChange={onHandlerInput}
               value={textMessage}
               inputRef={inputRef}
-              emojiInMessage={emojiInMessage}
-              setEmojiInMessage={setEmojiInMessage}
+              smileDetector={smileDetector}
             />
             {/* <Textarea
               onChange={onHandlerInput}

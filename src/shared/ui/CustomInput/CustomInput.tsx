@@ -1,11 +1,11 @@
-import { ConvertEmoji } from '@shared/utils/convertEmojiText'
+import { Emoji } from 'emoji-picker-react'
 import classes from './style.module.css'
 
 interface CustomInputProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   value: string
   inputRef: HTMLInputElement
-  emojiInMessage: string[]
+  smileDetector: React.RefObject<Record<string, string>>
   setEmojiInMessage: (callback: (prev: string[]) => string[]) => void
 }
 
@@ -13,16 +13,8 @@ export const CustomInput: React.FC<CustomInputProps> = ({
   onChange,
   value,
   inputRef,
-  emojiInMessage,
-  setEmojiInMessage,
+  smileDetector,
 }) => {
-  // const [value, setValue] = useState<string>('')
-
-  // const onaChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const val = e.target.value
-  //   setValue(val)
-  // }
-
   const onHandlerClick = () => {
     inputRef.current.focus()
   }
@@ -39,11 +31,19 @@ export const CustomInput: React.FC<CustomInputProps> = ({
         placeholder="Type Message..."
       ></textarea>
       <div className={classes.content} onClick={onHandlerClick}>
-        <ConvertEmoji
-          text={value}
-          emojiInMessage={emojiInMessage}
-          setEmojiInMessage={setEmojiInMessage}
-        />
+        {[...value].map((elem, index) => {
+          if (!smileDetector.current![elem]) {
+            return elem
+          } else {
+            return (
+              <Emoji
+                unified={smileDetector.current![elem]}
+                size={23.5}
+                key={index}
+              />
+            )
+          }
+        })}
       </div>
     </div>
   )
