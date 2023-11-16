@@ -2,12 +2,14 @@ import img from './user-img.jpg'
 import classes from './message.module.css'
 import { messageProps } from './type'
 import moment from 'moment'
+import { HandlerEmojiContent } from '@shared/utils'
 
 export const Message: React.FC<messageProps> = ({
   isMyMessage,
   content,
   date,
   userName,
+  smileDetector,
 }) => {
   const time = moment(+date * 1000).format('DD.MM.YY HH:mm')
   return (
@@ -18,7 +20,13 @@ export const Message: React.FC<messageProps> = ({
           <div className={classes.name}>
             {userName} <span className={classes.time}>{time}</span>
           </div>
-          <div className={classes.text}>{content}</div>
+          <div className={classes.text}>
+            <HandlerEmojiContent
+              content={content}
+              smileDetector={smileDetector}
+              sizeSmile={23}
+            />
+          </div>
         </div>
       ) : (
         <div className={classes.myMessage}>
@@ -26,7 +34,13 @@ export const Message: React.FC<messageProps> = ({
           <div className={classes.myName}>
             {userName} <span className={classes.myTime}>{time}</span>
           </div>
-          <div className={classes.myText}>{content}</div>
+          <div className={classes.myText}>
+            <HandlerEmojiContent
+              content={content}
+              smileDetector={smileDetector}
+              sizeSmile={25}
+            />
+          </div>
         </div>
       )}
     </>

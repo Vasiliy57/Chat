@@ -52,6 +52,7 @@ export const Messages: React.FC = () => {
                 date={message.date}
                 typeMessage={message.type}
                 userName={message.userName}
+                smileDetector={message.smileDetector}
                 key={index}
               />
             )

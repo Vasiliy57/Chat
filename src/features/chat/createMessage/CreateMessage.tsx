@@ -7,11 +7,11 @@ import { setCurrentDialogId } from '@shared/store/chat/chat'
 import { sendMessageDataBase } from '@/firebase/messages/sendMessageDataBase'
 import { BUTTON_TYPE, BUTTON_CLASS_NAME } from '@shared/constants'
 import { ICONS } from '@shared/constants/icons'
-import EmojiPicker, { Categories, Emoji } from 'emoji-picker-react'
+import EmojiPicker, { Categories } from 'emoji-picker-react'
 import { Theme } from 'emoji-picker-react'
 
 export const CreateMessage: React.FC = () => {
-  const inputRef = useRef<HTMLInputElement>(null)
+  const inputRef = useRef<HTMLTextAreaElement>(null)
 
   const dispatch = useAppDispatch()
   const currentDialogUser = useAppSelector(
@@ -25,6 +25,7 @@ export const CreateMessage: React.FC = () => {
   )
   const [textMessage, setTextMessage] = useState<string>('')
   const [isEmoji, setIsEmoji] = useState<boolean>(false)
+  const smileDetector = useRef<Record<string, string>>({})
 
   const onSendMessage = () => {
     if (!currentDialogId && textMessage.trim() && currentDialogUser) {
@@ -34,7 +35,14 @@ export const CreateMessage: React.FC = () => {
           return data
         })
         .then((dialogId) => {
-          sendMessageDataBase(textMessage, 'text', dialogId, email!, userName!)
+          sendMessageDataBase(
+            textMessage,
+            'text',
+            dialogId,
+            email!,
+            userName!,
+            smileDetector.current
+          )
         })
     } else {
       sendMessageDataBase(
@@ -42,7 +50,8 @@ export const CreateMessage: React.FC = () => {
         'text',
         currentDialogId!,
         email!,
-        userName!
+        userName!,
+        smileDetector.current
       )
     }
 
@@ -50,11 +59,10 @@ export const CreateMessage: React.FC = () => {
     setIsEmoji(false)
   }
 
-  const smileDetector = useRef<Record<string, React.ReactNode>>({})
-
-  const onHandlerInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTextMessage(e.target.value)
+  const onHandlerInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setTextMessage(event.target.value)
   }
+
   const onIsEmoji = () => {
     setIsEmoji(!isEmoji)
   }
@@ -85,15 +93,9 @@ export const CreateMessage: React.FC = () => {
             <CustomInput
               onChange={onHandlerInput}
               value={textMessage}
-              inputRef={inputRef}
               smileDetector={smileDetector}
+              inputRef={inputRef}
             />
-            {/* <Textarea
-              onChange={onHandlerInput}
-              textareaClassName={TEXTAREA_CLASS_NAME.MESSAGE}
-              value={textMessage}
-              placeholder="Type message..."
-            ></Textarea> */}
             <div className={classes.buttons}>
               <Button
                 onClick={() => {}}
