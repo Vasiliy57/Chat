@@ -7,8 +7,8 @@ interface HandlerEmojiContentProps {
 }
 
 export const HandlerEmojiContent: React.FC<HandlerEmojiContentProps> = ({
-  content,
-  smileDetector,
+  content = [],
+  smileDetector = {},
   sizeSmile,
 }) => {
   return (
