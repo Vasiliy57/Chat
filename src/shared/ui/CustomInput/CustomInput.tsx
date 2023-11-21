@@ -1,3 +1,4 @@
+import { Emoji } from 'emoji-picker-react'
 import classes from './style.module.css'
 import { HandlerEmojiContent } from '@shared/utils'
 
@@ -9,12 +10,29 @@ interface CustomInputProps {
 }
 
 export const CustomInput: React.FC<CustomInputProps> = ({
-  emojiInMessage,
+  // emojiInMessage,
   smileDetector,
   refCustomInput,
   onHandlerInput,
 }) => {
   const onHandlerClick = () => {}
+
+  const onHandlerInputInsideComponent = (e) => {
+    onHandlerInput(e)
+    const content = e.currentTarget.textContent
+
+    const data = [...content].map((elem, index) => {
+      if (!smileDetector.current![elem]) {
+        return elem
+      } else {
+        return (
+          <Emoji unified={smileDetector.current![elem]} size={30} key={index} />
+        )
+      }
+    })
+
+    console.log(data)
+  }
 
   return (
     <div className={classes.customInput}>
@@ -24,13 +42,13 @@ export const CustomInput: React.FC<CustomInputProps> = ({
         onClick={onHandlerClick}
         contentEditable={true}
         suppressContentEditableWarning={true}
-        onInput={onHandlerInput}
+        onInput={onHandlerInputInsideComponent}
       >
-        <HandlerEmojiContent
-          content={emojiInMessage}
+        {/* <HandlerEmojiContent
+          content={refCustomInput?.current?.innerText}
           smileDetector={smileDetector.current!}
           sizeSmile={30}
-        />
+        /> */}
       </div>
     </div>
   )

@@ -7,7 +7,7 @@ import { setCurrentDialogId } from '@shared/store/chat/chat'
 import { sendMessageDataBase } from '@/firebase/messages/sendMessageDataBase'
 import { BUTTON_TYPE, BUTTON_CLASS_NAME } from '@shared/constants'
 import { ICONS } from '@shared/constants/icons'
-import EmojiPicker, { Categories } from 'emoji-picker-react'
+import EmojiPicker, { Categories, Emoji } from 'emoji-picker-react'
 import { Theme } from 'emoji-picker-react'
 
 export const CreateMessage: React.FC = () => {
@@ -23,13 +23,27 @@ export const CreateMessage: React.FC = () => {
   const { email, userId, userName } = useAppSelector(
     (state) => state.ProfileReducer.user
   )
-  const [contentMessage, setContentMessage] = useState<string>('')
-  const [emojiInMessage, setEmojiInMessage] = useState<string>('')
+
   const [isEmoji, setIsEmoji] = useState<boolean>(false)
   const smileDetector = useRef<Record<string, string>>({})
 
-  const onSendMessage = () => {
-    if (!currentDialogId && contentMessage.trim() && currentDialogUser) {
+  const onSendMessage = async () => {
+    const text = refCustomInput.current?.innerHTML ?? ''
+
+    const childrens = refCustomInput.current?.childNodes
+    let messageText = ''
+
+    childrens?.forEach((el) => {
+      if (typeof el.nodeValue === 'string') {
+        messageText += el.nodeValue
+      } else {
+        messageText += el.getAttribute('data-unified')
+      }
+    })
+
+    refCustomInput!.current!.innerText = ''
+
+    if (!currentDialogId && text.trim() && currentDialogUser) {
       addDialog(userId, currentDialogUser.userId)
         .then((data) => {
           dispatch(setCurrentDialogId(data))
@@ -37,7 +51,7 @@ export const CreateMessage: React.FC = () => {
         })
         .then((dialogId) => {
           sendMessageDataBase(
-            contentMessage,
+            messageText,
             'text',
             dialogId,
             email!,
@@ -47,7 +61,7 @@ export const CreateMessage: React.FC = () => {
         })
     } else {
       sendMessageDataBase(
-        contentMessage,
+        messageText,
         'text',
         currentDialogId!,
         email!,
@@ -56,29 +70,19 @@ export const CreateMessage: React.FC = () => {
       )
     }
 
-    setContentMessage('')
-    setEmojiInMessage('')
     setIsEmoji(false)
-
-    setTimeout(() => {
-      refCustomInput.current!.innerText = ''
-    }, 300)
   }
 
   const onHandlerInput = (e) => {
-    setContentMessage(e.currentTarget.textContent)
+    console.log('EVENT: ', e.currentTarget.textContent)
+    console.log('REF: ', refCustomInput.current?.innerText)
   }
 
   const onIsEmoji = () => {
     setIsEmoji(!isEmoji)
   }
-  const onHandlerEmoji = (emoji: { emoji: string; unified: string }) => {
-    setEmojiInMessage((prev) => {
-      return prev + emoji.emoji
-    })
-    setContentMessage((prev) => {
-      return prev + emoji.emoji
-    })
+  const onHandlerEmoji = (emoji) => {
+    refCustomInput.current!.innerHTML += `<img src="${emoji.imageUrl}" data-unified="${emoji.emoji}" style="width: 30px;"/>`
 
     if (!smileDetector.current[emoji.emoji]) {
       smileDetector.current[emoji.emoji] = emoji.unified
@@ -90,7 +94,7 @@ export const CreateMessage: React.FC = () => {
   return (
     <div>
       <div className={classes.typeMessage}>
-        {currentDialogUser?.email ? (
+        {currentDialogUser?.email && (
           <>
             <Button
               onClick={onIsEmoji}
@@ -101,7 +105,7 @@ export const CreateMessage: React.FC = () => {
             />
             <CustomInput
               onHandlerInput={onHandlerInput}
-              emojiInMessage={emojiInMessage}
+              // emojiInMessage={emojiInMessage}
               smileDetector={smileDetector}
               refCustomInput={refCustomInput}
             />
@@ -129,7 +133,7 @@ export const CreateMessage: React.FC = () => {
               />
             </div>
           </>
-        ) : null}
+        )}
       </div>
       {!isEmoji || (
         <EmojiPicker
