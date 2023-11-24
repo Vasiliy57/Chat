@@ -7,7 +7,7 @@ import { setCurrentDialogId } from '@shared/store/chat/chat'
 import { sendMessageDataBase } from '@/firebase/messages/sendMessageDataBase'
 import { BUTTON_TYPE, BUTTON_CLASS_NAME } from '@shared/constants'
 import { ICONS } from '@shared/constants/icons'
-import EmojiPicker, { Categories, Emoji } from 'emoji-picker-react'
+import EmojiPicker, { Categories } from 'emoji-picker-react'
 import { Theme } from 'emoji-picker-react'
 
 export const CreateMessage: React.FC = () => {
@@ -37,7 +37,7 @@ export const CreateMessage: React.FC = () => {
       if (typeof el.nodeValue === 'string') {
         messageText += el.nodeValue
       } else {
-        messageText += el.getAttribute('data-unified')
+        messageText += el.dataset.unified
       }
     })
 
@@ -73,22 +73,21 @@ export const CreateMessage: React.FC = () => {
     setIsEmoji(false)
   }
 
-  const onHandlerInput = (e) => {
-    console.log('EVENT: ', e.currentTarget.textContent)
-    console.log('REF: ', refCustomInput.current?.innerText)
-  }
-
   const onIsEmoji = () => {
     setIsEmoji(!isEmoji)
   }
-  const onHandlerEmoji = (emoji) => {
+  const onHandlerEmoji = (emoji: {
+    emoji: string
+    imageUrl: string
+    unified: string
+  }) => {
     refCustomInput.current!.innerHTML += `<img src="${emoji.imageUrl}" data-unified="${emoji.emoji}" style="width: 30px;"/>`
 
     if (!smileDetector.current[emoji.emoji]) {
       smileDetector.current[emoji.emoji] = emoji.unified
     }
 
-    refCustomInput.current?.focus()
+    // refCustomInput.current?.focus()
   }
 
   return (
@@ -103,12 +102,7 @@ export const CreateMessage: React.FC = () => {
               buttonClassName={BUTTON_CLASS_NAME.ICON}
               styleBtn={{ height: '50px' }}
             />
-            <CustomInput
-              onHandlerInput={onHandlerInput}
-              // emojiInMessage={emojiInMessage}
-              smileDetector={smileDetector}
-              refCustomInput={refCustomInput}
-            />
+            <CustomInput refCustomInput={refCustomInput} />
             <div className={classes.buttons}>
               <Button
                 onClick={() => {}}
