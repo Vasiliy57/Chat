@@ -1,0 +1,67 @@
+.customInput {
+  width: 100%;
+  position: relative;
+}
+
+.textarea {
+  position: absolute;
+  top: 0px;
+  left: 0;
+  width: 100%;
+
+  background-color: transparent;
+  color: transparent;
+
+  font-size: 2.2rem;
+  resize: none;
+  caret-color: #fff;
+  min-height: 40px;
+  max-height: 80px;
+  z-index: 10;
+  padding: 0 20px;
+  line-height: 142%;
+  letter-spacing: .5%;
+  padding: 5px 20px 0 20px;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.textarea:placeholder {
+  color: #fff;
+}
+
+
+.content {
+
+  position: relative;
+  width: 100%;
+  /* background-color: #44597f; */
+  background-color: transparent;
+  color: #fff;
+  font-size: 2.2rem;
+  line-height: 142%;
+  letter-spacing: .5%;
+  padding: 5px 20px 0 20px;
+  word-wrap: break-word;
+  word-break: break-all;
+  overflow-y: auto;
+  min-height: 40px;
+  max-height: 80px;
+}
+
+.content::-webkit-scrollbar {
+  width: 5px;
+  /* background-color: var(--color-bg-main); */
+  background-color: #181818;
+}
+
+.content::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: var(--color-light-blue);
+}
+
+.content::-webkit-scrollbar-track {
+  border-radius: 5px;
+  /* background-color: var(--color-bg-main); */
+  background-color: #181818;
+}

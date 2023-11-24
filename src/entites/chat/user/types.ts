@@ -14,4 +14,5 @@ export interface ILastMessage {
   email: string
   type: string
   userName: string
+  smileDetector: Record<string, string>
 }

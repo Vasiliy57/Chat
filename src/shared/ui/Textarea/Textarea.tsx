@@ -17,6 +17,8 @@ export const Textarea: React.FC<TextareaProps> = ({
       value={value}
       {...props}
       maxLength={maxLength}
-    ></textarea>
+    >
+      {props.children ?? null}
+    </textarea>
   )
 }

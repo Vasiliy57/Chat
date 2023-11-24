@@ -6,7 +6,8 @@ export const sendMessageDataBase = (
   type: string,
   dialogId: string,
   email: string,
-  userName: string
+  userName: string,
+  smileDetector: Record<string, string>
 ) => {
   const message = {
     type,
@@ -14,6 +15,7 @@ export const sendMessageDataBase = (
     date: Math.floor(new Date().getTime() / 1000),
     email,
     userName,
+    smileDetector,
   }
 
   // Get a key for a new Post.

@@ -9,6 +9,7 @@ import { useEffect } from 'react'
 import { onValue, ref } from 'firebase/database'
 import { dbRealTime } from '@/firebase/realTimeDataBase'
 import { useState } from 'react'
+import { HandlerEmojiContent } from '@shared/utils'
 
 export const User: React.FC<UserProps> = ({
   userName,
@@ -51,7 +52,15 @@ export const User: React.FC<UserProps> = ({
       <div className={classes.info}>
         <div className={classes.row}>
           <div className={classes.name}>{userName}</div>
-          <div className={classes.lastMessage}>{lastMessage?.content}</div>
+          <div className={classes.lastMessage}>
+            {lastMessage?.content ? (
+              <HandlerEmojiContent
+                content={lastMessage.content}
+                smileDetector={lastMessage.smileDetector}
+                sizeSmile={15}
+              />
+            ) : null}
+          </div>
         </div>
         <div className={classes.right}>
           <div className={classes.time}>{time}</div>

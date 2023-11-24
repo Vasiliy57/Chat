@@ -1,5 +1,3 @@
-
-
 export interface IMessages {
   currentDialogUser: {
     email: string | null
@@ -14,4 +12,5 @@ export interface IMessage {
   date: string
   email: string
   userName: string
+  smileDetector: Record<string, string>
 }
