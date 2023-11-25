@@ -2,16 +2,16 @@ import { ref, child, push, update } from 'firebase/database'
 import { dbRealTime } from '../realTimeDataBase'
 
 export const sendMessageDataBase = (
-  textMessage: string,
+  content: string,
   type: string,
   dialogId: string,
   email: string,
   userName: string,
-  smileDetector: Record<string, string>
+  smileDetector?: Record<string, string>
 ) => {
   const message = {
     type,
-    content: textMessage,
+    content,
     date: Math.floor(new Date().getTime() / 1000),
     email,
     userName,

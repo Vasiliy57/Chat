@@ -1,3 +1,3 @@
-import { HandlerEmojiContent } from './HandlerEmojiContent'
+import { ConvertEmojiContent } from './ConvertEmojiContent'
 
-export { HandlerEmojiContent }
+export { ConvertEmojiContent }

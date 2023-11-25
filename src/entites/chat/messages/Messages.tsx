@@ -15,6 +15,11 @@ export const Messages: React.FC = () => {
   const currentDialogId = useAppSelector(
     (state) => state.chatSlice.currentDialogId
   )
+  const userAvatar = useAppSelector(
+    (state) => state.chatSlice.currentDialogUser?.avatar
+  )
+  const myAvatar = useAppSelector((state) => state.ProfileReducer.user.avatar)
+
   const [listMessages, setListMessages] = useState<IMessage[]>([])
 
   useEffect(() => {
@@ -45,9 +50,12 @@ export const Messages: React.FC = () => {
       {listMessages ? (
         <>
           {listMessages.map((message, index) => {
+            const isMyMessage = message.email === myEmail
+            const avatar = isMyMessage ? myAvatar : userAvatar
             return (
               <Message
-                isMyMessage={message.email === myEmail}
+                avatar={avatar}
+                isMyMessage={isMyMessage}
                 content={message.content}
                 date={message.date}
                 typeMessage={message.type}

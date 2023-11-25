@@ -1,0 +1,10 @@
+.file {
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+}
+
+.file img {
+  width: 100%;
+  height: 100%;
+}

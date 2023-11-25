@@ -5,4 +5,5 @@ export interface messageProps {
   typeMessage: string
   userName: string
   smileDetector: Record<string, string>
+  avatar?: string | null
 }

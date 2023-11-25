@@ -9,6 +9,10 @@ import { BUTTON_TYPE, BUTTON_CLASS_NAME } from '@shared/constants'
 import { ICONS } from '@shared/constants/icons'
 import EmojiPicker, { Categories } from 'emoji-picker-react'
 import { Theme } from 'emoji-picker-react'
+import { AttachFile } from './components/AttachFile/AttachFile'
+import imageCompression from 'browser-image-compression'
+import { saveFile } from '@/firebase/storageImages/saveFile'
+import { uniqueId } from '@shared/utils/uniqueId'
 
 export const CreateMessage: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -89,7 +93,42 @@ export const CreateMessage: React.FC = () => {
 
     // refCustomInput.current?.focus()
   }
+  const onHandlerInputFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files![0]
 
+    if (/^image/.test(file.type)) {
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 300,
+        useWebWorker: true,
+      }
+      const imageId = uniqueId()
+      const compressedFile = await imageCompression(file, options)
+      await saveFile(compressedFile, imageId)
+      sendMessageDataBase(
+        imageId,
+        'image',
+        currentDialogId!,
+        email!,
+        userName!,
+        smileDetector.current
+      )
+    } else {
+      const fileId = uniqueId()
+      await saveFile(file, fileId)
+      sendMessageDataBase(
+        fileId,
+        'file',
+        currentDialogId!,
+        email!,
+        userName!,
+        smileDetector.current
+      )
+    }
+
+    refCustomInput!.current!.innerText = ''
+    setIsEmoji(false)
+  }
   return (
     <div>
       <div className={classes.typeMessage}>
@@ -110,12 +149,7 @@ export const CreateMessage: React.FC = () => {
                 iconName={ICONS.VOICE}
                 buttonClassName={BUTTON_CLASS_NAME.ICON}
               />
-              <Button
-                onClick={() => {}}
-                buttonType={BUTTON_TYPE.ICON}
-                iconName={ICONS.ATTACH}
-                buttonClassName={BUTTON_CLASS_NAME.ICON}
-              />
+              <AttachFile onHandlerInputFile={onHandlerInputFile} />
               <Button
                 buttonType={BUTTON_TYPE.BUTTON_ICON}
                 content="Send"

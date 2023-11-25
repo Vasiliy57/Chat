@@ -12,7 +12,7 @@ import { BUTTON_CLASS_NAME, BUTTON_TYPE } from '@shared/constants'
 
 export const Dialogs: React.FC<DialogsProps> = ({
   isMyDialogs,
-  onSwitchDialogs, 
+  onSwitchDialogs,
 }) => {
   const myUserId = useAppSelector((state) => state.ProfileReducer.user.userId)
   const currentDialogUser = useAppSelector(

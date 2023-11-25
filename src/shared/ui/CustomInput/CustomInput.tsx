@@ -5,14 +5,11 @@ interface CustomInputProps {
 }
 
 export const CustomInput: React.FC<CustomInputProps> = ({ refCustomInput }) => {
-  const onHandlerClick = () => {}
-
   return (
     <div className={classes.customInput}>
       <div
         ref={refCustomInput}
         className={classes.content}
-        onClick={onHandlerClick}
         contentEditable={true}
         suppressContentEditableWarning={true}
       ></div>
