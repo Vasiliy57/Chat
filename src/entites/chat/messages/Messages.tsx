@@ -52,6 +52,7 @@ export const Messages: React.FC = () => {
           {listMessages.map((message, index) => {
             const isMyMessage = message.email === myEmail
             const avatar = isMyMessage ? myAvatar : userAvatar
+
             return (
               <Message
                 avatar={avatar}
@@ -62,6 +63,7 @@ export const Messages: React.FC = () => {
                 userName={message.userName}
                 smileDetector={message.smileDetector}
                 key={index}
+                id={message.id}
               />
             )
           })}

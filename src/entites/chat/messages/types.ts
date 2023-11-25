@@ -13,4 +13,5 @@ export interface IMessage {
   email: string
   userName: string
   smileDetector: Record<string, string>
+  id: string
 }

@@ -7,7 +7,8 @@ export const sendMessageDataBase = (
   dialogId: string,
   email: string,
   userName: string,
-  smileDetector?: Record<string, string>
+  smileDetector?: Record<string, string>,
+  id?: string
 ) => {
   const message = {
     type,
@@ -16,6 +17,7 @@ export const sendMessageDataBase = (
     email,
     userName,
     smileDetector,
+    id,
   }
 
   // Get a key for a new Post.

@@ -12,6 +12,7 @@ export const Message: React.FC<messageProps> = ({
   smileDetector,
   typeMessage,
   avatar,
+  id,
 }) => {
   const time = moment(+date * 1000).format('DD.MM.YY HH:mm')
   const classesName = {
@@ -35,9 +36,9 @@ export const Message: React.FC<messageProps> = ({
         }
       >
         {typeMessage === 'image' ? (
-          <ImageMessage imageId={content} />
+          <ImageMessage imageId={id!} />
         ) : typeMessage === 'file' ? (
-          <FileMessage fileId={content} />
+          <FileMessage fileId={id!} content={content} />
         ) : (
           <TextMessage content={content} smileDetector={smileDetector} />
         )}

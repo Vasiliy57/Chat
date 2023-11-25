@@ -60,7 +60,8 @@ export const CreateMessage: React.FC = () => {
             dialogId,
             email!,
             userName!,
-            smileDetector.current
+            smileDetector.current,
+            ''
           )
         })
     } else {
@@ -70,7 +71,8 @@ export const CreateMessage: React.FC = () => {
         currentDialogId!,
         email!,
         userName!,
-        smileDetector.current
+        smileDetector.current,
+        ''
       )
     }
 
@@ -95,6 +97,7 @@ export const CreateMessage: React.FC = () => {
   }
   const onHandlerInputFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files![0]
+    console.log(file.type)
 
     if (/^image/.test(file.type)) {
       const options = {
@@ -106,23 +109,25 @@ export const CreateMessage: React.FC = () => {
       const compressedFile = await imageCompression(file, options)
       await saveFile(compressedFile, imageId)
       sendMessageDataBase(
-        imageId,
+        '',
         'image',
         currentDialogId!,
         email!,
         userName!,
-        smileDetector.current
+        smileDetector.current,
+        imageId
       )
     } else {
       const fileId = uniqueId()
       await saveFile(file, fileId)
       sendMessageDataBase(
-        fileId,
+        file.type,
         'file',
         currentDialogId!,
         email!,
         userName!,
-        smileDetector.current
+        smileDetector.current,
+        fileId
       )
     }
 
