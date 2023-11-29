@@ -7,8 +7,8 @@ export const sendMessageDataBase = (
   dialogId: string,
   email: string,
   userName: string,
-  smileDetector?: Record<string, string>,
-  id?: string
+  smileDetector: Record<string, string> = {},
+  id: string = ''
 ) => {
   const message = {
     type,
