@@ -1,17 +1,15 @@
 import { Button, CustomInput } from '@shared/ui'
 import { useRef, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '@shared/hooks'
-import { addDialog } from '@/firebase/users'
+import { useAppSelector } from '@shared/hooks'
 import classes from './createMessage.module.css'
-import { setCurrentDialogId } from '@shared/store/chat/chat'
-import { sendMessageDataBase } from '@/firebase/messages/sendMessageDataBase'
 import { BUTTON_TYPE, BUTTON_CLASS_NAME } from '@shared/constants'
 import { ICONS } from '@shared/constants/icons'
 import EmojiPicker, { Categories } from 'emoji-picker-react'
 import { Theme } from 'emoji-picker-react'
+import { AttachFile } from './components/AttachFile/AttachFile'
+import { preActionSendMessage } from './utils/preActionSendMessage'
 
 export const CreateMessage: React.FC = () => {
-  const dispatch = useAppDispatch()
   const refCustomInput = useRef<HTMLDivElement>(null)
 
   const currentDialogUser = useAppSelector(
@@ -42,34 +40,20 @@ export const CreateMessage: React.FC = () => {
     })
 
     refCustomInput!.current!.innerText = ''
-
-    if (!currentDialogId && text.trim() && currentDialogUser) {
-      addDialog(userId, currentDialogUser.userId)
-        .then((data) => {
-          dispatch(setCurrentDialogId(data))
-          return data
-        })
-        .then((dialogId) => {
-          sendMessageDataBase(
-            messageText,
-            'text',
-            dialogId,
-            email!,
-            userName!,
-            smileDetector.current
-          )
-        })
-    } else {
-      sendMessageDataBase(
-        messageText,
-        'text',
-        currentDialogId!,
-        email!,
-        userName!,
-        smileDetector.current
-      )
-    }
-
+    const isNewDialog = !currentDialogId && !!currentDialogUser
+    await preActionSendMessage({
+      type: 'text',
+      arguments: {
+        content: messageText,
+        dialogId: currentDialogId!,
+        email: email!,
+        userName: userName!,
+        smileDetector: smileDetector.current,
+      },
+      isNewDialog,
+      myUserId: userId!,
+      userId: currentDialogUser!.userId!,
+    })
     setIsEmoji(false)
   }
 
@@ -89,7 +73,27 @@ export const CreateMessage: React.FC = () => {
 
     // refCustomInput.current?.focus()
   }
+  const onHandlerInputFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files![0]
+    const isNewDialog = !currentDialogId && !!currentDialogUser
+    await preActionSendMessage({
+      type: 'file',
+      arguments: {
+        content: file.type,
+        dialogId: currentDialogId!,
+        email: email!,
+        userName: userName!,
+        smileDetector: smileDetector.current,
+      },
+      file,
+      isNewDialog,
+      myUserId: userId!,
+      userId: currentDialogUser!.userId!,
+    })
 
+    refCustomInput!.current!.innerText = ''
+    setIsEmoji(false)
+  }
   return (
     <div>
       <div className={classes.typeMessage}>
@@ -110,12 +114,7 @@ export const CreateMessage: React.FC = () => {
                 iconName={ICONS.VOICE}
                 buttonClassName={BUTTON_CLASS_NAME.ICON}
               />
-              <Button
-                onClick={() => {}}
-                buttonType={BUTTON_TYPE.ICON}
-                iconName={ICONS.ATTACH}
-                buttonClassName={BUTTON_CLASS_NAME.ICON}
-              />
+              <AttachFile onHandlerInputFile={onHandlerInputFile} />
               <Button
                 buttonType={BUTTON_TYPE.BUTTON_ICON}
                 content="Send"

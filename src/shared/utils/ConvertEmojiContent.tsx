@@ -1,12 +1,12 @@
 import { Emoji } from 'emoji-picker-react'
 
-interface HandlerEmojiContentProps {
+interface ConvertEmojiContentProps {
   content: string
   smileDetector: Record<string, string>
   sizeSmile: number
 }
 
-export const HandlerEmojiContent: React.FC<HandlerEmojiContentProps> = ({
+export const ConvertEmojiContent: React.FC<ConvertEmojiContentProps> = ({
   content = [],
   smileDetector = {},
   sizeSmile,
