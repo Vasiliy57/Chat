@@ -1,5 +1,5 @@
-import { collection, getDocs, query, where } from 'firebase/firestore'
 import { db } from '../fireStore'
+import { collection, getDocs, query, where } from 'firebase/firestore'
 import { IUser } from '@pages/types'
 
 export const getAllUsersFireStore = async (

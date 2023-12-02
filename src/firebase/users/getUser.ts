@@ -1,5 +1,5 @@
-import { doc, getDoc } from 'firebase/firestore'
 import { db } from '../fireStore'
+import { doc, getDoc } from 'firebase/firestore'
 
 interface IUser {
   email: string | null

@@ -1,6 +1,7 @@
-import defaultImg from './user-img.jpg'
-import classes from './selectedUser.module.css'
 import { ISelectedUser } from './types'
+import defaultImg from '@shared/assets/images/user-img.jpg'
+import classes from './selectedUser.module.css'
+
 export const SelectedUser: React.FC<ISelectedUser> = ({
   currentDialogUser,
 }) => {

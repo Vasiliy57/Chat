@@ -34,10 +34,11 @@
 //     </div>
 //   )
 // }
-import classes from './style.module.css'
-import { getDownloadURL, ref } from 'firebase/storage'
 import { storage } from '@/firebase/storage'
+import { getDownloadURL, ref } from 'firebase/storage'
+
 import fileImg from './file.png'
+import classes from './style.module.css'
 
 interface FileMessageProps {
   fileId: string

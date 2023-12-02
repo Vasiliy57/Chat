@@ -1,14 +1,18 @@
 import { useEffect, useState } from 'react'
+import { useAppSelector } from '@shared/hooks'
+
 import { User } from '../user/User'
-import classes from './dialogs.module.css'
+import { Button } from '@shared/ui'
+
 import { DialogsProps, IUser } from './types'
 import { updateListMyDialogs } from '@/firebase/users/updateListMyDialogs'
 import { getAllUsersFireStore } from '@/firebase/users'
 import { onValue, ref } from 'firebase/database'
 import { dbRealTime } from '@/firebase/realTimeDataBase'
-import { useAppSelector } from '@shared/hooks'
-import { Button } from '@shared/ui'
+
 import { BUTTON_CLASS_NAME, BUTTON_TYPE } from '@shared/constants'
+
+import classes from './dialogs.module.css'
 
 export const Dialogs: React.FC<DialogsProps> = ({
   isMyDialogs,
@@ -39,9 +43,9 @@ export const Dialogs: React.FC<DialogsProps> = ({
 
   useEffect(() => {
     if (!isMyDialogs) {
-      getAllUsersFireStore(myUserId).then((users) =>
+      getAllUsersFireStore(myUserId).then((users) => {
         setSearchDialogUserList(users)
-      )
+      })
     }
   }, [isMyDialogs])
 

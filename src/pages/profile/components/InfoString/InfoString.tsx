@@ -1,9 +1,11 @@
-import classes from './style.module.css'
-import { INFO_STRING } from '@shared/constants'
 import { Icon } from '@shared/assets/Icon/Icon'
-import { ICONS } from '@shared/constants/icons'
 import { Input, Textarea } from '@shared/ui'
+
+import { INFO_STRING } from '@shared/constants'
+import { ICONS } from '@shared/constants/icons'
 import { INPUT_CLASS_NAME, TEXTAREA_CLASS_NAME } from '@shared/constants'
+
+import classes from './style.module.css'
 
 interface InfoStringProps {
   type: keyof typeof INFO_STRING

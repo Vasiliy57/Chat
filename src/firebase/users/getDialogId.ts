@@ -1,5 +1,5 @@
-import { ref, child, get } from 'firebase/database'
 import { dbRealTime } from '../realTimeDataBase'
+import { ref, child, get } from 'firebase/database'
 
 export const getDialogId = async (
   myUserId: string | null,

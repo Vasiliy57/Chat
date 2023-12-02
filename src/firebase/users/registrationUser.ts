@@ -1,5 +1,5 @@
-import { doc, setDoc } from 'firebase/firestore'
 import { usersRef } from '../fireStore'
+import { doc, setDoc } from 'firebase/firestore'
 
 export const registrationUser = async (
   email: string,

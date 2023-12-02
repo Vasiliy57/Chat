@@ -1,12 +1,14 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { useRef } from 'react'
+import { useAppSelector } from '@shared/hooks'
+
+import { Message } from '@shared/components'
+
 import { off, onValue, ref } from 'firebase/database'
 import { dbRealTime } from '@/firebase/realTimeDataBase'
-import { useAppSelector } from '@shared/hooks'
-import { useState } from 'react'
-import classes from './messages.module.css'
 import { IMessage } from './types'
-import { Message } from '@shared/components'
-import { useRef } from 'react'
+
+import classes from './messages.module.css'
 
 export const Messages: React.FC = () => {
   const messagesEndRef = useRef<HTMLInputElement>(null)

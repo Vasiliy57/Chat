@@ -1,15 +1,18 @@
 import { useAppDispatch } from '@shared/hooks'
-import { ILastMessage, UserProps } from './types'
+import { useEffect } from 'react'
+import { useState } from 'react'
+
+import { ConvertEmojiContent } from '@shared/utils'
+
 import moment from 'moment'
-import userImg from './user-img.jpg'
-import classes from './user.module.css'
 import { setCurrentDialogUser } from '@shared/store/chat/chat'
 import { getDialogId } from '@/firebase/users/getDialogId'
-import { useEffect } from 'react'
 import { onValue, ref } from 'firebase/database'
 import { dbRealTime } from '@/firebase/realTimeDataBase'
-import { useState } from 'react'
-import { ConvertEmojiContent } from '@shared/utils'
+import { ILastMessage, UserProps } from './types'
+
+import userImg from '@shared/assets/images/user-img.jpg'
+import classes from './user.module.css'
 
 export const User: React.FC<UserProps> = ({
   userName,
@@ -39,7 +42,7 @@ export const User: React.FC<UserProps> = ({
         })
       }
     })
-  })
+  }, [])
 
   const dispatch = useAppDispatch()
   const currentClassName = isSelected ? 'user-select' : 'user'

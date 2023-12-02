@@ -1,10 +1,7 @@
+import { forwardRef } from 'react'
 import classes from './style.module.css'
 
-interface CustomInputProps {
-  refCustomInput: HTMLDivElement
-}
-
-export const CustomInput: React.FC<CustomInputProps> = ({ refCustomInput }) => {
+export const CustomInput = forwardRef<HTMLDivElement>((_, refCustomInput) => {
   return (
     <div className={classes.customInput}>
       <div
@@ -15,4 +12,5 @@ export const CustomInput: React.FC<CustomInputProps> = ({ refCustomInput }) => {
       ></div>
     </div>
   )
-}
+})
+CustomInput.displayName = 'CustomInput'

@@ -1,9 +1,9 @@
 export interface IUser {
   userName: string
   email: string
-  img?: string
+  img: string | null
   userId: string
-  avatar: string
+  avatar: string | null
 }
 
 export interface DialogsProps {

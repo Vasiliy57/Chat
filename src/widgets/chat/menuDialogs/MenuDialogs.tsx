@@ -1,8 +1,9 @@
+import { useState } from 'react'
 import { Dialogs, Search } from '@/entites/chat'
 import { Logo } from '@shared/components'
-import { useState } from 'react'
 
 import classes from './menuDialogs.module.css'
+
 import {
   setCurrentDialogId,
   setCurrentDialogUser,

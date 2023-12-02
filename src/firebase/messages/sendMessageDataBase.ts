@@ -1,5 +1,5 @@
-import { ref, child, push, update } from 'firebase/database'
 import { dbRealTime } from '../realTimeDataBase'
+import { ref, child, push, update } from 'firebase/database'
 
 export const sendMessageDataBase = (
   content: string,
