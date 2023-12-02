@@ -1,6 +1,7 @@
 import { Dialog, MenuDialogs } from '@widgets/chat'
-import classes from './main.module.css'
 import { MyUser } from '@/entites/chat'
+
+import classes from './main.module.css'
 
 export const Chat: React.FC = () => {
   return (

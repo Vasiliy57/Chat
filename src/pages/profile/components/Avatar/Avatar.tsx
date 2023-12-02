@@ -1,10 +1,14 @@
-import { Button } from '@shared/ui'
-import classes from './style.module.css'
-import { Icon } from '@shared/assets/Icon/Icon'
-import { BUTTON_CLASS_NAME, BUTTON_TYPE, ICONS } from '@shared/constants'
-import defaultImg from './user-img.jpg'
 import { useAppSelector } from '@shared/hooks'
+
+import { Button } from '@shared/ui'
+import { Icon } from '@shared/assets/Icon/Icon'
+
+import { BUTTON_CLASS_NAME, BUTTON_TYPE, ICONS } from '@shared/constants'
+
 import { AvatarProps } from './type'
+import defaultImg from '@shared/assets/images/user-img.jpg'
+
+import classes from './style.module.css'
 
 export const Avatar: React.FC<AvatarProps> = ({
   isEdit,

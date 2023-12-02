@@ -1,13 +1,17 @@
-import { Button, CustomInput } from '@shared/ui'
 import { useRef, useState } from 'react'
 import { useAppSelector } from '@shared/hooks'
-import classes from './createMessage.module.css'
+
+import { Button, CustomInput } from '@shared/ui'
+import { AttachFile } from './components/AttachFile/AttachFile'
+import EmojiPicker, { Categories } from 'emoji-picker-react'
+
+import { preActionSendMessage } from './utils/preActionSendMessage'
+import { Theme } from 'emoji-picker-react'
+
 import { BUTTON_TYPE, BUTTON_CLASS_NAME } from '@shared/constants'
 import { ICONS } from '@shared/constants/icons'
-import EmojiPicker, { Categories } from 'emoji-picker-react'
-import { Theme } from 'emoji-picker-react'
-import { AttachFile } from './components/AttachFile/AttachFile'
-import { preActionSendMessage } from './utils/preActionSendMessage'
+
+import classes from './createMessage.module.css'
 
 export const CreateMessage: React.FC = () => {
   const refCustomInput = useRef<HTMLDivElement>(null)
@@ -24,10 +28,10 @@ export const CreateMessage: React.FC = () => {
 
   const [isEmoji, setIsEmoji] = useState<boolean>(false)
   const smileDetector = useRef<Record<string, string>>({})
+  const isExistingUserInfo =
+    email && userName && userId && currentDialogUser && currentDialogUser.userId
 
   const onSendMessage = async () => {
-    const text = refCustomInput.current?.innerHTML ?? ''
-
     const childrens = refCustomInput.current?.childNodes
     let messageText = ''
 
@@ -35,25 +39,27 @@ export const CreateMessage: React.FC = () => {
       if (typeof el.nodeValue === 'string') {
         messageText += el.nodeValue
       } else {
-        messageText += el.dataset.unified
+        messageText += (el as HTMLImageElement).getAttribute('data-unified')
       }
     })
 
     refCustomInput!.current!.innerText = ''
     const isNewDialog = !currentDialogId && !!currentDialogUser
-    await preActionSendMessage({
-      type: 'text',
-      arguments: {
-        content: messageText,
-        dialogId: currentDialogId!,
-        email: email!,
-        userName: userName!,
-        smileDetector: smileDetector.current,
-      },
-      isNewDialog,
-      myUserId: userId!,
-      userId: currentDialogUser!.userId!,
-    })
+    if (isExistingUserInfo) {
+      await preActionSendMessage({
+        type: 'text',
+        arguments: {
+          content: messageText,
+          dialogId: currentDialogId!,
+          email: email,
+          userName: userName,
+          smileDetector: smileDetector.current,
+        },
+        isNewDialog,
+        myUserId: userId,
+        userId: currentDialogUser.userId,
+      })
+    }
     setIsEmoji(false)
   }
 
@@ -76,20 +82,23 @@ export const CreateMessage: React.FC = () => {
   const onHandlerInputFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files![0]
     const isNewDialog = !currentDialogId && !!currentDialogUser
-    await preActionSendMessage({
-      type: 'file',
-      arguments: {
-        content: file.type,
-        dialogId: currentDialogId!,
-        email: email!,
-        userName: userName!,
-        smileDetector: smileDetector.current,
-      },
-      file,
-      isNewDialog,
-      myUserId: userId!,
-      userId: currentDialogUser!.userId!,
-    })
+
+    if (isExistingUserInfo) {
+      await preActionSendMessage({
+        type: 'file',
+        arguments: {
+          content: file.type,
+          dialogId: currentDialogId!,
+          email: email,
+          userName: userName,
+          smileDetector: smileDetector.current,
+        },
+        file,
+        isNewDialog,
+        myUserId: userId,
+        userId: currentDialogUser.userId,
+      })
+    }
 
     refCustomInput!.current!.innerText = ''
     setIsEmoji(false)
@@ -106,7 +115,7 @@ export const CreateMessage: React.FC = () => {
               buttonClassName={BUTTON_CLASS_NAME.ICON}
               styleBtn={{ height: '50px' }}
             />
-            <CustomInput refCustomInput={refCustomInput} />
+            <CustomInput ref={refCustomInput} />
             <div className={classes.buttons}>
               <Button
                 onClick={() => {}}

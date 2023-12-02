@@ -1,5 +1,5 @@
-import classes from './style.module.css'
 import { InputProps } from './type'
+import classes from './style.module.css'
 
 export const Input: React.FC<InputProps> = ({
   onChange,

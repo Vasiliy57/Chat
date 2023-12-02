@@ -1,7 +1,7 @@
 import { Icon } from '@shared/assets/Icon/Icon'
 import { BUTTON_TYPE } from '@shared/constants'
-import classes from './style.module.css'
 import { ButtonProps } from './type'
+import classes from './style.module.css'
 
 export const Button: React.FC<ButtonProps> = ({
   iconName,

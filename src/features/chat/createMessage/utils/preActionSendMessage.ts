@@ -3,8 +3,8 @@ import imageCompression from 'browser-image-compression'
 import { saveFile } from '@/firebase/storageImages/saveFile'
 import { addDialog } from '@/firebase/users'
 import { uniqueId } from '@shared/utils/uniqueId'
-import { store } from '@app/store/initialStore'
 import { setCurrentDialogId } from '@shared/store/chat/chat'
+import { store } from '@app/store/initialStore'
 
 // type MessageType = 'text' | 'image' | 'file'
 
@@ -65,8 +65,9 @@ export const preActionSendMessage = async (
           }
 
           const compressedFile = await imageCompression(props.file, options)
+
           await saveFile(compressedFile, fileId)
-          sendMessageDataBase(
+          await sendMessageDataBase(
             '',
             'image',
             dialogId,
@@ -77,7 +78,7 @@ export const preActionSendMessage = async (
           )
         } else {
           await saveFile(props.file, fileId)
-          sendMessageDataBase(
+          await sendMessageDataBase(
             props.arguments.content,
             'file',
             dialogId,

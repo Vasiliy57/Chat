@@ -1,6 +1,6 @@
 import { Icon } from '@shared/assets/Icon/Icon'
-import classes from './style.module.css'
 import { ICONS } from '@shared/constants'
+import classes from './style.module.css'
 
 interface AttachFileProps {
   onHandlerInputFile: (e: React.ChangeEvent<HTMLInputElement>) => void

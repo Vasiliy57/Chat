@@ -1,8 +1,8 @@
-import img from './user-img.jpg'
-import classes from './message.module.css'
-import { messageProps } from './type'
-import moment from 'moment'
 import { FileMessage, ImageMessage, TextMessage } from './components'
+import moment from 'moment'
+import { messageProps } from './type'
+import img from '@shared/assets/images/user-img.jpg'
+import classes from './message.module.css'
 
 export const Message: React.FC<messageProps> = ({
   isMyMessage,

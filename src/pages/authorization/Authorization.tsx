@@ -1,13 +1,17 @@
-import { Button, FormTitle, Input } from '@/shared/ui'
 import { useState } from 'react'
+import { useAppDispatch } from '@shared/hooks'
+
+import { Button, FormTitle, Input } from '@/shared/ui'
 import { Link } from 'react-router-dom'
-import classes from './authorization.module.css'
+
 import { signInUserFirebase } from '@/firebase'
 import { setUser } from '@/shared/store/profile'
-import { useAppDispatch } from '@shared/hooks'
 import { getUser } from '@/firebase/users'
+
 import { BUTTON_TYPE, BUTTON_CLASS_NAME } from '@shared/constants'
 import { INPUT_CLASS_NAME } from '@shared/constants'
+
+import classes from './authorization.module.css'
 
 export const Authorization: React.FC = () => {
   const [email, setEmail] = useState<string>('')
