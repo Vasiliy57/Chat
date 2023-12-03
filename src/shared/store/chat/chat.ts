@@ -4,6 +4,7 @@ import { IChat, IUser } from './types'
 const initialState: IChat = {
   currentDialogUser: null,
   currentDialogId: null,
+  // usersInSearch: [],
 }
 
 export const chat = createSlice({
@@ -16,6 +17,9 @@ export const chat = createSlice({
     setCurrentDialogId: (state, action: PayloadAction<string | null>) => {
       state.currentDialogId = action.payload
     },
+    // setUsersInSearch: (state, action: PayloadAction<IUserInSearch[]>) => {
+    //   state.usersInSearch = action.payload
+    // },
   },
 })
 
