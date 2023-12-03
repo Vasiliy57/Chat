@@ -1,17 +1,20 @@
 import { useState } from 'react'
+import { useAppDispatch } from '@shared/hooks'
+
 import { Dialogs, Search } from '@/entites/chat'
 import { Logo } from '@shared/components'
-
-import classes from './menuDialogs.module.css'
 
 import {
   setCurrentDialogId,
   setCurrentDialogUser,
 } from '@shared/store/chat/chat'
-import { useAppDispatch } from '@shared/hooks'
+import { IUser } from '@pages/types'
+
+import classes from './menuDialogs.module.css'
 
 export const MenuDialogs: React.FC = () => {
   const [isMyDialogs, setIsMyDialogs] = useState<boolean>(true)
+  const [searchDialogUserList, setSearchDialogUserList] = useState<IUser[]>([])
   const dispatch = useAppDispatch()
 
   const onSwitchDialogs = (dialogs: boolean) => {
@@ -23,8 +26,14 @@ export const MenuDialogs: React.FC = () => {
   return (
     <div className={classes.menuDialogs}>
       <Logo />
-      {!isMyDialogs && <Search />}
-      <Dialogs isMyDialogs={isMyDialogs} onSwitchDialogs={onSwitchDialogs} />
+      {!isMyDialogs && (
+        <Search setSearchDialogUserList={setSearchDialogUserList} />
+      )}
+      <Dialogs
+        isMyDialogs={isMyDialogs}
+        onSwitchDialogs={onSwitchDialogs}
+        searchDialogUserList={searchDialogUserList}
+      />
     </div>
   )
 }

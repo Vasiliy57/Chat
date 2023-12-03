@@ -6,7 +6,6 @@ import { Button } from '@shared/ui'
 
 import { DialogsProps, IUser } from './types'
 import { updateListMyDialogs } from '@/firebase/users/updateListMyDialogs'
-import { getAllUsersFireStore } from '@/firebase/users'
 import { onValue, ref } from 'firebase/database'
 import { dbRealTime } from '@/firebase/realTimeDataBase'
 
@@ -17,6 +16,7 @@ import classes from './dialogs.module.css'
 export const Dialogs: React.FC<DialogsProps> = ({
   isMyDialogs,
   onSwitchDialogs,
+  searchDialogUserList,
 }) => {
   const myUserId = useAppSelector((state) => state.ProfileReducer.user.userId)
   const currentDialogUser = useAppSelector(
@@ -24,7 +24,6 @@ export const Dialogs: React.FC<DialogsProps> = ({
   )
 
   const [dialogUserList, setDialogUserList] = useState<IUser[]>([])
-  const [searchDialogUserList, setSearchDialogUserList] = useState<IUser[]>([])
   const userList = isMyDialogs ? dialogUserList : searchDialogUserList
 
   useEffect(() => {
@@ -40,14 +39,6 @@ export const Dialogs: React.FC<DialogsProps> = ({
       }
     })
   }, [])
-
-  useEffect(() => {
-    if (!isMyDialogs) {
-      getAllUsersFireStore(myUserId).then((users) => {
-        setSearchDialogUserList(users)
-      })
-    }
-  }, [isMyDialogs])
 
   return (
     <div className={isMyDialogs ? classes.dialogs : ''}>

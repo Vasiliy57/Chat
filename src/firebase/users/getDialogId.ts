@@ -14,7 +14,7 @@ export const getDialogId = async (
       if (snapshot.exists()) {
         dialogId = snapshot.val()
       } else {
-        console.log('No data available')
+        // console.log('No data available')
       }
     })
     .catch((error) => {

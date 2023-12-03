@@ -9,4 +9,5 @@ export interface IUser {
 export interface DialogsProps {
   isMyDialogs: boolean
   onSwitchDialogs: (dialogs: boolean) => void
+  searchDialogUserList: IUser[]
 }
