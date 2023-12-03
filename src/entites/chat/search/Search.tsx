@@ -5,6 +5,7 @@ import { Input } from '@/shared/ui'
 import { Icon } from '@shared/assets/Icon/Icon'
 
 import { getUsersBySearch } from '@/firebase/users'
+import { showNotification } from '@shared/utils'
 
 import { ICONS } from '@shared/constants'
 import { INPUT_CLASS_NAME } from '@shared/constants'
@@ -22,10 +23,14 @@ export const Search: React.FC<SearchProps> = ({ setSearchDialogUserList }) => {
   const delayedValue = useDebounce(value, 1500)
 
   useEffect(() => {
-    getUsersBySearch(delayedValue.trim(), myUserId).then((users) => {
-      setSearchDialogUserList(users)
-      return
-    })
+    getUsersBySearch(delayedValue.trim(), myUserId)
+      .then((users) => {
+        setSearchDialogUserList(users)
+        return
+      })
+      .catch((error) => {
+        showNotification('error', error.message)
+      })
   }, [delayedValue])
 
   const onHandlerInput = (e: React.ChangeEvent<HTMLInputElement>) => {

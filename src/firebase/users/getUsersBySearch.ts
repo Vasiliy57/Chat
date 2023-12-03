@@ -19,7 +19,6 @@ export const getUsersBySearch = async (
   querySnapshot.forEach((doc) => {
     users.push(doc.data() as IUser)
   })
-  console.log(users)
 
   return users
 }

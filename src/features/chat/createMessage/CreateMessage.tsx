@@ -12,7 +12,6 @@ import { BUTTON_TYPE, BUTTON_CLASS_NAME } from '@shared/constants'
 import { ICONS } from '@shared/constants/icons'
 
 import classes from './createMessage.module.css'
-
 export const CreateMessage: React.FC = () => {
   const refCustomInput = useRef<HTMLDivElement>(null)
 

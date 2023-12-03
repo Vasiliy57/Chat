@@ -67,10 +67,6 @@ export const User: React.FC<UserProps> = ({
                 sizeSmile={15}
               />
             ) : null}
-
-            {/* {lastMessage?.content ? (
-             
-            ) : null} */}
           </div>
         </div>
         <div className={classes.right}>

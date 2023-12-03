@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 import { signInUserFirebase } from '@/firebase'
 import { setUser } from '@/shared/store/profile'
 import { getUser } from '@/firebase/users'
+import { showNotification } from '@shared/utils'
 
 import { BUTTON_TYPE, BUTTON_CLASS_NAME } from '@shared/constants'
 import { INPUT_CLASS_NAME } from '@shared/constants'
@@ -45,7 +46,7 @@ export const Authorization: React.FC = () => {
         )
       }
     } catch (err) {
-      console.log(err)
+      showNotification('error', err.message)
     }
 
     setEmail('')

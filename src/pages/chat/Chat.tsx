@@ -1,6 +1,5 @@
 import { Dialog, MenuDialogs } from '@widgets/chat'
 import { MyUser } from '@/entites/chat'
-
 import classes from './main.module.css'
 
 export const Chat: React.FC = () => {
@@ -14,4 +13,3 @@ export const Chat: React.FC = () => {
     </div>
   )
 }
-// показать компонент MenuDialogs

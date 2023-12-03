@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 import { createNewUserFirebase } from '@/firebase'
 import { createDialogs, registrationUser } from '@/firebase/users'
 import { setUser } from '@/shared/store/profile'
+import { showNotification } from '@shared/utils'
 
 import {
   BUTTON_TYPE,
@@ -57,7 +58,7 @@ export const Registration: React.FC = () => {
           )
         })
         .catch((err) => {
-          console.log(err.message)
+          showNotification('error', err.message)
         })
 
       setEmail('')
@@ -65,7 +66,7 @@ export const Registration: React.FC = () => {
       setRepeatPassword('')
       setUserName('')
     } else {
-      alert("Passwords don't match !!!")
+      showNotification('warning', "Passwords don't match !")
     }
   }
 

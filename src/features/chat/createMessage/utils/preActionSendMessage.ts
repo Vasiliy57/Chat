@@ -5,6 +5,7 @@ import { addDialog } from '@/firebase/users'
 import { uniqueId } from '@shared/utils/uniqueId'
 import { setCurrentDialogId } from '@shared/store/chat/chat'
 import { store } from '@app/store/initialStore'
+import { showNotification } from '@shared/utils'
 
 // type MessageType = 'text' | 'image' | 'file'
 
@@ -45,14 +46,19 @@ export const preActionSendMessage = async (
 
   switch (props.type) {
     case 'text':
-      sendMessageDataBase(
-        props.arguments.content,
-        props.type,
-        dialogId,
-        props.arguments.email,
-        props.arguments.userName,
-        props.arguments.smileDetector
-      )
+      if (props.arguments.content) {
+        sendMessageDataBase(
+          props.arguments.content,
+          props.type,
+          dialogId,
+          props.arguments.email,
+          props.arguments.userName,
+          props.arguments.smileDetector
+        )
+      } else {
+        showNotification('warning', 'The field cannot be empty')
+      }
+
       return
     case 'file':
       {

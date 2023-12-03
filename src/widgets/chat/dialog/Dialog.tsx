@@ -6,6 +6,7 @@ import { Header, Messages } from '@/entites/chat'
 
 import { getDialogId } from '@/firebase/users/getDialogId'
 import { setCurrentDialogId } from '@shared/store/chat/chat'
+import { showNotification } from '@shared/utils'
 
 import classes from './dialog.module.css'
 
@@ -19,9 +20,11 @@ export const Dialog: React.FC = () => {
 
   useEffect(() => {
     if (currentDialogUser?.email) {
-      getDialogId(myUserId, currentDialogUser.userId).then((data) =>
-        dispatch(setCurrentDialogId(data))
-      )
+      getDialogId(myUserId, currentDialogUser.userId)
+        .then((data) => dispatch(setCurrentDialogId(data)))
+        .catch((error) => {
+          showNotification('error', error.message)
+        })
     }
   }, [currentDialogUser])
 
