@@ -1,11 +1,8 @@
 import { useEffect, useState } from 'react'
-import { useAppSelector, useDebounce } from '@shared/hooks'
+import { useAppSelector, useCustomSearch } from '@shared/hooks'
 
 import { Input } from '@/shared/ui'
 import { Icon } from '@shared/assets/Icon/Icon'
-
-import { getUsersBySearch } from '@/firebase/users'
-import { showNotification } from '@shared/utils'
 
 import { ICONS } from '@shared/constants'
 import { INPUT_CLASS_NAME } from '@shared/constants'
@@ -20,18 +17,29 @@ interface SearchProps {
 export const Search: React.FC<SearchProps> = ({ setSearchDialogUserList }) => {
   const myUserId = useAppSelector((state) => state.ProfileReducer.user.userId)
   const [value, setValue] = useState<string>('')
-  const delayedValue = useDebounce(value, 1500)
+  const foundUsers = useCustomSearch(myUserId, value)
 
   useEffect(() => {
-    getUsersBySearch(delayedValue.trim(), myUserId)
-      .then((users) => {
-        setSearchDialogUserList(users)
-        return
-      })
-      .catch((error) => {
-        showNotification('error', error.message)
-      })
-  }, [delayedValue])
+    setSearchDialogUserList(foundUsers)
+    return () => setSearchDialogUserList([])
+  }, [foundUsers])
+
+  // const [allUsers, setAllUsers] = useState<IUser[]>([])
+  // const delayedValue = useDebounce(value, 1000)
+
+  // useEffect(() => {
+  //   getAllUsers(myUserId)
+  //     .then((users) => setAllUsers(users))
+  //     .catch((error) => showNotification('error', error.message))
+  //   console.log('Get all users')
+  // }, [])
+  // useEffect(() => {
+  //   const foundUsers = userSearch(delayedValue, allUsers)
+  //   setSearchDialogUserList(foundUsers)
+  //   return () => {
+  //     setSearchDialogUserList([])
+  //   }
+  // }, [delayedValue, allUsers])
 
   const onHandlerInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.currentTarget.value)
@@ -53,7 +61,7 @@ export const Search: React.FC<SearchProps> = ({ setSearchDialogUserList }) => {
       <Input
         onChange={onHandlerInput}
         inputClassName={INPUT_CLASS_NAME.SEARCH}
-        placeholder="Search messages, people"
+        placeholder="Search people"
       />
     </div>
   )
