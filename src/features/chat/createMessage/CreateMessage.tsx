@@ -33,12 +33,17 @@ export const CreateMessage: React.FC = () => {
   const onSendMessage = async () => {
     const childrens = refCustomInput.current?.childNodes
     let messageText = ''
-
     childrens?.forEach((el) => {
       if (typeof el.nodeValue === 'string') {
         messageText += el.nodeValue
-      } else {
+      } else if (el.nodeName === 'IMG') {
         messageText += (el as HTMLImageElement).getAttribute('data-unified')
+      } else if (el.nodeName === 'DIV') {
+        el.childNodes.forEach((child) => {
+          console.log(child)
+        })
+        messageText += `
+        `
       }
     })
 

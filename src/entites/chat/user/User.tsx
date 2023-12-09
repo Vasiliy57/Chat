@@ -27,8 +27,11 @@ export const User: React.FC<UserProps> = ({
 
   const time =
     lastMessage && moment(+lastMessage.date * 1000).format('DD.MM.YY HH:mm')
+  console.log('render User')
 
   useEffect(() => {
+    alert('Work UseEf in User')
+
     let unSubscribe
     getDialogId(myUserId, userId).then((dialogId) => {
       if (dialogId && !isDialogId) {
@@ -43,7 +46,12 @@ export const User: React.FC<UserProps> = ({
         })
       }
     })
-    return unSubscribe
+
+    return () => {
+      console.log('Delete USer')
+
+      // unSubscribe()
+    }
   }, [])
 
   const dispatch = useAppDispatch()

@@ -25,11 +25,8 @@ export const Dialogs: React.FC<DialogsProps> = ({
 
   const [dialogUserList, setDialogUserList] = useState<IUser[]>([])
   const userList = isMyDialogs ? dialogUserList : searchDialogUserList
-  console.log(userList)
 
   useEffect(() => {
-    console.log('work useEf dialogs')
-
     const myDialogsRef = ref(
       dbRealTime,
       'dialogsUsers/' + myUserId + '/dialogs'
