@@ -13,7 +13,7 @@ interface IUser {
   avatar: string | null
 }
 
-export const useCustomSearch = (myUserId: string | null, value: string) => {
+export const useCustomSearch = (myUserId: string, value: string) => {
   const delayedValue = useDebounce(value, 1000)
   const [foundUsers, setFoundUsers] = useState<IUser[]>([])
   const [allUsers, setAllUsers] = useState<IUser[]>([])
