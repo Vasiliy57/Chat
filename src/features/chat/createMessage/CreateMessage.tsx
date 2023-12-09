@@ -12,7 +12,6 @@ import { BUTTON_TYPE, BUTTON_CLASS_NAME } from '@shared/constants'
 import { ICONS } from '@shared/constants/icons'
 
 import classes from './createMessage.module.css'
-
 export const CreateMessage: React.FC = () => {
   const refCustomInput = useRef<HTMLDivElement>(null)
 
@@ -36,10 +35,26 @@ export const CreateMessage: React.FC = () => {
     let messageText = ''
 
     childrens?.forEach((el) => {
+      console.log(el)
+
       if (typeof el.nodeValue === 'string') {
         messageText += el.nodeValue
-      } else {
+      } else if (el.nodeName === 'IMG') {
         messageText += (el as HTMLImageElement).getAttribute('data-unified')
+      } else if (el.nodeName === 'DIV') {
+        messageText += '\n'
+        el.childNodes.forEach((child) => {
+          if (typeof child.nodeValue === 'string') {
+            messageText += child.nodeValue
+          } else if (child.nodeName === 'IMG') {
+            messageText += (child as HTMLImageElement).getAttribute(
+              'data-unified'
+            )
+          }
+          //  } else if (child.nodeName === 'BR') {
+          //   messageText += '\n'
+          // }
+        })
       }
     })
 

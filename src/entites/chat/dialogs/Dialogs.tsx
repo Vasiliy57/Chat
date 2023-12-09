@@ -31,13 +31,15 @@ export const Dialogs: React.FC<DialogsProps> = ({
       dbRealTime,
       'dialogsUsers/' + myUserId + '/dialogs'
     )
-    onValue(myDialogsRef, async (snapshot) => {
+    const unSubscribe = onValue(myDialogsRef, async (snapshot) => {
       const data = await snapshot.val()
       if (data) {
         const users = await updateListMyDialogs(Object.keys(data))
         setDialogUserList(users)
       }
     })
+
+    return unSubscribe
   }, [])
 
   return (

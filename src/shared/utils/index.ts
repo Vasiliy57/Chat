@@ -1,3 +1,3 @@
 import { ConvertEmojiContent } from './ConvertEmojiContent'
-
-export { ConvertEmojiContent }
+import { showNotification } from './showNotification'
+export { ConvertEmojiContent, showNotification }

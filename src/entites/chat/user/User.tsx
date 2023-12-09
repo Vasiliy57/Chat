@@ -29,20 +29,23 @@ export const User: React.FC<UserProps> = ({
     lastMessage && moment(+lastMessage.date * 1000).format('DD.MM.YY HH:mm')
 
   useEffect(() => {
+    let unSubscribe
     getDialogId(myUserId, userId).then((dialogId) => {
       if (dialogId && !isDialogId) {
         const messagesRef = ref(
           dbRealTime,
           'messages/' + dialogId + '/lastMessage'
         )
-        onValue(messagesRef, async (snapshot) => {
+        unSubscribe = onValue(messagesRef, async (snapshot) => {
           const data = await snapshot.val()
           setLastMessage(data)
           setIsDialogId(true)
         })
       }
     })
-  }, [])
+
+    return unSubscribe
+  })
 
   const dispatch = useAppDispatch()
   const currentClassName = isSelected ? 'user-select' : 'user'
@@ -67,10 +70,6 @@ export const User: React.FC<UserProps> = ({
                 sizeSmile={15}
               />
             ) : null}
-
-            {/* {lastMessage?.content ? (
-             
-            ) : null} */}
           </div>
         </div>
         <div className={classes.right}>

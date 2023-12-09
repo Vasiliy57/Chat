@@ -3,7 +3,7 @@ import { registrationUser } from './registrationUser'
 import { createDialogs } from './createDialogs'
 import { addDialog } from './addDialog'
 import { updateUser } from './updateUser'
-import { getUsersBySearch } from './getUsersBySearch'
+import { getAllUsers } from './getAllUsers'
 
 export {
   getUser,
@@ -11,5 +11,5 @@ export {
   createDialogs,
   addDialog,
   updateUser,
-  getUsersBySearch,
+  getAllUsers,
 }

@@ -10,6 +10,7 @@ import { AboutMe } from './components/AboutMe/AboutMe'
 import { logOut, setUser } from '@shared/store/profile/profileSlice'
 import { saveImage } from '@/firebase/storageImages/saveImage'
 import { getUser, updateUser } from '@/firebase/users'
+import { showNotification } from '@shared/utils'
 
 import { Routing, INFO_STRING } from '@shared/constants'
 import { BUTTON_TYPE, BUTTON_CLASS_NAME } from '@shared/constants'
@@ -71,12 +72,12 @@ export const Profile: React.FC = () => {
   const onHandlerEdit = () => {
     setIsEdit(true)
   }
-  const onHandlerInputFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onHandlerInputFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
     const fileImg = files![0]
 
     if (!/^image/.test(fileImg.type)) {
-      alert('The selected file is not an image!')
+      showNotification('warning', 'The selected file is not an image!')
       return
     }
     const reader = new FileReader()
@@ -86,7 +87,7 @@ export const Profile: React.FC = () => {
       setCurrentImg(reader.result as string)
     }
     reader.onerror = () => {
-      alert('An error occurred while reading the file')
+      showNotification('error', 'An error occurred while reading the file')
     }
   }
   const onSaveEdit = async () => {
@@ -100,8 +101,15 @@ export const Profile: React.FC = () => {
       editNumber || '',
       editAddress || ''
     )
+      .then(() => {
+        showNotification('success', 'Saved successfully')
+      })
+      .catch((error) => {
+        showNotification('error', error.message)
+      })
     const newUser = await getUser(myUserId!)
     dispatch(setUser(newUser!))
+    setIsEdit(false)
   }
 
   const onHandlerAddress = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
