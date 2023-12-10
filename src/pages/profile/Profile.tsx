@@ -28,11 +28,11 @@ export const Profile: React.FC = () => {
     number,
   } = useAppSelector((state) => state.ProfileReducer.user)
 
-  const [editInfoAboutMe, setEditInfoAboutMe] = useState<string>('')
+  const [editInfoAboutMe, setEditInfoAboutMe] = useState<string | null>('')
   const [currentImg, setCurrentImg] = useState<string | null>(null)
   const [isEdit, setIsEdit] = useState<boolean>(false)
-  const [editNumber, setEditNumber] = useState<string>('')
-  const [editAddress, setEditAddress] = useState<string>('')
+  const [editNumber, setEditNumber] = useState<string | null>('')
+  const [editAddress, setEditAddress] = useState<string | null>('')
 
   const styleBtnBack = {
     position: 'absolute',
@@ -44,9 +44,9 @@ export const Profile: React.FC = () => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    setEditInfoAboutMe(infoAboutMe || 'Write information about yourself')
-    setEditNumber(number || 'write your number')
-    setEditAddress(address || 'write your address')
+    setEditInfoAboutMe(infoAboutMe)
+    setEditNumber(number)
+    setEditAddress(address)
     setCurrentImg(avatar)
   }, [infoAboutMe])
 
@@ -61,9 +61,9 @@ export const Profile: React.FC = () => {
   const onGoBack = () => {
     if (isEdit) {
       setIsEdit(false)
-      setEditInfoAboutMe(infoAboutMe || 'Write information about yourself')
-      setEditNumber(number || 'write your number')
-      setEditAddress(address || 'write your address')
+      setEditInfoAboutMe(infoAboutMe)
+      setEditNumber(number)
+      setEditAddress(address)
       setCurrentImg(avatar)
     } else {
       navigation(-1)

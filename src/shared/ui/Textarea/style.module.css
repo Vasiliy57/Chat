@@ -60,4 +60,7 @@
   height: 40px;
 }
 
-.info-string:focus {}
+.info-string:disabled {
+  padding: 3px;
+  border: none;
+}

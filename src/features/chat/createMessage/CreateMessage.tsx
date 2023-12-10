@@ -51,9 +51,6 @@ export const CreateMessage: React.FC = () => {
               'data-unified'
             )
           }
-          //  } else if (child.nodeName === 'BR') {
-          //   messageText += '\n'
-          // }
         })
       }
     })
