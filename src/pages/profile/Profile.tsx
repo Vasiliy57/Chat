@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '@shared/hooks'
 import { useNavigate } from 'react-router-dom'
+import imageCompression from 'browser-image-compression'
 
 import { Avatar } from './components/Avatar/Avatar'
 import { Button } from '@shared/ui'
@@ -80,8 +81,16 @@ export const Profile: React.FC = () => {
       showNotification('warning', 'The selected file is not an image!')
       return
     }
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 300,
+      useWebWorker: true,
+    }
+
+    const compressedImage = await imageCompression(fileImg, options)
+
     const reader = new FileReader()
-    reader.readAsDataURL(fileImg)
+    reader.readAsDataURL(compressedImage)
 
     reader.onload = () => {
       setCurrentImg(reader.result as string)

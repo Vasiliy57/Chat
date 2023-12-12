@@ -10,7 +10,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix",
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
-    "proxy": "lcp --proxyUrl http://127.0.0.1:5173/"
+    "proxy": "https://firebasestorage.googleapis.com"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",

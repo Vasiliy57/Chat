@@ -1,11 +1,11 @@
-import { useAppDispatch, useAppSelector } from '@shared/hooks'
+import { useAppDispatch } from '@shared/hooks'
 import { useEffect, useState } from 'react'
 import { getUser } from '@/firebase/users'
 import defaultImg from '@shared/assets/images/user-img.jpg'
 import classes from './style.module.css'
 import { Icon } from '@shared/assets/Icon/Icon'
 import { ICONS, Routing } from '@shared/constants'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import {
   setCurrentDialogId,
   setCurrentDialogUser,
@@ -21,16 +21,18 @@ interface IUser {
   address: string | null
   emailVerified: boolean
 }
+type IParams = {
+  id: string
+}
 
 export const UserProfile: React.FC = () => {
   const dispatch = useAppDispatch()
-  const userId = useAppSelector(
-    (state) => state.chatSlice.currentDialogUser?.userId
-  )
+  const { id } = useParams<IParams>()
+
   const [user, setUser] = useState<IUser | null>(null)
 
   useEffect(() => {
-    getUser(userId!).then((data) => setUser(data))
+    getUser(id!).then((data) => setUser(data))
   }, [])
   const onHandlerBtn = () => {
     dispatch(setCurrentDialogUser(null))

@@ -31,12 +31,13 @@ export const CreateMessage: React.FC = () => {
     email && userName && userId && currentDialogUser && currentDialogUser.userId
 
   const onSendMessage = async () => {
+    // ***************************
+    // Кастомное решение, по другому никак
+    // ***************************
     const childrens = refCustomInput.current?.childNodes
     let messageText = ''
 
     childrens?.forEach((el) => {
-      console.log(el)
-
       if (typeof el.nodeValue === 'string') {
         messageText += el.nodeValue
       } else if (el.nodeName === 'IMG') {
@@ -54,8 +55,8 @@ export const CreateMessage: React.FC = () => {
         })
       }
     })
-
     refCustomInput!.current!.innerText = ''
+
     const isNewDialog = !currentDialogId && !!currentDialogUser
     if (isExistingUserInfo) {
       await preActionSendMessage({
@@ -83,13 +84,25 @@ export const CreateMessage: React.FC = () => {
     imageUrl: string
     unified: string
   }) => {
-    refCustomInput.current!.innerHTML += `<img src="${emoji.imageUrl}" data-unified="${emoji.emoji}" style="width: 30px;"/>`
+    // ***************************
+    // Кастомное решение, по другому никак
+    // ***************************
+    const childDiv = refCustomInput.current!.lastChild
+    if (childDiv?.nodeName == 'DIV') {
+      const childBr = childDiv.lastChild
+      if (childBr?.nodeName == 'BR') {
+        childDiv.removeChild(childBr!)
+      }
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      //@ts-ignore
+      childDiv.innerHTML += `<img src="${emoji.imageUrl}" data-unified="${emoji.emoji}" style="width: 30px;"/>`
+    } else {
+      refCustomInput.current!.innerHTML += `<img src="${emoji.imageUrl}" data-unified="${emoji.emoji}" style="width: 30px;"/>`
+    }
 
     if (!smileDetector.current[emoji.emoji]) {
       smileDetector.current[emoji.emoji] = emoji.unified
     }
-
-    // refCustomInput.current?.focus()
   }
   const onHandlerInputFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files![0]
