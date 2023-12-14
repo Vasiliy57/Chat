@@ -1,9 +1,12 @@
+import { useAppSelector } from '@shared/hooks'
+
 import { Authorization } from '@pages/authorization/Authorization'
 import { Registration } from '@pages/registration/Registration'
 import { Chat } from '@pages/chat/Chat'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { useAppSelector } from '@shared/hooks'
 import { Profile } from '@pages/profile/Profile'
+import { UserProfile } from '@pages/userProfile/UserProfile'
+
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Routing } from '@shared/constants'
 
 const Router: React.FC = () => {
@@ -14,6 +17,7 @@ const Router: React.FC = () => {
         <Routes>
           <Route path={Routing.CHAT} element={<Chat />} />
           <Route path={Routing.PROFILE} element={<Profile />} />
+          <Route path={Routing.USER_PROFILE} element={<UserProfile />} />
           <Route path="/*" element={<Chat />} />
         </Routes>
       ) : (

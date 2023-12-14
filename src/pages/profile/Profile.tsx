@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '@shared/hooks'
 import { useNavigate } from 'react-router-dom'
+import imageCompression from 'browser-image-compression'
 
 import { Avatar } from './components/Avatar/Avatar'
 import { Button } from '@shared/ui'
@@ -28,11 +29,11 @@ export const Profile: React.FC = () => {
     number,
   } = useAppSelector((state) => state.ProfileReducer.user)
 
-  const [editInfoAboutMe, setEditInfoAboutMe] = useState<string>('')
+  const [editInfoAboutMe, setEditInfoAboutMe] = useState<string | null>('')
   const [currentImg, setCurrentImg] = useState<string | null>(null)
   const [isEdit, setIsEdit] = useState<boolean>(false)
-  const [editNumber, setEditNumber] = useState<string>('')
-  const [editAddress, setEditAddress] = useState<string>('')
+  const [editNumber, setEditNumber] = useState<string | null>('')
+  const [editAddress, setEditAddress] = useState<string | null>('')
 
   const styleBtnBack = {
     position: 'absolute',
@@ -44,9 +45,9 @@ export const Profile: React.FC = () => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    setEditInfoAboutMe(infoAboutMe || 'Write information about yourself')
-    setEditNumber(number || 'write your number')
-    setEditAddress(address || 'write your address')
+    setEditInfoAboutMe(infoAboutMe)
+    setEditNumber(number)
+    setEditAddress(address)
     setCurrentImg(avatar)
   }, [infoAboutMe])
 
@@ -61,9 +62,9 @@ export const Profile: React.FC = () => {
   const onGoBack = () => {
     if (isEdit) {
       setIsEdit(false)
-      setEditInfoAboutMe(infoAboutMe || 'Write information about yourself')
-      setEditNumber(number || 'write your number')
-      setEditAddress(address || 'write your address')
+      setEditInfoAboutMe(infoAboutMe)
+      setEditNumber(number)
+      setEditAddress(address)
       setCurrentImg(avatar)
     } else {
       navigation(-1)
@@ -80,8 +81,16 @@ export const Profile: React.FC = () => {
       showNotification('warning', 'The selected file is not an image!')
       return
     }
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 300,
+      useWebWorker: true,
+    }
+
+    const compressedImage = await imageCompression(fileImg, options)
+
     const reader = new FileReader()
-    reader.readAsDataURL(fileImg)
+    reader.readAsDataURL(compressedImage)
 
     reader.onload = () => {
       setCurrentImg(reader.result as string)
