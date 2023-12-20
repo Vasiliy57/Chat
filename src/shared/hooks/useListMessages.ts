@@ -22,6 +22,7 @@ export const useListMessages = ({
 }: IUseListMessages) => {
   const [listMessages, setListMessages] = useState<IMessage[]>([])
   const lastMessageDate = useRef<number>(new Date().getTime() / 1000)
+  const isFirstLoadMessages = useRef<boolean>(true)
 
   useEffect(() => {
     if (currentDialogId) {
@@ -38,7 +39,6 @@ export const useListMessages = ({
       get(queryFirstLoadMessages).then((data) => {
         if (data.val()) {
           const dataMessages: IMessage[] = Object.values(data.val())
-          dataMessages.pop()
           setListMessages((prev) => {
             return prev.concat(dataMessages)
           })
@@ -48,15 +48,17 @@ export const useListMessages = ({
       onValue(queryMessage, async (snapshot) => {
         const data = await snapshot.val()
 
-        if (data) {
+        if (data && !isFirstLoadMessages.current) {
           const dataMessage: IMessage[] = Object.values(data)
           setListMessages((prev) => {
             return prev.concat(dataMessage)
           })
         }
+        isFirstLoadMessages.current = false
       })
 
       return () => {
+        isFirstLoadMessages.current = true
         setListMessages([])
         off(queryMessage)
       }
@@ -66,7 +68,7 @@ export const useListMessages = ({
   }, [currentDialogId])
 
   useEffect(() => {
-    if (inView && listMessages.length) {
+    if (inView && listMessages.length > 0) {
       lastMessageDate.current = parseInt(listMessages[0].date)
 
       const queryLoadMessages = query(

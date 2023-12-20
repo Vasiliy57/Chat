@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useRef } from 'react'
 import { useAppSelector, useListMessages } from '@shared/hooks'
 import { useInView } from 'react-intersection-observer'
@@ -9,7 +9,7 @@ import classes from './messages.module.css'
 
 export const Messages: React.FC = () => {
   const messagesElement = useRef<HTMLDivElement | null>(null)
-  const [heightMessages, setHeightMessages] = useState<number | undefined>(0)
+  const heightElementMessages = useRef<number>(0)
 
   const myEmail = useAppSelector((state) => state.ProfileReducer.user.email)
   const currentDialogId = useAppSelector(
@@ -27,11 +27,10 @@ export const Messages: React.FC = () => {
   const listMessages = useListMessages({ inView, currentDialogId })
 
   useEffect(() => {
-    setHeightMessages((prev) => {
-      const heightScrollDown = messagesElement.current!.scrollHeight - prev!
-      messagesElement.current!.scrollTop += heightScrollDown
-      return messagesElement.current?.scrollHeight
-    })
+    const heightScrollDown =
+      messagesElement.current!.scrollHeight - heightElementMessages.current
+    messagesElement.current!.scrollTop += heightScrollDown
+    heightElementMessages.current = messagesElement.current?.scrollHeight ?? 0
   }, [listMessages])
 
   return (
