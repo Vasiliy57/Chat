@@ -22,6 +22,8 @@ export const Message: React.FC<messageProps> = ({
     time: isMyMessage ? classes.myTime : classes.time,
     content: isMyMessage ? classes.myContent : classes.content,
   }
+  console.log('Render MEssage')
+
   return (
     <div className={classesName.message}>
       <img src={avatar ?? img} className={classesName.avatar} />
