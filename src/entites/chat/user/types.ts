@@ -6,6 +6,7 @@ export interface UserProps {
   isSelected: boolean
   myUserId: string | null
   avatar: null | string
+  isMyDialogs: boolean
 }
 
 export interface ILastMessage {

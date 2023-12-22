@@ -1,4 +1,4 @@
-import { useAppDispatch } from '@shared/hooks'
+import { useAppDispatch, useAppSelector } from '@shared/hooks'
 import { useEffect } from 'react'
 import { useState } from 'react'
 
@@ -18,19 +18,35 @@ export const User: React.FC<UserProps> = ({
   userName,
   email,
   userId,
-  isSelected,
   myUserId,
+  isSelected,
   avatar,
+  isMyDialogs,
 }) => {
   const [lastMessage, setLastMessage] = useState<ILastMessage | null>(null)
   const [isDialogId, setIsDialogId] = useState<boolean>(false)
-
+  // ---------------------------------------
+  const currentDialogId = useAppSelector(
+    (state) => state.chatSlice.currentDialogId
+  )
+  // ---------------------------------------
   const time =
     lastMessage && moment(+lastMessage.date * 1000).format('DD.MM.YY HH:mm')
 
   useEffect(() => {
     let unSubscribe
-    getDialogId(myUserId, userId).then((dialogId) => {
+
+    getDialogId(myUserId, userId).then((dataDialogId) => {
+      let dialogId
+      // ---------------------------------------
+      if (dataDialogId) {
+        dialogId = dataDialogId
+      } else if (isSelected && currentDialogId) {
+        dialogId = currentDialogId
+      } else {
+        dialogId = null
+      }
+      // ---------------------------------------
       if (dialogId && !isDialogId) {
         const messagesRef = ref(
           dbRealTime,
@@ -38,6 +54,8 @@ export const User: React.FC<UserProps> = ({
         )
         unSubscribe = onValue(messagesRef, async (snapshot) => {
           const data = await snapshot.val()
+          console.log('event')
+
           setLastMessage(data)
           setIsDialogId(true)
         })
@@ -45,7 +63,8 @@ export const User: React.FC<UserProps> = ({
     })
 
     return unSubscribe
-  })
+  }, [isMyDialogs, currentDialogId])
+  // console.log('render User')
 
   const dispatch = useAppDispatch()
   const currentClassName = isSelected ? 'user-select' : 'user'

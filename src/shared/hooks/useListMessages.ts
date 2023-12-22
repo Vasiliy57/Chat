@@ -40,6 +40,7 @@ export const useListMessages = ({
         if (data.val()) {
           const dataMessages: IMessage[] = Object.values(data.val())
           setListMessages((prev) => {
+            dataMessages.pop()
             return prev.concat(dataMessages)
           })
         }
@@ -48,7 +49,8 @@ export const useListMessages = ({
       onValue(queryMessage, async (snapshot) => {
         const data = await snapshot.val()
 
-        if (data && !isFirstLoadMessages.current) {
+        // if (data && !isFirstLoadMessages.current) {
+        if (data) {
           const dataMessage: IMessage[] = Object.values(data)
           setListMessages((prev) => {
             return prev.concat(dataMessage)
