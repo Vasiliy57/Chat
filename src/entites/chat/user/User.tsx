@@ -21,50 +21,35 @@ export const User: React.FC<UserProps> = ({
   myUserId,
   isSelected,
   avatar,
-  isMyDialogs,
 }) => {
   const [lastMessage, setLastMessage] = useState<ILastMessage | null>(null)
-  const [isDialogId, setIsDialogId] = useState<boolean>(false)
-  // ---------------------------------------
+
   const currentDialogId = useAppSelector(
     (state) => state.chatSlice.currentDialogId
   )
-  // ---------------------------------------
+
   const time =
     lastMessage && moment(+lastMessage.date * 1000).format('DD.MM.YY HH:mm')
 
   useEffect(() => {
     let unSubscribe
 
-    getDialogId(myUserId, userId).then((dataDialogId) => {
-      let dialogId
-      // ---------------------------------------
-      if (dataDialogId) {
-        dialogId = dataDialogId
-      } else if (isSelected && currentDialogId) {
-        dialogId = currentDialogId
-      } else {
-        dialogId = null
-      }
-      // ---------------------------------------
-      if (dialogId && !isDialogId) {
+    getDialogId(myUserId, userId).then((dialogId) => {
+      if (dialogId) {
         const messagesRef = ref(
           dbRealTime,
           'messages/' + dialogId + '/lastMessage'
         )
         unSubscribe = onValue(messagesRef, async (snapshot) => {
           const data = await snapshot.val()
-          console.log('event')
 
           setLastMessage(data)
-          setIsDialogId(true)
         })
       }
     })
 
     return unSubscribe
-  }, [isMyDialogs, currentDialogId])
-  // console.log('render User')
+  }, [currentDialogId])
 
   const dispatch = useAppDispatch()
   const currentClassName = isSelected ? 'user-select' : 'user'

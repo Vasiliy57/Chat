@@ -22,7 +22,6 @@ export const Dialogs: React.FC<DialogsProps> = ({
   const currentDialogUser = useAppSelector(
     (state) => state.chatSlice.currentDialogUser
   )
-  // console.log('Render Dialogs')
 
   const [dialogUserList, setDialogUserList] = useState<IUser[]>([])
   const userList = isMyDialogs ? dialogUserList : searchDialogUserList
@@ -67,7 +66,6 @@ export const Dialogs: React.FC<DialogsProps> = ({
       {userList.map((user) => {
         return (
           <User
-            isMyDialogs={isMyDialogs}
             key={user.userId}
             userName={user.userName}
             email={user.email}
