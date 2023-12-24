@@ -27,20 +27,23 @@ export const Dialogs: React.FC<DialogsProps> = ({
   const userList = isMyDialogs ? dialogUserList : searchDialogUserList
 
   useEffect(() => {
-    const myDialogsRef = ref(
-      dbRealTime,
-      'dialogsUsers/' + myUserId + '/dialogs'
-    )
-    const unSubscribe = onValue(myDialogsRef, async (snapshot) => {
-      const data = await snapshot.val()
-      if (data) {
-        const users = await updateListMyDialogs(Object.keys(data))
-        setDialogUserList(users)
-      }
-    })
+    let unSubscribe
+    if (isMyDialogs) {
+      const myDialogsRef = ref(
+        dbRealTime,
+        'dialogsUsers/' + myUserId + '/dialogs'
+      )
+      unSubscribe = onValue(myDialogsRef, async (snapshot) => {
+        const data = await snapshot.val()
+        if (data) {
+          const users = await updateListMyDialogs(Object.keys(data))
 
+          setDialogUserList(users)
+        }
+      })
+    }
     return unSubscribe
-  }, [])
+  }, [isMyDialogs])
 
   return (
     <div className={isMyDialogs ? classes.dialogs : ''}>
@@ -60,10 +63,10 @@ export const Dialogs: React.FC<DialogsProps> = ({
           content="SEARCH CHATS"
         />
       </div>
-      {userList.map((user, index) => {
+      {userList.map((user) => {
         return (
           <User
-            key={index}
+            key={user.userId}
             userName={user.userName}
             email={user.email}
             userId={user.userId}

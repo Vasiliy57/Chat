@@ -21,9 +21,15 @@ const persistConfig = {
   blacklist: ['chatSlice'],
 }
 
+const chatSlicePersistConfig = {
+  key: 'chatSlice',
+  storage: storage,
+  blacklist: ['currentDialogUser', 'currentDialogId'],
+}
+
 export const rootReducer = combineReducers({
+  chatSlice: persistReducer(chatSlicePersistConfig, chatSlice),
   ProfileReducer,
-  chatSlice,
 })
 
 const _persistedReducer = persistReducer(persistConfig, rootReducer)

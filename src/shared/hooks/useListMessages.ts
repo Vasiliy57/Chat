@@ -25,36 +25,40 @@ export const useListMessages = ({
   const isFirstLoadMessages = useRef<boolean>(true)
 
   useEffect(() => {
+    const queryFirstLoadMessages = query(
+      ref(dbRealTime, 'messages/' + currentDialogId + '/allMessages'),
+      limitToLast(6)
+    )
+
+    const queryMessage = query(
+      ref(dbRealTime, 'messages/' + currentDialogId + '/allMessages'),
+      limitToLast(1)
+    )
+
     if (currentDialogId) {
-      const queryFirstLoadMessages = query(
-        ref(dbRealTime, 'messages/' + currentDialogId + '/allMessages'),
-        limitToLast(6)
-      )
-
-      const queryMessage = query(
-        ref(dbRealTime, 'messages/' + currentDialogId + '/allMessages'),
-        limitToLast(1)
-      )
-
-      get(queryFirstLoadMessages).then((data) => {
-        if (data.val()) {
-          const dataMessages: IMessage[] = Object.values(data.val())
+      get(queryFirstLoadMessages).then((response) => {
+        const firstLoadValue = response.val()
+        if (firstLoadValue) {
+          const messages: IMessage[] = Object.values(firstLoadValue)
           setListMessages((prev) => {
-            return prev.concat(dataMessages)
+            return prev.concat(messages)
           })
         }
-      })
 
-      onValue(queryMessage, async (snapshot) => {
-        const data = await snapshot.val()
+        onValue(queryMessage, async (snapshot) => {
+          const lastLoadValue = await snapshot.val()
 
-        if (data && !isFirstLoadMessages.current) {
-          const dataMessage: IMessage[] = Object.values(data)
-          setListMessages((prev) => {
-            return prev.concat(dataMessage)
-          })
-        }
-        isFirstLoadMessages.current = false
+          if (
+            (lastLoadValue && !isFirstLoadMessages.current) ||
+            !firstLoadValue
+          ) {
+            const message: IMessage[] = Object.values(lastLoadValue)
+            setListMessages((prev) => {
+              return prev.concat(message)
+            })
+          }
+          isFirstLoadMessages.current = false
+        })
       })
 
       return () => {

@@ -1,4 +1,4 @@
-import { useAppDispatch } from '@shared/hooks'
+import { useAppDispatch, useAppSelector } from '@shared/hooks'
 import { useEffect } from 'react'
 import { useState } from 'react'
 
@@ -18,34 +18,38 @@ export const User: React.FC<UserProps> = ({
   userName,
   email,
   userId,
-  isSelected,
   myUserId,
+  isSelected,
   avatar,
 }) => {
   const [lastMessage, setLastMessage] = useState<ILastMessage | null>(null)
-  const [isDialogId, setIsDialogId] = useState<boolean>(false)
+
+  const currentDialogId = useAppSelector(
+    (state) => state.chatSlice.currentDialogId
+  )
 
   const time =
     lastMessage && moment(+lastMessage.date * 1000).format('DD.MM.YY HH:mm')
 
   useEffect(() => {
     let unSubscribe
+
     getDialogId(myUserId, userId).then((dialogId) => {
-      if (dialogId && !isDialogId) {
+      if (dialogId) {
         const messagesRef = ref(
           dbRealTime,
           'messages/' + dialogId + '/lastMessage'
         )
         unSubscribe = onValue(messagesRef, async (snapshot) => {
           const data = await snapshot.val()
+
           setLastMessage(data)
-          setIsDialogId(true)
         })
       }
     })
 
     return unSubscribe
-  })
+  }, [currentDialogId])
 
   const dispatch = useAppDispatch()
   const currentClassName = isSelected ? 'user-select' : 'user'
