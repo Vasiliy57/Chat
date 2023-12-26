@@ -4,6 +4,18 @@
   align-items: center;
   cursor: pointer;
   padding: 10px 24px;
+  position: relative;
+}
+
+.read {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  width: 10px;
+  height: 10px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background-color: var(--color-light-blue);
 }
 
 .user-select {
@@ -13,6 +25,7 @@
   align-items: center;
   cursor: pointer;
   padding: 10px 24px;
+  position: relative;
 }
 
 .img {

@@ -6,6 +6,7 @@ export interface UserProps {
   isSelected: boolean
   myUserId: string | null
   avatar: null | string
+  myEmail: string | null
 }
 
 export interface ILastMessage {
@@ -15,4 +16,5 @@ export interface ILastMessage {
   type: string
   userName: string
   smileDetector: Record<string, string>
+  isRead: boolean
 }

@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@shared/hooks'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useState } from 'react'
 
 import { ConvertEmojiContent } from '@shared/utils'
@@ -13,6 +13,7 @@ import { ILastMessage, UserProps } from './types'
 
 import userImg from '@shared/assets/images/user-img.jpg'
 import classes from './user.module.css'
+import { updateLastMessage } from '@/firebase/messages/updateLastMessage'
 
 export const User: React.FC<UserProps> = ({
   userName,
@@ -21,8 +22,13 @@ export const User: React.FC<UserProps> = ({
   myUserId,
   isSelected,
   avatar,
+  myEmail,
 }) => {
+  const dispatch = useAppDispatch()
   const [lastMessage, setLastMessage] = useState<ILastMessage | null>(null)
+  const [isReadLastMessage, setIsReadLastMessage] = useState<boolean>(false)
+
+  const dialogId = useRef<string | null>(null)
 
   const currentDialogId = useAppSelector(
     (state) => state.chatSlice.currentDialogId
@@ -31,19 +37,34 @@ export const User: React.FC<UserProps> = ({
   const time =
     lastMessage && moment(+lastMessage.date * 1000).format('DD.MM.YY HH:mm')
 
+  // useEffect(() => {
+  // if (
+  //   dialogId.current &&
+  //   currentDialogId &&
+  //   dialogId.current === currentDialogId
+  // ) {
+  //   console.log('work')
+  //   updateLastMessage(true, currentDialogId)
+  // }
+  // }, [lastMessage?.isRead])
+
   useEffect(() => {
     let unSubscribe
-
-    getDialogId(myUserId, userId).then((dialogId) => {
+    getDialogId(myUserId, userId).then((dataDialogId) => {
       if (dialogId) {
+        dialogId.current = dataDialogId
+
         const messagesRef = ref(
           dbRealTime,
-          'messages/' + dialogId + '/lastMessage'
+          'messages/' + dataDialogId + '/lastMessage'
         )
         unSubscribe = onValue(messagesRef, async (snapshot) => {
           const data = await snapshot.val()
 
           setLastMessage(data)
+          data.email === myEmail
+            ? setIsReadLastMessage(true)
+            : setIsReadLastMessage(data.isRead)
         })
       }
     })
@@ -51,13 +72,18 @@ export const User: React.FC<UserProps> = ({
     return unSubscribe
   }, [currentDialogId])
 
-  const dispatch = useAppDispatch()
-  const currentClassName = isSelected ? 'user-select' : 'user'
   const onHandlerClick = () => {
     dispatch(setCurrentDialogUser({ email, userName, userId, avatar }))
+
+    if (dialogId.current) {
+      updateLastMessage(true, dialogId.current)
+    }
   }
+
+  const currentClassName = isSelected ? 'user-select' : 'user'
   return (
     <div className={classes[currentClassName]} onClick={onHandlerClick}>
+      {!isReadLastMessage ? <span className={classes.read}></span> : null}
       <img className={classes.img} src={avatar ?? userImg} alt="User avatar" />
       <div className={classes.info}>
         <div className={classes.row}>

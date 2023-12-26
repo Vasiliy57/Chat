@@ -18,7 +18,9 @@ export const Dialogs: React.FC<DialogsProps> = ({
   onSwitchDialogs,
   searchDialogUserList,
 }) => {
-  const myUserId = useAppSelector((state) => state.ProfileReducer.user.userId)
+  const { userId: myUserId, email: myEmail } = useAppSelector(
+    (state) => state.ProfileReducer.user
+  )
   const currentDialogUser = useAppSelector(
     (state) => state.chatSlice.currentDialogUser
   )
@@ -66,6 +68,7 @@ export const Dialogs: React.FC<DialogsProps> = ({
       {userList.map((user) => {
         return (
           <User
+            myEmail={myEmail}
             key={user.userId}
             userName={user.userName}
             email={user.email}

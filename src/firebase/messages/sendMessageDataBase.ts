@@ -19,6 +19,7 @@ export const sendMessageDataBase = (
     smileDetector,
     id,
   }
+  const lastMessage = { ...message, isRead: false }
 
   // Get a key for a new Post.
   const newMessageKey = push(
@@ -28,7 +29,7 @@ export const sendMessageDataBase = (
   // Write the new post's data simultaneously in the posts list and the user's post list.
   const updates = {
     ['messages/' + dialogId + '/' + 'allMessages/' + newMessageKey]: message,
-    ['messages/' + dialogId + '/' + 'lastMessage']: message,
+    ['messages/' + dialogId + '/' + 'lastMessage']: lastMessage,
   }
 
   return update(ref(dbRealTime), updates)
