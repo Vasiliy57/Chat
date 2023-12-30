@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@shared/hooks'
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { useState } from 'react'
 
 import { ConvertEmojiContent } from '@shared/utils'
@@ -13,7 +13,6 @@ import { ILastMessage, UserProps } from './types'
 
 import userImg from '@shared/assets/images/user-img.jpg'
 import classes from './user.module.css'
-import { updateLastMessage } from '@/firebase/messages/updateLastMessage'
 
 export const User: React.FC<UserProps> = ({
   userName,
@@ -28,8 +27,6 @@ export const User: React.FC<UserProps> = ({
   const [lastMessage, setLastMessage] = useState<ILastMessage | null>(null)
   const [isReadLastMessage, setIsReadLastMessage] = useState<boolean>(false)
 
-  const dialogId = useRef<string | null>(null)
-
   const currentDialogId = useAppSelector(
     (state) => state.chatSlice.currentDialogId
   )
@@ -37,26 +34,13 @@ export const User: React.FC<UserProps> = ({
   const time =
     lastMessage && moment(+lastMessage.date * 1000).format('DD.MM.YY HH:mm')
 
-  // useEffect(() => {
-  // if (
-  //   dialogId.current &&
-  //   currentDialogId &&
-  //   dialogId.current === currentDialogId
-  // ) {
-  //   console.log('work')
-  //   updateLastMessage(true, currentDialogId)
-  // }
-  // }, [lastMessage?.isRead])
-
   useEffect(() => {
     let unSubscribe
-    getDialogId(myUserId, userId).then((dataDialogId) => {
+    getDialogId(myUserId, userId).then((dialogId) => {
       if (dialogId) {
-        dialogId.current = dataDialogId
-
         const messagesRef = ref(
           dbRealTime,
-          'messages/' + dataDialogId + '/lastMessage'
+          'messages/' + dialogId + '/lastMessage'
         )
         unSubscribe = onValue(messagesRef, async (snapshot) => {
           const data = await snapshot.val()
@@ -74,10 +58,6 @@ export const User: React.FC<UserProps> = ({
 
   const onHandlerClick = () => {
     dispatch(setCurrentDialogUser({ email, userName, userId, avatar }))
-
-    if (dialogId.current) {
-      updateLastMessage(true, dialogId.current)
-    }
   }
 
   const currentClassName = isSelected ? 'user-select' : 'user'
