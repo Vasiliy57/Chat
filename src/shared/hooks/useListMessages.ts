@@ -25,7 +25,12 @@ export const useListMessages = ({
   const [listMessages, setListMessages] = useState<IMessage[]>([])
   const lastMessageDate = useRef<number>(new Date().getTime() / 1000)
   const isFirstLoadMessages = useRef<boolean>(true)
-  const myEmail = useAppSelector((state) => state.ProfileReducer.user.email)
+  const { email: myEmail, userId: myUserId } = useAppSelector(
+    (state) => state.ProfileReducer.user
+  )
+  const userId = useAppSelector(
+    (state) => state.chatSlice.currentDialogUser?.userId
+  )
 
   useEffect(() => {
     const queryFirstLoadMessages = query(
@@ -44,8 +49,8 @@ export const useListMessages = ({
         if (firstLoadValue) {
           const messages: IMessage[] = Object.values(firstLoadValue)
 
-          if (messages.at(-1)?.email != myEmail) {
-            updateLastMessage(true, currentDialogId)
+          if (messages.at(-1)?.email != myEmail && myUserId && userId) {
+            updateLastMessage(true, myUserId, userId)
           }
 
           setListMessages((prev) => {
@@ -62,8 +67,8 @@ export const useListMessages = ({
           ) {
             const message: IMessage[] = Object.values(lastLoadValue)
 
-            if (message.at(-1)?.email != myEmail) {
-              updateLastMessage(true, currentDialogId)
+            if (message.at(-1)?.email != myEmail && myUserId && userId) {
+              updateLastMessage(true, myUserId, userId)
             }
 
             setListMessages((prev) => {

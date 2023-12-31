@@ -8,6 +8,8 @@ export const sendMessageDataBase = (
   email: string,
   userName: string,
   smileDetector: Record<string, string> = {},
+  myUserId: string,
+  userId: string,
   id: string = ''
 ) => {
   const message = {
@@ -29,7 +31,10 @@ export const sendMessageDataBase = (
   // Write the new post's data simultaneously in the posts list and the user's post list.
   const updates = {
     ['messages/' + dialogId + '/' + 'allMessages/' + newMessageKey]: message,
-    ['messages/' + dialogId + '/' + 'lastMessage']: lastMessage,
+    ['dialogsUsers/' + myUserId + '/dialogs' + '/' + userId + '/lastMessage']:
+      lastMessage,
+    ['dialogsUsers/' + userId + '/dialogs' + '/' + myUserId + '/lastMessage']:
+      lastMessage,
   }
 
   return update(ref(dbRealTime), updates)

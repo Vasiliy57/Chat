@@ -53,7 +53,9 @@ export const preActionSendMessage = async (
           dialogId,
           props.arguments.email,
           props.arguments.userName,
-          props.arguments.smileDetector
+          props.arguments.smileDetector,
+          props.myUserId,
+          props.userId
         )
       } else {
         showNotification('warning', 'The field cannot be empty')
@@ -80,6 +82,8 @@ export const preActionSendMessage = async (
             props.arguments.email,
             props.arguments.userName,
             props.arguments.smileDetector,
+            props.myUserId,
+            props.userId,
             fileId
           )
         } else {
@@ -91,6 +95,8 @@ export const preActionSendMessage = async (
             props.arguments.email,
             props.arguments.userName,
             props.arguments.smileDetector,
+            props.myUserId,
+            props.userId,
             fileId
           )
         }

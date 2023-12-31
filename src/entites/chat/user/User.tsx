@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from '@shared/hooks'
+import { useAppDispatch } from '@shared/hooks'
 import { useEffect } from 'react'
 import { useState } from 'react'
 
@@ -6,10 +6,7 @@ import { ConvertEmojiContent } from '@shared/utils'
 
 import moment from 'moment'
 import { setCurrentDialogUser } from '@shared/store/chat/chat'
-import { getDialogId } from '@/firebase/users/getDialogId'
-import { onValue, ref } from 'firebase/database'
-import { dbRealTime } from '@/firebase/realTimeDataBase'
-import { ILastMessage, UserProps } from './types'
+import { UserProps } from './types'
 
 import userImg from '@shared/assets/images/user-img.jpg'
 import classes from './user.module.css'
@@ -18,43 +15,25 @@ export const User: React.FC<UserProps> = ({
   userName,
   email,
   userId,
-  myUserId,
   isSelected,
   avatar,
   myEmail,
+  lastMessage,
 }) => {
   const dispatch = useAppDispatch()
-  const [lastMessage, setLastMessage] = useState<ILastMessage | null>(null)
   const [isReadLastMessage, setIsReadLastMessage] = useState<boolean>(false)
-
-  const currentDialogId = useAppSelector(
-    (state) => state.chatSlice.currentDialogId
-  )
 
   const time =
     lastMessage && moment(+lastMessage.date * 1000).format('DD.MM.YY HH:mm')
-
   useEffect(() => {
-    let unSubscribe
-    getDialogId(myUserId, userId).then((dialogId) => {
-      if (dialogId) {
-        const messagesRef = ref(
-          dbRealTime,
-          'messages/' + dialogId + '/lastMessage'
-        )
-        unSubscribe = onValue(messagesRef, async (snapshot) => {
-          const data = await snapshot.val()
-
-          setLastMessage(data)
-          data.email === myEmail
-            ? setIsReadLastMessage(true)
-            : setIsReadLastMessage(data.isRead)
-        })
-      }
-    })
-
-    return unSubscribe
-  }, [currentDialogId])
+    if (lastMessage) {
+      lastMessage.email === myEmail
+        ? setIsReadLastMessage(true)
+        : setIsReadLastMessage(lastMessage.isRead)
+    } else {
+      setIsReadLastMessage(true)
+    }
+  }, [lastMessage])
 
   const onHandlerClick = () => {
     dispatch(setCurrentDialogUser({ email, userName, userId, avatar }))

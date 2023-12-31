@@ -37,8 +37,17 @@ export const Dialogs: React.FC<DialogsProps> = ({
       )
       unSubscribe = onValue(myDialogsRef, async (snapshot) => {
         const data = await snapshot.val()
+        // console.log(data)
+
         if (data) {
           const users = await updateListMyDialogs(Object.keys(data))
+          users.forEach((user: IUser) => {
+            user.lastMessage = data[user.userId].lastMessage
+          })
+
+          users.sort(
+            (a: IUser, b: IUser) => b.lastMessage.date - a.lastMessage.date
+          )
 
           setDialogUserList(users)
         }
@@ -46,6 +55,7 @@ export const Dialogs: React.FC<DialogsProps> = ({
     }
     return unSubscribe
   }, [isMyDialogs])
+  //useff
 
   return (
     <div className={isMyDialogs ? classes.dialogs : ''}>
@@ -68,13 +78,14 @@ export const Dialogs: React.FC<DialogsProps> = ({
       {userList.map((user) => {
         return (
           <User
+            lastMessage={user.lastMessage}
             myEmail={myEmail}
             key={user.userId}
             userName={user.userName}
             email={user.email}
             userId={user.userId}
             isSelected={user.email === currentDialogUser?.email}
-            myUserId={myUserId}
+            // myUserId={myUserId}
             avatar={user.avatar}
           />
         )

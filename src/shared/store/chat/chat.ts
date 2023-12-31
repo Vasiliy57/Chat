@@ -17,9 +17,6 @@ export const chat = createSlice({
     setCurrentDialogId: (state, action: PayloadAction<string | null>) => {
       state.currentDialogId = action.payload
     },
-    // setUsersInSearch: (state, action: PayloadAction<IUserInSearch[]>) => {
-    //   state.usersInSearch = action.payload
-    // },
   },
 })
 

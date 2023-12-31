@@ -9,12 +9,12 @@ export const getDialogId = async (
 
   const dbRef = ref(dbRealTime)
 
-  await get(child(dbRef, `dialogsUsers/${myUserId}/dialogs/${userId}`))
+  await get(child(dbRef, `dialogsUsers/${myUserId}/dialogs/${userId}/dialogId`))
     .then((snapshot) => {
       if (snapshot.exists()) {
         dialogId = snapshot.val()
       } else {
-        // console.log('No data available')
+        console.log('No data available')
       }
     })
     .catch((error) => {
