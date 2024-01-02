@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useDebounce } from './useDebounce'
-import { getAllUsers } from '@/firebase/users'
+import { getUsersSearch } from '@/firebase/users'
 import { showNotification } from '@shared/utils'
 
 interface IUser {
@@ -14,14 +14,17 @@ interface IUser {
 }
 
 export const useCustomSearch = (myUserId: string, value: string) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const delayedValue = useDebounce(value, 1000)
   const [foundUsers, setFoundUsers] = useState<IUser[]>([])
   const [allUsers, setAllUsers] = useState<IUser[]>([])
 
   useEffect(() => {
-    getAllUsers(myUserId)
+    setIsLoading(true)
+    getUsersSearch(myUserId)
       .then((users) => setAllUsers(users))
       .catch((error) => showNotification('error', error.message))
+      .finally(() => setIsLoading(false))
   }, [])
 
   useEffect(() => {

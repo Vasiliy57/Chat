@@ -11,6 +11,8 @@ import {
   ref,
 } from 'firebase/database'
 import { IMessage } from '@/entites/chat/messages/types'
+import { updateLastMessage } from '@/firebase/messages/updateLastMessage'
+import { useAppSelector } from '.'
 interface IUseListMessages {
   inView: boolean
   currentDialogId: string | null
@@ -23,6 +25,12 @@ export const useListMessages = ({
   const [listMessages, setListMessages] = useState<IMessage[]>([])
   const lastMessageDate = useRef<number>(new Date().getTime() / 1000)
   const isFirstLoadMessages = useRef<boolean>(true)
+  const { email: myEmail, userId: myUserId } = useAppSelector(
+    (state) => state.ProfileReducer.user
+  )
+  const userId = useAppSelector(
+    (state) => state.chatSlice.currentDialogUser?.userId
+  )
 
   useEffect(() => {
     const queryFirstLoadMessages = query(
@@ -40,6 +48,11 @@ export const useListMessages = ({
         const firstLoadValue = response.val()
         if (firstLoadValue) {
           const messages: IMessage[] = Object.values(firstLoadValue)
+
+          if (messages.at(-1)?.email != myEmail && myUserId && userId) {
+            updateLastMessage(true, myUserId, userId)
+          }
+
           setListMessages((prev) => {
             return prev.concat(messages)
           })
@@ -53,6 +66,11 @@ export const useListMessages = ({
             !firstLoadValue
           ) {
             const message: IMessage[] = Object.values(lastLoadValue)
+
+            if (message.at(-1)?.email != myEmail && myUserId && userId) {
+              updateLastMessage(true, myUserId, userId)
+            }
+
             setListMessages((prev) => {
               return prev.concat(message)
             })

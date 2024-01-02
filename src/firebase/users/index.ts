@@ -4,7 +4,7 @@ import { createDialogs } from './createDialogs'
 import { addDialog } from './addDialog'
 import { updateUser } from './updateUser'
 import { getAllUsers } from './getAllUsers'
-
+import { getUsersSearch } from './getUsersSearch'
 export {
   getUser,
   registrationUser,
@@ -12,4 +12,5 @@ export {
   addDialog,
   updateUser,
   getAllUsers,
+  getUsersSearch,
 }
