@@ -6,21 +6,26 @@ export const updateLastMessage = (
   myUserId: string,
   userId: string
 ) => {
+  const keyIsReadMessage =
+    'dialogsUsers/' +
+    myUserId +
+    '/dialogs' +
+    '/' +
+    userId +
+    '/lastMessage' +
+    '/isRead'
+  const keyIsReadMessageForUser =
+    'dialogsUsers/' +
+    userId +
+    '/dialogs' +
+    '/' +
+    myUserId +
+    '/lastMessage' +
+    '/isRead'
+
   const updates = {
-    ['dialogsUsers/' +
-    myUserId +
-    '/dialogs' +
-    '/' +
-    userId +
-    '/lastMessage' +
-    '/isRead']: isRead,
-    ['dialogsUsers/' +
-    userId +
-    '/dialogs' +
-    '/' +
-    myUserId +
-    '/lastMessage' +
-    '/isRead']: isRead,
+    [keyIsReadMessage]: isRead,
+    [keyIsReadMessageForUser]: isRead,
   }
   return update(ref(dbRealTime), updates)
 }

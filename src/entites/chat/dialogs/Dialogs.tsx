@@ -25,7 +25,9 @@ export const Dialogs: React.FC<DialogsProps> = ({
     (state) => state.chatSlice.currentDialogUser
   )
 
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const [dialogUserList, setDialogUserList] = useState<IUser[]>([])
+
   const userList = isMyDialogs ? dialogUserList : searchDialogUserList
 
   useEffect(() => {
@@ -35,27 +37,25 @@ export const Dialogs: React.FC<DialogsProps> = ({
         dbRealTime,
         'dialogsUsers/' + myUserId + '/dialogs'
       )
+      setIsLoading(true)
       unSubscribe = onValue(myDialogsRef, async (snapshot) => {
         const data = await snapshot.val()
-        // console.log(data)
 
         if (data) {
-          const users = await updateListMyDialogs(Object.keys(data))
+          const users: IUser[] = await updateListMyDialogs(Object.keys(data))
           users.forEach((user: IUser) => {
             user.lastMessage = data[user.userId].lastMessage
           })
 
-          users.sort(
-            (a: IUser, b: IUser) => b.lastMessage.date - a.lastMessage.date
-          )
+          users.sort((a, b) => b.lastMessage!.date - a.lastMessage!.date)
 
           setDialogUserList(users)
+          setIsLoading(false)
         }
       })
     }
     return unSubscribe
   }, [isMyDialogs])
-  //useff
 
   return (
     <div className={isMyDialogs ? classes.dialogs : ''}>
@@ -75,21 +75,26 @@ export const Dialogs: React.FC<DialogsProps> = ({
           content="SEARCH CHATS"
         />
       </div>
-      {userList.map((user) => {
-        return (
-          <User
-            lastMessage={user.lastMessage}
-            myEmail={myEmail}
-            key={user.userId}
-            userName={user.userName}
-            email={user.email}
-            userId={user.userId}
-            isSelected={user.email === currentDialogUser?.email}
-            // myUserId={myUserId}
-            avatar={user.avatar}
-          />
-        )
-      })}
+
+      {isLoading ? (
+        <span>123213333333333333321321321 213333333333333333</span>
+      ) : (
+        userList.map((user) => {
+          return (
+            <User
+              lastMessage={user.lastMessage}
+              myEmail={myEmail}
+              key={user.userId}
+              userName={user.userName}
+              email={user.email}
+              userId={user.userId}
+              isSelected={user.email === currentDialogUser?.email}
+              // myUserId={myUserId}
+              avatar={user.avatar}
+            />
+          )
+        })
+      )}
     </div>
   )
 }

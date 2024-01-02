@@ -10,7 +10,7 @@ import classes from './style.module.css'
 interface InfoStringProps {
   type: keyof typeof INFO_STRING
   isEdit: boolean
-  content: string | null
+  content: string
   onHandlerInput?: (e: React.ChangeEvent<HTMLInputElement>) => void
   onHandlerTextarea?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
 }

@@ -1,6 +1,6 @@
 interface ILastMessage {
   content: string
-  date: string
+  date: number
   email: string
   type: string
   userName: string

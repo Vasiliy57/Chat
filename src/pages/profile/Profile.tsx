@@ -162,19 +162,19 @@ export const Profile: React.FC = () => {
         <div className={classes.column}>
           <InfoString
             type={INFO_STRING.NUMBER}
-            content={editNumber}
+            content={editNumber ?? ''}
             isEdit={isEdit}
             onHandlerInput={onHandlerNumber}
           />
           <InfoString
             type={INFO_STRING.EMAIL}
-            content={email}
+            content={email ?? ''}
             isEdit={isEdit}
             onHandlerInput={() => {}}
           />
           <InfoString
             type={INFO_STRING.ADDRESS}
-            content={editAddress}
+            content={editAddress ?? ''}
             isEdit={isEdit}
             onHandlerTextarea={onHandlerAddress}
           />

@@ -21,7 +21,7 @@ export const User: React.FC<UserProps> = ({
   lastMessage,
 }) => {
   const dispatch = useAppDispatch()
-  const [isReadLastMessage, setIsReadLastMessage] = useState<boolean>(false)
+  const [isReadLastMessage, setIsReadLastMessage] = useState<boolean>(true)
 
   const time =
     lastMessage && moment(+lastMessage.date * 1000).format('DD.MM.YY HH:mm')
@@ -30,8 +30,6 @@ export const User: React.FC<UserProps> = ({
       lastMessage.email === myEmail
         ? setIsReadLastMessage(true)
         : setIsReadLastMessage(lastMessage.isRead)
-    } else {
-      setIsReadLastMessage(true)
     }
   }, [lastMessage])
 
