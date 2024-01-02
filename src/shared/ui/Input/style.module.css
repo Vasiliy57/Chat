@@ -46,6 +46,13 @@
   line-height: 142%;
   letter-spacing: .5%;
   font-size: 1.2rem;
-  border-bottom: 1px solid #D9D9D9;
   width: 100%;
+}
+
+.edit {
+  border-bottom: 1px solid #D9D9D9;
+}
+
+.edit:disabled {
+  border: none;
 }

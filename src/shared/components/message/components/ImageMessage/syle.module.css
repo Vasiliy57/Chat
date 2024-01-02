@@ -1,0 +1,13 @@
+.image {
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image img {
+  object-fit: cover;
+
+  /* max-width: 300px;
+  max-height: 200px; */
+}

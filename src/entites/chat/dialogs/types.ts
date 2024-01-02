@@ -1,12 +1,24 @@
+interface ILastMessage {
+  content: string
+  date: number
+  email: string
+  type: string
+  userName: string
+  smileDetector: Record<string, string>
+  isRead: boolean
+}
+
 export interface IUser {
   userName: string
   email: string
-  img?: string
+  img: string | null
   userId: string
-  avatar: string
+  avatar: string | null
+  lastMessage: ILastMessage | null
 }
 
 export interface DialogsProps {
   isMyDialogs: boolean
   onSwitchDialogs: (dialogs: boolean) => void
+  searchDialogUserList: IUser[]
 }

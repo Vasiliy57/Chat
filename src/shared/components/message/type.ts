@@ -4,4 +4,7 @@ export interface messageProps {
   date: string
   typeMessage: string
   userName: string
+  smileDetector: Record<string, string>
+  avatar?: string | null
+  id?: string
 }

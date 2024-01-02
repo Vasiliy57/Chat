@@ -13,7 +13,7 @@ export default defineConfig({
       '@entities': path.resolve(__dirname, './src/entities'),
       '@features': path.resolve(__dirname, './src/features'),
       '@': path.resolve(__dirname, './src'),
-    }
+    },
   },
 
   plugins: [react()],

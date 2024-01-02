@@ -1,17 +1,23 @@
-import { useAppDispatch, useAppSelector } from '@shared/hooks'
-import classes from './style.module.css'
-import { logOut, setUser } from '@shared/store/profile/profileSlice'
-import { useNavigate } from 'react-router-dom'
-import { Routing, INFO_STRING } from '@shared/constants'
 import { useEffect, useState } from 'react'
-import { saveImage } from '@/firebase/storageImages/saveImage'
-import { getUser, updateUser } from '@/firebase/users'
+import { useAppDispatch, useAppSelector } from '@shared/hooks'
+import { useNavigate } from 'react-router-dom'
+import imageCompression from 'browser-image-compression'
+
+import { Avatar } from './components/Avatar/Avatar'
+import { Button } from '@shared/ui'
 import { InfoString } from './components/InfoString/InfoString'
 import { AboutMe } from './components/AboutMe/AboutMe'
-import { Button } from '@shared/ui'
+
+import { logOut, setUser } from '@shared/store/profile/profileSlice'
+import { saveImage } from '@/firebase/storageImages/saveImage'
+import { getUser, updateUser } from '@/firebase/users'
+import { showNotification } from '@shared/utils'
+
+import { Routing, INFO_STRING } from '@shared/constants'
 import { BUTTON_TYPE, BUTTON_CLASS_NAME } from '@shared/constants'
 import { ICONS } from '@shared/constants/icons'
-import { Avatar } from './components/Avatar/Avatar'
+
+import classes from './style.module.css'
 
 export const Profile: React.FC = () => {
   const {
@@ -23,11 +29,11 @@ export const Profile: React.FC = () => {
     number,
   } = useAppSelector((state) => state.ProfileReducer.user)
 
-  const [editInfoAboutMe, setEditInfoAboutMe] = useState<string>('')
+  const [editInfoAboutMe, setEditInfoAboutMe] = useState<string | null>('')
   const [currentImg, setCurrentImg] = useState<string | null>(null)
   const [isEdit, setIsEdit] = useState<boolean>(false)
-  const [editNumber, setEditNumber] = useState<string>('')
-  const [editAddress, setEditAddress] = useState<string>('')
+  const [editNumber, setEditNumber] = useState<string | null>('')
+  const [editAddress, setEditAddress] = useState<string | null>('')
 
   const styleBtnBack = {
     position: 'absolute',
@@ -39,16 +45,16 @@ export const Profile: React.FC = () => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    setEditInfoAboutMe(infoAboutMe || 'Write information about yourself')
-    setEditNumber(number || 'write your number')
-    setEditAddress(address || 'write your address')
+    setEditInfoAboutMe(infoAboutMe)
+    setEditNumber(number)
+    setEditAddress(address)
     setCurrentImg(avatar)
   }, [infoAboutMe])
 
   const onHandlerInfoAboutMe = (e: React.FormEvent<HTMLTextAreaElement>) => {
     setEditInfoAboutMe(e.currentTarget.value)
   }
-
+  //
   const onHandlerLogOut = () => {
     dispatch(logOut())
     navigation(Routing.AUTHORIZATION)
@@ -56,9 +62,9 @@ export const Profile: React.FC = () => {
   const onGoBack = () => {
     if (isEdit) {
       setIsEdit(false)
-      setEditInfoAboutMe(infoAboutMe || 'Write information about yourself')
-      setEditNumber(number || 'write your number')
-      setEditAddress(address || 'write your address')
+      setEditInfoAboutMe(infoAboutMe)
+      setEditNumber(number)
+      setEditAddress(address)
       setCurrentImg(avatar)
     } else {
       navigation(-1)
@@ -67,22 +73,30 @@ export const Profile: React.FC = () => {
   const onHandlerEdit = () => {
     setIsEdit(true)
   }
-  const onHandlerInputFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onHandlerInputFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
     const fileImg = files![0]
 
     if (!/^image/.test(fileImg.type)) {
-      alert('The selected file is not an image!')
+      showNotification('warning', 'The selected file is not an image!')
       return
     }
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 300,
+      useWebWorker: true,
+    }
+
+    const compressedImage = await imageCompression(fileImg, options)
+
     const reader = new FileReader()
-    reader.readAsDataURL(fileImg)
+    reader.readAsDataURL(compressedImage)
 
     reader.onload = () => {
       setCurrentImg(reader.result as string)
     }
     reader.onerror = () => {
-      alert('An error occurred while reading the file')
+      showNotification('error', 'An error occurred while reading the file')
     }
   }
   const onSaveEdit = async () => {
@@ -96,8 +110,15 @@ export const Profile: React.FC = () => {
       editNumber || '',
       editAddress || ''
     )
+      .then(() => {
+        showNotification('success', 'Saved successfully')
+      })
+      .catch((error) => {
+        showNotification('error', error.message)
+      })
     const newUser = await getUser(myUserId!)
     dispatch(setUser(newUser!))
+    setIsEdit(false)
   }
 
   const onHandlerAddress = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -141,19 +162,19 @@ export const Profile: React.FC = () => {
         <div className={classes.column}>
           <InfoString
             type={INFO_STRING.NUMBER}
-            content={editNumber}
+            content={editNumber ?? ''}
             isEdit={isEdit}
             onHandlerInput={onHandlerNumber}
           />
           <InfoString
             type={INFO_STRING.EMAIL}
-            content={email}
+            content={email ?? ''}
             isEdit={isEdit}
             onHandlerInput={() => {}}
           />
           <InfoString
             type={INFO_STRING.ADDRESS}
-            content={editAddress}
+            content={editAddress ?? ''}
             isEdit={isEdit}
             onHandlerTextarea={onHandlerAddress}
           />

@@ -1,5 +1,5 @@
-import { ref, uploadString } from 'firebase/storage'
 import { storage } from '../storage'
+import { ref, uploadString } from 'firebase/storage'
 
 export const saveImage = (imgUrl: string, userId: string) => {
   const storageRef = ref(storage, userId)

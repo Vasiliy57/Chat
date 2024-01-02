@@ -1,14 +1,16 @@
-import classes from './style.module.css'
-import { INFO_STRING } from '@shared/constants'
 import { Icon } from '@shared/assets/Icon/Icon'
-import { ICONS } from '@shared/constants/icons'
 import { Input, Textarea } from '@shared/ui'
+
+import { INFO_STRING } from '@shared/constants'
+import { ICONS } from '@shared/constants/icons'
 import { INPUT_CLASS_NAME, TEXTAREA_CLASS_NAME } from '@shared/constants'
+
+import classes from './style.module.css'
 
 interface InfoStringProps {
   type: keyof typeof INFO_STRING
   isEdit: boolean
-  content: string | null
+  content: string
   onHandlerInput?: (e: React.ChangeEvent<HTMLInputElement>) => void
   onHandlerTextarea?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
 }
@@ -36,24 +38,23 @@ export const InfoString: React.FC<InfoStringProps> = ({
       return (
         <div className={`${classes.info} ${classes.email}`}>
           <Icon iconName={ICONS.EMAIL} />
-          {content || 'Write your email'}
+          {content}
         </div>
       )
     case INFO_STRING.NUMBER:
       return (
         <div className={`${classes.info} ${classes.number}`}>
           <Icon iconName={ICONS.TEL} />
-          {isEdit ? (
-            <Input
-              inputClassName={INPUT_CLASS_NAME.EDIT}
-              type="number"
-              maxLength={12}
-              onChange={onChangeInput}
-              value={content!}
-            />
-          ) : (
-            content || 'Write your number'
-          )}
+
+          <Input
+            inputClassName={INPUT_CLASS_NAME.EDIT}
+            type="number"
+            maxLength={12}
+            onChange={onChangeInput}
+            value={content!}
+            placeholder="Write your number"
+            disabled={!isEdit}
+          />
         </div>
       )
 
@@ -61,16 +62,14 @@ export const InfoString: React.FC<InfoStringProps> = ({
       return (
         <div className={`${classes.info} ${classes.address}`}>
           <Icon iconName={ICONS.LOCATION} />
-          {isEdit ? (
-            <Textarea
-              textareaClassName={TEXTAREA_CLASS_NAME.INFO_STRING}
-              maxLength={120}
-              onChange={onChangeTextarea}
-              value={content!}
-            />
-          ) : (
-            content || 'Write your address'
-          )}
+          <Textarea
+            textareaClassName={TEXTAREA_CLASS_NAME.INFO_STRING}
+            maxLength={120}
+            onChange={onChangeTextarea}
+            value={content!}
+            placeholder="Write your address"
+            disabled={!isEdit}
+          />
         </div>
       )
   }

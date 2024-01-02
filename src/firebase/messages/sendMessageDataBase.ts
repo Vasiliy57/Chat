@@ -1,21 +1,27 @@
-import { getCurrentDate } from '@shared/utils/currentDate'
-import { ref, child, push, update } from 'firebase/database'
 import { dbRealTime } from '../realTimeDataBase'
+import { ref, child, push, update } from 'firebase/database'
 
 export const sendMessageDataBase = (
-  textMessage: string,
+  content: string,
   type: string,
   dialogId: string,
   email: string,
-  userName: string
+  userName: string,
+  smileDetector: Record<string, string> = {},
+  myUserId: string,
+  userId: string,
+  id: string = ''
 ) => {
   const message = {
     type,
-    content: textMessage,
-    date: getCurrentDate(),
+    content,
+    date: Math.floor(new Date().getTime() / 1000),
     email,
     userName,
+    smileDetector,
+    id,
   }
+  const lastMessage = { ...message, isRead: false }
 
   // Get a key for a new Post.
   const newMessageKey = push(
@@ -23,10 +29,13 @@ export const sendMessageDataBase = (
   ).key
 
   // Write the new post's data simultaneously in the posts list and the user's post list.
-  const updates: any = {}
-  updates['messages/' + dialogId + '/' + 'allMessages/' + newMessageKey] =
-    message
-  updates['messages/' + dialogId + '/' + 'lastMessage'] = message
+  const updates = {
+    ['messages/' + dialogId + '/' + 'allMessages/' + newMessageKey]: message,
+    ['dialogsUsers/' + myUserId + '/dialogs' + '/' + userId + '/lastMessage']:
+      lastMessage,
+    ['dialogsUsers/' + userId + '/dialogs' + '/' + myUserId + '/lastMessage']:
+      lastMessage,
+  }
 
   return update(ref(dbRealTime), updates)
 }

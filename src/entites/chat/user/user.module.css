@@ -4,6 +4,18 @@
   align-items: center;
   cursor: pointer;
   padding: 10px 24px;
+  position: relative;
+}
+
+.read {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  width: 10px;
+  height: 10px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background-color: var(--color-light-blue);
 }
 
 .user-select {
@@ -13,6 +25,7 @@
   align-items: center;
   cursor: pointer;
   padding: 10px 24px;
+  position: relative;
 }
 
 .img {
@@ -64,8 +77,10 @@
 }
 
 .time {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   color: #E0E0E0;
+  white-space: pre-wrap;
+  max-width: 55px;
 }
 
 .count {
@@ -75,4 +90,10 @@
   background: var(--color-light-blue);
   border-radius: 50%;
   padding: 3px 6px;
+}
+
+.lastMessageFile {
+  font-size: 1.6rem;
+  font-style: italic;
+  color: #797979;
 }

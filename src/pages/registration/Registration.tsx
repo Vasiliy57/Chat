@@ -1,17 +1,21 @@
 import { useState } from 'react'
-import classes from './registration.module.css'
-import { createNewUserFirebase } from '@/firebase'
-import { Link } from 'react-router-dom'
-import { Button, FormTitle, Input } from '@/shared/ui'
-import { IData, IUser } from '../types'
-import { setUser } from '@/shared/store/profile'
 import { useAppDispatch } from '@shared/hooks'
+
+import { Button, FormTitle, Input } from '@/shared/ui'
+import { Link } from 'react-router-dom'
+
+import { createNewUserFirebase } from '@/firebase'
 import { createDialogs, registrationUser } from '@/firebase/users'
+import { setUser } from '@/shared/store/profile'
+import { showNotification } from '@shared/utils'
+
 import {
   BUTTON_TYPE,
   BUTTON_CLASS_NAME,
   INPUT_CLASS_NAME,
 } from '@shared/constants'
+
+import classes from './registration.module.css'
 
 export const Registration: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -36,8 +40,8 @@ export const Registration: React.FC = () => {
   const handlerBtnReg = () => {
     if (password === repeatPassword) {
       createNewUserFirebase(email, password)
-        .then((data: IData): IUser => data.user)
-        .then(async (user: IUser) => {
+        .then((data) => data.user)
+        .then(async (user) => {
           await registrationUser(email, userName, user.uid, user.emailVerified)
           await createDialogs(user.uid)
           dispatch(
@@ -54,7 +58,7 @@ export const Registration: React.FC = () => {
           )
         })
         .catch((err) => {
-          console.log(err.message)
+          showNotification('error', err.message)
         })
 
       setEmail('')
@@ -62,7 +66,7 @@ export const Registration: React.FC = () => {
       setRepeatPassword('')
       setUserName('')
     } else {
-      alert("Passwords don't match !!!")
+      showNotification('warning', "Passwords don't match !")
     }
   }
 

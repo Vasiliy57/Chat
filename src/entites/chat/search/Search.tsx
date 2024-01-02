@@ -1,11 +1,34 @@
-import { Button, Input } from '@/shared/ui'
-import classes from './search.module.css'
-import { BUTTON_TYPE, BUTTON_CLASS_NAME } from '@shared/constants'
-import { ICONS } from '@shared/constants'
-import { Icon } from '@shared/assets/Icon/Icon'
-import { INPUT_CLASS_NAME } from '@shared/constants'
+import { useEffect, useState } from 'react'
+import { useAppSelector, useCustomSearch } from '@shared/hooks'
 
-export const Search: React.FC = () => {
+import { Input } from '@/shared/ui'
+import { Icon } from '@shared/assets/Icon/Icon'
+
+import { ICONS } from '@shared/constants'
+import { INPUT_CLASS_NAME } from '@shared/constants'
+import { IUser } from '@pages/types'
+
+import classes from './search.module.css'
+
+interface SearchProps {
+  setSearchDialogUserList: (users: IUser[]) => void
+}
+
+export const Search: React.FC<SearchProps> = ({ setSearchDialogUserList }) => {
+  const myUserId = useAppSelector((state) => state.ProfileReducer.user.userId)
+  const [value, setValue] = useState<string>('')
+
+  const foundUsers = useCustomSearch(myUserId!, value)
+
+  useEffect(() => {
+    setSearchDialogUserList(foundUsers)
+    return () => setSearchDialogUserList([])
+  }, [foundUsers])
+
+  const onHandlerInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.currentTarget.value)
+  }
+
   const styleIcon = {
     position: 'absolute',
     left: '39px',
@@ -20,15 +43,9 @@ export const Search: React.FC = () => {
     <div className={classes.search}>
       <Icon iconName={ICONS.SEARCH} styleIcon={styleIcon} />
       <Input
-        onChange={() => {}}
+        onChange={onHandlerInput}
         inputClassName={INPUT_CLASS_NAME.SEARCH}
-        placeholder="Search messages, people"
-      />
-      <Button
-        buttonType={BUTTON_TYPE.ICON}
-        onClick={() => {}}
-        iconName={ICONS.PLUS}
-        buttonClassName={BUTTON_CLASS_NAME.FORM}
+        placeholder="Search people"
       />
     </div>
   )

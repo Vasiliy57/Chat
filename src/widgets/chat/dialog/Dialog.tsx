@@ -1,22 +1,30 @@
-import { Header, Messages } from "@/entites/chat"
-import { CreateMessage } from "@features/index"
-import classes from './dialog.module.css'
-import { getDialogId } from "@/firebase/users/getDialogId"
-import { useAppDispatch, useAppSelector } from "@shared/hooks"
-import { setCurrentDialogId } from "@shared/store/chat/chat"
 import { useEffect } from 'react'
+import { useAppDispatch, useAppSelector } from '@shared/hooks'
+
+import { CreateMessage } from '@features/index'
+import { Header, Messages } from '@/entites/chat'
+
+import { getDialogId } from '@/firebase/users/getDialogId'
+import { setCurrentDialogId } from '@shared/store/chat/chat'
+import { showNotification } from '@shared/utils'
+
+import classes from './dialog.module.css'
 
 export const Dialog: React.FC = () => {
-
   const dispatch = useAppDispatch()
 
-  const currentDialogUser = useAppSelector(state => state.chatSlice.currentDialogUser)
-  const myUserId = useAppSelector(state => state.ProfileReducer.user.userId)
+  const currentDialogUser = useAppSelector(
+    (state) => state.chatSlice.currentDialogUser
+  )
+  const myUserId = useAppSelector((state) => state.ProfileReducer.user.userId)
 
   useEffect(() => {
     if (currentDialogUser?.email) {
       getDialogId(myUserId, currentDialogUser.userId)
-        .then(data => dispatch(setCurrentDialogId(data)))
+        .then((data) => dispatch(setCurrentDialogId(data)))
+        .catch((error) => {
+          showNotification('error', error.message)
+        })
     }
   }, [currentDialogUser])
 
@@ -28,7 +36,6 @@ export const Dialog: React.FC = () => {
     )
   }
   return (
-
     <div className={classes.dialog}>
       <Header />
       <Messages />
@@ -36,4 +43,3 @@ export const Dialog: React.FC = () => {
     </div>
   )
 }
-

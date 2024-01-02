@@ -1,19 +1,20 @@
-import { Button, Textarea } from '@shared/ui'
-import { useState } from 'react'
-import { useAppDispatch, useAppSelector } from '@shared/hooks'
-import { addDialog } from '@/firebase/users'
-import classes from './createMessage.module.css'
-import { setCurrentDialogId } from '@shared/store/chat/chat'
-import { sendMessageDataBase } from '@/firebase/messages/sendMessageDataBase'
-import {
-  BUTTON_TYPE,
-  BUTTON_CLASS_NAME,
-  TEXTAREA_CLASS_NAME,
-} from '@shared/constants'
+import { useRef, useState } from 'react'
+import { useAppSelector } from '@shared/hooks'
+
+import { Button, CustomInput } from '@shared/ui'
+import { AttachFile } from './components/AttachFile/AttachFile'
+import EmojiPicker, { Categories } from 'emoji-picker-react'
+
+import { preActionSendMessage } from './utils/preActionSendMessage'
+import { Theme } from 'emoji-picker-react'
+
+import { BUTTON_TYPE, BUTTON_CLASS_NAME } from '@shared/constants'
 import { ICONS } from '@shared/constants/icons'
 
+import classes from './createMessage.module.css'
 export const CreateMessage: React.FC = () => {
-  const dispatch = useAppDispatch()
+  const refCustomInput = useRef<HTMLDivElement>(null)
+
   const currentDialogUser = useAppSelector(
     (state) => state.chatSlice.currentDialogUser
   )
@@ -23,78 +24,157 @@ export const CreateMessage: React.FC = () => {
   const { email, userId, userName } = useAppSelector(
     (state) => state.ProfileReducer.user
   )
-  const [textMessage, setTextMessage] = useState<string>('')
 
-  const onSendMessage = () => {
-    if (!currentDialogId && textMessage.trim()) {
-      addDialog(userId, currentDialogUser.userId)
-        .then((data) => {
-          dispatch(setCurrentDialogId(data))
-          return data
+  const [isEmoji, setIsEmoji] = useState<boolean>(false)
+  const smileDetector = useRef<Record<string, string>>({})
+  const isExistingUserInfo =
+    email && userName && userId && currentDialogUser && currentDialogUser.userId
+
+  const onSendMessage = async () => {
+    // ***************************
+    // Кастомное решение, по другому никак
+    // ***************************
+    const childrens = refCustomInput.current?.childNodes
+    let messageText = ''
+
+    childrens?.forEach((el) => {
+      if (typeof el.nodeValue === 'string') {
+        messageText += el.nodeValue
+      } else if (el.nodeName === 'IMG') {
+        messageText += (el as HTMLImageElement).getAttribute('data-unified')
+      } else if (el.nodeName === 'DIV') {
+        messageText += '\n'
+        el.childNodes.forEach((child) => {
+          if (typeof child.nodeValue === 'string') {
+            messageText += child.nodeValue
+          } else if (child.nodeName === 'IMG') {
+            messageText += (child as HTMLImageElement).getAttribute(
+              'data-unified'
+            )
+          }
         })
-        .then((dialogId) => {
-          sendMessageDataBase(textMessage, 'text', dialogId, email!, userName!)
-          console.log(textMessage, 'text', dialogId, email!, userName!)
-        })
-    } else {
-      sendMessageDataBase(
-        textMessage,
-        'text',
-        currentDialogId!,
-        email!,
-        userName!
-      )
+      }
+    })
+    refCustomInput!.current!.innerText = ''
+
+    const isNewDialog = !currentDialogId && !!currentDialogUser
+    if (isExistingUserInfo) {
+      await preActionSendMessage({
+        type: 'text',
+        arguments: {
+          content: messageText,
+          dialogId: currentDialogId!,
+          email: email,
+          userName: userName,
+          smileDetector: smileDetector.current,
+        },
+        isNewDialog,
+        myUserId: userId,
+        userId: currentDialogUser.userId,
+      })
     }
-    setTextMessage('')
+    setIsEmoji(false)
   }
 
-  const onHandlerInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setTextMessage(e.target.value)
+  const onIsEmoji = () => {
+    setIsEmoji(!isEmoji)
   }
+  const onHandlerEmoji = (emoji: {
+    emoji: string
+    imageUrl: string
+    unified: string
+  }) => {
+    // ***************************
+    // Кастомное решение, по другому никак
+    // ***************************
+    const childDiv = refCustomInput.current!.lastChild
+    if (childDiv?.nodeName == 'DIV') {
+      const childBr = childDiv.lastChild
+      if (childBr?.nodeName == 'BR') {
+        childDiv.removeChild(childBr!)
+      }
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      //@ts-ignore
+      childDiv.innerHTML += `<img src="${emoji.imageUrl}" data-unified="${emoji.emoji}" style="width: 30px;"/>`
+    } else {
+      refCustomInput.current!.innerHTML += `<img src="${emoji.imageUrl}" data-unified="${emoji.emoji}" style="width: 30px;"/>`
+    }
 
+    if (!smileDetector.current[emoji.emoji]) {
+      smileDetector.current[emoji.emoji] = emoji.unified
+    }
+  }
+  const onHandlerInputFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files![0]
+    const isNewDialog = !currentDialogId && !!currentDialogUser
+
+    if (isExistingUserInfo) {
+      await preActionSendMessage({
+        type: 'file',
+        arguments: {
+          content: file.type,
+          dialogId: currentDialogId!,
+          email: email,
+          userName: userName,
+          smileDetector: smileDetector.current,
+        },
+        file,
+        isNewDialog,
+        myUserId: userId,
+        userId: currentDialogUser.userId,
+      })
+    }
+
+    refCustomInput!.current!.innerText = ''
+    setIsEmoji(false)
+  }
   return (
-    <div className={classes.typeMessage}>
-      {currentDialogUser.email ? (
-        <>
-          <Button
-            onClick={() => {}}
-            buttonType={BUTTON_TYPE.ICON}
-            iconName={ICONS.SMILE}
-            buttonClassName={BUTTON_CLASS_NAME.ICON}
-            styleBtn={{ height: '50px' }}
-          />
-          <Textarea
-            onChange={onHandlerInput}
-            textareaClassName={TEXTAREA_CLASS_NAME.MESSAGE}
-            value={textMessage}
-            placeholder="Type message..."
-          />
-
-          <div className={classes.buttons}>
+    <div>
+      <div className={classes.typeMessage}>
+        {currentDialogUser?.email && (
+          <>
             <Button
-              onClick={() => {}}
+              onClick={onIsEmoji}
               buttonType={BUTTON_TYPE.ICON}
-              iconName={ICONS.VOICE}
+              iconName={ICONS.SMILE}
               buttonClassName={BUTTON_CLASS_NAME.ICON}
+              styleBtn={{ height: '50px' }}
             />
-            <Button
-              onClick={() => {}}
-              buttonType={BUTTON_TYPE.ICON}
-              iconName={ICONS.ATTACH}
-              buttonClassName={BUTTON_CLASS_NAME.ICON}
-            />
-            <Button
-              buttonType={BUTTON_TYPE.BUTTON_ICON}
-              content="Send"
-              onClick={onSendMessage}
-              iconName={ICONS.SEND}
-              buttonClassName={BUTTON_CLASS_NAME.SEND}
-              widthIcon="18px"
-              heightIcon="18px"
-            />
-          </div>
-        </>
-      ) : null}
+            <CustomInput ref={refCustomInput} />
+            <div className={classes.buttons}>
+              <Button
+                onClick={() => {}}
+                buttonType={BUTTON_TYPE.ICON}
+                iconName={ICONS.VOICE}
+                buttonClassName={BUTTON_CLASS_NAME.ICON}
+              />
+              <AttachFile onHandlerInputFile={onHandlerInputFile} />
+              <Button
+                buttonType={BUTTON_TYPE.BUTTON_ICON}
+                content="Send"
+                onClick={onSendMessage}
+                iconName={ICONS.SEND}
+                buttonClassName={BUTTON_CLASS_NAME.SEND}
+                widthIcon="18px"
+                heightIcon="18px"
+              />
+            </div>
+          </>
+        )}
+      </div>
+      {!isEmoji || (
+        <EmojiPicker
+          theme={Theme.DARK}
+          width={'100%'}
+          height={'300px'}
+          lazyLoadEmojis={false}
+          onEmojiClick={onHandlerEmoji}
+          searchDisabled={true}
+          categories={[
+            { category: Categories.SMILEYS_PEOPLE, name: 'Faces...' },
+          ]}
+        />
+      )}
     </div>
   )
 }

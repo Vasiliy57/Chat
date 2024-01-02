@@ -1,0 +1,17 @@
+.file {
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+}
+
+.file img {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.type {
+  color: #A0A0A0;
+}

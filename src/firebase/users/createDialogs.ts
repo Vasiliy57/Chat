@@ -1,27 +1,10 @@
-import { ref, set } from "firebase/database"
-import { dbRealTime } from "../realTimeDataBase";
+import { dbRealTime } from '../realTimeDataBase'
+import { ref, set } from 'firebase/database'
 
 export const createDialogs = async (userId: string | null) => {
-
-  // const dialogId = uniqueId()
-  console.log('Work createDialogs');
-  // const dialogId = 'dialogsID-' + uniqueId()
-
   set(ref(dbRealTime, 'dialogsUsers/' + userId), {
     dialogs: {
-      init: 'initializing a dialogs object'
-    }
-  });
-
-  // set(ref(dbRealTime, 'dialogsUsers/' + myEmail + '/dialogs'), {
-  //   [myEmail]: dialogId
-  // });
-
-  // set(ref(dbRealTime, 'messagesAll/'), {
-  //   [dialogId]: []
-  // })
+      init: 'initializing a dialogs object',
+    },
+  })
 }
-
-
-
-

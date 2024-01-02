@@ -1,12 +1,24 @@
 .messages {
   padding: 0 45px 10px 45px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column-reverse;
+  position: relative;
   height: 100%;
+}
+
+
+
+.listMessages {
   display: flex;
   flex-direction: column;
-  /* justify-content: flex-end; */
   gap: 20px;
-  overflow-y: auto;
-  position: relative;
+}
+
+.inView {
+  background-color: transparent;
+  height: 20px;
+  width: 100%;
 }
 
 .notMessages {

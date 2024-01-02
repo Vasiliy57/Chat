@@ -1,5 +1,5 @@
-import { ref, child, get } from 'firebase/database'
 import { dbRealTime } from '../realTimeDataBase'
+import { ref, child, get } from 'firebase/database'
 
 export const getDialogId = async (
   myUserId: string | null,
@@ -9,7 +9,7 @@ export const getDialogId = async (
 
   const dbRef = ref(dbRealTime)
 
-  await get(child(dbRef, `dialogsUsers/${myUserId}/dialogs/${userId}`))
+  await get(child(dbRef, `dialogsUsers/${myUserId}/dialogs/${userId}/dialogId`))
     .then((snapshot) => {
       if (snapshot.exists()) {
         dialogId = snapshot.val()

@@ -1,5 +1,5 @@
-import { ref, onValue } from "firebase/database"
-import { dbRealTime } from "../realTimeDataBase"
+import { dbRealTime } from '../realTimeDataBase'
+import { ref, onValue } from 'firebase/database'
 
 export const getMyDialogs = (myUserId: string | null) => {
   let result: string[] = []
@@ -8,10 +8,7 @@ export const getMyDialogs = (myUserId: string | null) => {
   onValue(myDialogsRef, async (snapshot) => {
     const data = await snapshot.val()
     result = Object.keys(data)
-
   })
-
 
   return result
 }
-

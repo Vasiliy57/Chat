@@ -1,9 +1,11 @@
 import { useAppSelector } from '@shared/hooks'
 import { SelectedUser } from '../selectedUser/SelectedUser'
-import classes from './header.module.css'
 import { Button } from '@/shared/ui'
+
 import { ICONS } from '@shared/constants'
 import { BUTTON_TYPE, BUTTON_CLASS_NAME } from '@shared/constants'
+
+import classes from './header.module.css'
 
 export const Header: React.FC = () => {
   const currentDialogUser = useAppSelector(

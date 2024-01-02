@@ -1,68 +1,69 @@
 import { useEffect } from 'react'
-import { off, onValue, ref } from 'firebase/database'
-import { dbRealTime } from '@/firebase/realTimeDataBase'
-import { useAppSelector } from '@shared/hooks'
-import { useState } from 'react'
-import classes from './messages.module.css'
-import { IMessage } from './types'
-import { Message } from '@shared/components'
 import { useRef } from 'react'
+import { useAppSelector, useListMessages } from '@shared/hooks'
+import { useInView } from 'react-intersection-observer'
+
+import { Message } from '@shared/components'
+
+import classes from './messages.module.css'
 
 export const Messages: React.FC = () => {
-  const messagesEndRef = useRef<HTMLInputElement>(null)
+  const messagesElement = useRef<HTMLDivElement | null>(null)
+  const heightElementMessages = useRef<number>(0)
 
   const myEmail = useAppSelector((state) => state.ProfileReducer.user.email)
   const currentDialogId = useAppSelector(
     (state) => state.chatSlice.currentDialogId
   )
-  const [listMessages, setListMessages] = useState<IMessage[]>([])
+  const userAvatar = useAppSelector(
+    (state) => state.chatSlice.currentDialogUser?.avatar
+  )
+  const myAvatar = useAppSelector((state) => state.ProfileReducer.user.avatar)
+
+  const { ref: refInView, inView } = useInView({
+    /* Optional options */
+    threshold: 0,
+  })
+  const listMessages = useListMessages({ inView, currentDialogId })
 
   useEffect(() => {
-    const messagesRef = ref(
-      dbRealTime,
-      'messages/' + currentDialogId + '/allMessages'
-    )
-    if (currentDialogId) {
-      onValue(messagesRef, async (snapshot) => {
-        const data = await snapshot.val()
-        data ? setListMessages(Object.values(data)) : null
-      })
-    } else {
-      setListMessages([])
-    }
-
-    return () => {
-      off(messagesRef)
-    }
-  }, [currentDialogId])
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView()
+    const heightScrollDown =
+      messagesElement.current!.scrollHeight - heightElementMessages.current
+    messagesElement.current!.scrollTop += heightScrollDown
+    heightElementMessages.current = messagesElement.current?.scrollHeight ?? 0
   }, [listMessages])
 
   return (
-    <div className={classes.messages}>
-      {listMessages ? (
-        <>
-          {listMessages.map((message, index) => {
-            return (
-              <Message
-                isMyMessage={message.email === myEmail}
-                content={message.content}
-                date={message.date}
-                typeMessage={message.type}
-                userName={message.userName}
-                key={index}
-              />
-            )
-          })}
-        </>
-      ) : (
-        <div className={classes.notMessages}>
-          You dont have any messages yet
-        </div>
-      )}
-      <div ref={messagesEndRef} />
+    <div className={classes.messages} ref={messagesElement}>
+      <div className={classes.listMessages}>
+        <div ref={refInView} className={classes.inView}></div>
+        {listMessages ? (
+          <>
+            {listMessages.map((message, index) => {
+              const isMyMessage = message.email === myEmail
+              const avatar = isMyMessage ? myAvatar : userAvatar
+
+              return (
+                <Message
+                  avatar={avatar}
+                  isMyMessage={isMyMessage}
+                  content={message.content}
+                  date={message.date}
+                  typeMessage={message.type}
+                  userName={message.userName}
+                  smileDetector={message.smileDetector}
+                  key={index}
+                  id={message.id}
+                />
+              )
+            })}
+          </>
+        ) : (
+          <div className={classes.notMessages}>
+            You dont have any messages yet
+          </div>
+        )}
+      </div>
     </div>
   )
 }
