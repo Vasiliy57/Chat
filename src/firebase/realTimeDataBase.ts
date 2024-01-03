@@ -1,6 +1,3 @@
-import { getDatabase } from "firebase/database"
+import { getDatabase } from 'firebase/database'
 
 export const dbRealTime = getDatabase()
-
-
-

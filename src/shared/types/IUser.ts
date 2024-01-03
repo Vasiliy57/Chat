@@ -7,13 +7,12 @@ interface ILastMessage {
   smileDetector: Record<string, string>
   isRead: boolean
 }
-export interface UserProps {
+
+export interface IUser {
   userName: string
-  lastMessage?: ILastMessage
   email: string
-  key?: string | number
+  img: string | null
   userId: string
-  isSelected: boolean
-  avatar: null | string
-  myEmail: string | null
+  avatar: string | null
+  lastMessage?: ILastMessage
 }

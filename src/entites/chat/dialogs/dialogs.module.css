@@ -1,5 +1,5 @@
 .dialogs {
-  margin-top: 70px;
+  margin-top: 80px;
 }
 
 .btnGroup {
@@ -14,4 +14,8 @@
   position: relative;
   margin-bottom: 10px;
   background-color: var(--color-bg-main);
+}
+
+.list {
+  position: relative;
 }
