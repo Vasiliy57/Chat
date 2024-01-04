@@ -1,5 +1,4 @@
 .user {
-  padding: 12px 0;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -20,7 +19,6 @@
 
 .user-select {
   background-color: #00a2ff44;
-  padding: 12px 0;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -29,8 +27,8 @@
 }
 
 .img {
-  width: 58px;
-  height: 58px;
+  width: 5.8rem;
+  height: 5.8rem;
   border-radius: 50%;
   margin-right: 20px;
 }
@@ -96,4 +94,25 @@
   font-size: 1.6rem;
   font-style: italic;
   color: #797979;
+}
+
+
+@media (max-width:1180px) {
+  .user {
+    padding: 10px 14px;
+  }
+
+  .name {
+    max-width: 115px;
+  }
+
+  .lastMessage {
+    max-width: 115px;
+  }
+
+  .user-select {
+
+    padding: 10px 14px;
+
+  }
 }

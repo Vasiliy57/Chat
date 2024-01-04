@@ -1,11 +1,12 @@
 .header {
   background-color: var(--color-bg-main);
-  padding: 15px 50px;
+  padding: 15px 20px;
   border-bottom: 1px solid #303030;
   display: flex;
   align-items: center;
   justify-content: space-between;
   min-height: 88px;
+  border-right: 1px solid #303030;
 }
 
 .row {
@@ -13,3 +14,5 @@
   align-items: center;
   gap: 40px;
 }
+
+@media (max-width:1000px) {}

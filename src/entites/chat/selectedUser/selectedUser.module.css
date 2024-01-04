@@ -1,11 +1,16 @@
+.row {
+  display: flex;
+  gap: 20px;
+}
+
 .selectedUser {
   display: flex;
   align-items: center;
 }
 
 .img {
-  width: 58px;
-  height: 58px;
+  width: 5.8rem;
+  height: 5.8rem;
   border-radius: 50%;
   margin-right: 20px;
 }
@@ -32,3 +37,9 @@
   color: var(--color-light-blue);
   font-size: 14px;
 }
+
+/* .btnGroup {
+  display: flex;
+  gap: 10px;
+  align-items: start;
+} */

@@ -40,8 +40,14 @@ export const Messages: React.FC = () => {
         {listMessages ? (
           <>
             {listMessages.map((message, index) => {
-              const isMyMessage = message.email === myEmail
+              const isMyMessage =
+                message.email === myEmail ||
+                message.email.toLowerCase() === myEmail!.toLowerCase()
+
               const avatar = isMyMessage ? myAvatar : userAvatar
+              // console.log('Message Email:', message.email)
+              // console.log('MyEmail:', myEmail)
+              // console.log(message.email === myEmail)
 
               return (
                 <Message

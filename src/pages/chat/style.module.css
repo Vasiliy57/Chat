@@ -1,0 +1,43 @@
+.main {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--color-bg-main);
+  border-radius: 15px;
+  height: 100vh;
+  max-height: 740px;
+  padding-right: 100px;
+}
+
+.wrap {
+  max-width: 1665px;
+  padding: 20px 0;
+  margin: 0 auto;
+
+}
+
+
+@media (max-width:1500px) {
+
+
+  .main {
+    padding-right: 0px;
+    border-radius: 0px;
+  }
+
+}
+
+
+@media (max-height:780px) {
+  .main {
+    max-height: 780px;
+    border-radius: 0px;
+  }
+
+  .wrap {
+
+    padding: 0;
+
+  }
+}

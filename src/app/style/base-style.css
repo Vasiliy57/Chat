@@ -24,4 +24,11 @@ body {
   --color-light-blue: #00A3FF;
   --color-user-name: #DADADA;
   --fs-description: 2rem;
+
+}
+
+@media (max-width:1180px) {
+  html {
+    font-size: 9px;
+  }
 }

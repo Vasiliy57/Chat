@@ -1,9 +1,10 @@
 import { useAppSelector } from '@shared/hooks'
 import { SelectedUser } from '../selectedUser/SelectedUser'
-import { Button } from '@/shared/ui'
+import { MyUser } from '..'
+// import { Button } from '@/shared/ui'
 
-import { ICONS } from '@shared/constants'
-import { BUTTON_TYPE, BUTTON_CLASS_NAME } from '@shared/constants'
+// import { ICONS } from '@shared/constants'
+// import { BUTTON_TYPE, BUTTON_CLASS_NAME } from '@shared/constants'
 
 import classes from './header.module.css'
 
@@ -16,7 +17,7 @@ export const Header: React.FC = () => {
       {currentDialogUser?.email ? (
         <>
           <SelectedUser currentDialogUser={currentDialogUser} />
-          <div className={classes.row}>
+          {/* <div className={classes.row}>
             <Button
               onClick={() => {}}
               buttonType={BUTTON_TYPE.ICON}
@@ -35,9 +36,12 @@ export const Header: React.FC = () => {
               iconName={ICONS.MENU}
               buttonClassName={BUTTON_CLASS_NAME.ICON}
             />
-          </div>
+          </div> */}
         </>
       ) : null}
+      <div className={classes.myUser}>
+        <MyUser />
+      </div>
     </div>
   )
 }

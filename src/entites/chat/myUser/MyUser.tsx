@@ -18,10 +18,10 @@ export const MyUser: React.FC = () => {
   }
   return (
     <Link to="/profile" className={classes.myUser} onClick={onHandlerClick}>
+      <div className={classes.name}>{userName}</div>
       <div className={classes.img}>
         <img src={avatar || img} alt="avatar" />
       </div>
-      <div className={classes.name}>{userName}</div>
     </Link>
   )
 }

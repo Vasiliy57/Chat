@@ -11,4 +11,5 @@ export const BUTTON_CLASS_NAME = {
   SEND: 'send',
   SWITCH: 'switch',
   ICON: 'icon',
+  PHONE: 'phone',
 } as const
