@@ -1,8 +1,3 @@
-.row {
-  display: flex;
-  gap: 20px;
-}
-
 .selectedUser {
   display: flex;
   align-items: center;

@@ -4,15 +4,16 @@
   justify-content: space-between;
   align-items: center;
   background-color: var(--color-bg-main);
-  border-radius: 15px;
+
   height: 100vh;
-  max-height: 740px;
+  max-height: 1368px;
   padding-right: 100px;
+  border-bottom: 10px solid var(--color-bg-dark);
 }
 
 .wrap {
   max-width: 1665px;
-  padding: 20px 0;
+  /* padding-bottom: 20px; */
   margin: 0 auto;
 
 }
@@ -23,13 +24,12 @@
 
   .main {
     padding-right: 0px;
-    border-radius: 0px;
   }
 
 }
 
 
-@media (max-height:780px) {
+/* @media (max-height:780px) {
   .main {
     max-height: 780px;
     border-radius: 0px;
@@ -40,4 +40,4 @@
     padding: 0;
 
   }
-}
+} */

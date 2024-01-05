@@ -1,6 +1,6 @@
-.dialogs {
-  margin-top: 80px;
-}
+/* .dialogs {
+  margin-top: 10px;
+} */
 
 .btnGroup {
   display: flex;
@@ -19,3 +19,9 @@
 .list {
   position: relative;
 }
+
+/* @media (max-width:780px) {
+  .dialogs {
+    margin-top: 10px;
+  }
+} */

@@ -35,7 +35,8 @@
 
 .info {
   display: flex;
-  width: 100%;
+  flex: 0 1 100%;
+  /* width: 100%; */
   justify-content: space-between;
   align-items: center;
 }
@@ -115,4 +116,64 @@
     padding: 10px 14px;
 
   }
+}
+
+@media (max-width:780px) {
+  .name {
+    max-width: 550px;
+  }
+
+  .lastMessage {
+    max-width: 550px;
+  }
+
+
+}
+
+@media (max-width:720px) {
+  .name {
+    max-width: 450px;
+  }
+
+  .lastMessage {
+    max-width: 450px;
+  }
+
+
+}
+
+@media (max-width:620px) {
+  .name {
+    max-width: 350px;
+  }
+
+  .lastMessage {
+    max-width: 350px;
+  }
+
+
+}
+
+@media (max-width:520px) {
+  .name {
+    max-width: 250px;
+  }
+
+  .lastMessage {
+    max-width: 250px;
+  }
+
+
+}
+
+@media (max-width:420px) {
+  .name {
+    max-width: 150px;
+  }
+
+  .lastMessage {
+    max-width: 150px;
+  }
+
+
 }

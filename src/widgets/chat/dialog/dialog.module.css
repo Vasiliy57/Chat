@@ -19,8 +19,8 @@
   font-weight: 600;
 }
 
-/* @media (max-width:1600px) {
+@media (max-width:780px) {
   .dialog {
-    flex: 0 1 100%;
+    display: none;
   }
-} */
+}

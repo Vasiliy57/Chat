@@ -46,3 +46,11 @@
   /* background-color: var(--color-bg-main); */
   background-color: #181818;
 }
+
+
+@media (max-width:780px) {
+  .messages {
+    padding: 0 10px 10px 10px;
+
+  }
+}

@@ -17,6 +17,7 @@ export const Dialog: React.FC = () => {
     (state) => state.chatSlice.currentDialogUser
   )
   const myUserId = useAppSelector((state) => state.ProfileReducer.user.userId)
+  const isCurrentDialogUser: boolean = !!currentDialogUser
 
   useEffect(() => {
     if (currentDialogUser?.email) {
@@ -36,7 +37,10 @@ export const Dialog: React.FC = () => {
     )
   }
   return (
-    <div className={classes.dialog}>
+    <div
+      className={classes.dialog}
+      style={isCurrentDialogUser ? { display: 'flex' } : {}}
+    >
       <Header />
       <Messages />
       <CreateMessage />

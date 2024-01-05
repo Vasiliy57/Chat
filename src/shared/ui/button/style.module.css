@@ -63,6 +63,21 @@
 }
 
 .phone img {
-  width: 2.6rem;
-  height: 2.6rem;
+  width: 3rem;
+  height: 3rem;
+}
+
+.menu img {
+  width: 3rem;
+  height: 3rem;
+}
+
+.video img {
+  width: 3rem;
+  height: 3rem;
+}
+
+.arrow img {
+  width: 3rem;
+  height: 3rem;
 }

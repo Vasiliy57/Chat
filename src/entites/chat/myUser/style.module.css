@@ -2,9 +2,13 @@
   cursor: pointer;
   /* width: 150px; */
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   gap: 20px;
+  padding: 10px 0;
+  border-top: 1px dashed #303030;
+  border-bottom: 1px dashed#303030;
+  /* border-radius: 10px; */
 }
 
 .name {
@@ -31,3 +35,9 @@
   border-radius: 50%;
 
 }
+
+/* @media (max-width:1180px) {
+  .myUser {
+    padding: 10px 0;
+  }
+} */

@@ -24,3 +24,9 @@
     padding: 10px 25px;
   }
 }
+
+@media (max-width:880px) {
+  .typeMessage {
+    padding: 5px 12px;
+  }
+}
