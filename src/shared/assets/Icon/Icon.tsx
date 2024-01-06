@@ -109,7 +109,7 @@ export const Icon: React.FC<SvgProps> = ({
           height={heightIcon}
           src={attach}
           style={styleIcon}
-          className={classes.icon}
+          className={classes.attach}
           alt="icon attach"
         />
       )
@@ -142,7 +142,7 @@ export const Icon: React.FC<SvgProps> = ({
           height={heightIcon}
           src={smile}
           style={styleIcon}
-          className={classes.icon}
+          className={classes.smile}
           alt="icon smile"
         />
       )

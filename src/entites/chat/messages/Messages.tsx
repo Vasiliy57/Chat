@@ -34,14 +34,20 @@ export const Messages: React.FC = () => {
   }, [listMessages])
 
   return (
-    <div className={classes.messages} ref={messagesElement}>
+    <div className={classes.messages} ref={messagesElement} id="scrollableDiv">
       <div className={classes.listMessages}>
         <div ref={refInView} className={classes.inView}></div>
         {listMessages ? (
           <>
             {listMessages.map((message, index) => {
-              const isMyMessage = message.email === myEmail
+              const isMyMessage =
+                message.email === myEmail ||
+                message.email.toLowerCase() === myEmail!.toLowerCase()
+
               const avatar = isMyMessage ? myAvatar : userAvatar
+              // console.log('Message Email:', message.email)
+              // console.log('MyEmail:', myEmail)
+              // console.log(message.email === myEmail)
 
               return (
                 <Message

@@ -4,7 +4,7 @@ html {
 }
 
 body {
-  min-width: 300px;
+  min-width: 320px;
   background-color: var(--color-bg-dark);
 }
 
@@ -24,4 +24,17 @@ body {
   --color-light-blue: #00A3FF;
   --color-user-name: #DADADA;
   --fs-description: 2rem;
+
+}
+
+@media (max-width:1180px) {
+  html {
+    font-size: 9px;
+  }
+}
+
+@media (max-width:880px) {
+  html {
+    font-size: 8px;
+  }
 }

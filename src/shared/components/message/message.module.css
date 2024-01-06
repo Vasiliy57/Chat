@@ -2,6 +2,7 @@
   position: relative;
   padding-left: 64px;
   margin-top: 10px;
+
 }
 
 .avatar {
@@ -27,6 +28,7 @@
 
 .content {
   margin-top: 7px;
+  margin-right: 20px;
   max-width: 564px;
   display: inline-block;
   padding: 16px 24px;
@@ -39,7 +41,10 @@
 .myMessage {
   position: relative;
   padding-right: 64px;
-  align-self: flex-end;
+  /* align-self: flex-end; */
+  display: flex;
+  flex-direction: column;
+  align-items: end;
 }
 
 .myAvatar {
@@ -66,12 +71,14 @@
 
 .myContent {
   margin-top: 7px;
+  margin-left: 20px;
   max-width: 564px;
   padding: 16px 24px;
   border: 1px solid #323232;
   background-color: var(--color-light-blue);
   border-radius: 14px 0 14px 14px;
   box-shadow: 1px 2px 6px #ffffff31;
+  text-align: right;
 }
 
 .contentImage {
@@ -83,4 +90,120 @@
   background-color: transparent;
   border: 1px solid var(--color-light-blue);
   box-shadow: none;
+}
+
+@media (max-width:1080px) {
+  .content {
+    max-width: 500px;
+  }
+
+  .myContent {
+    max-width: 500px;
+  }
+}
+
+@media (max-width:1000px) {
+  .content {
+    max-width: 420px;
+  }
+
+  .myContent {
+    max-width: 420px;
+  }
+}
+
+@media (max-width:900px) {
+  .content {
+    max-width: 330px;
+  }
+
+  .myContent {
+    max-width: 330px;
+  }
+
+}
+
+@media (max-width:810px) {
+  .content {
+    max-width: 300px;
+  }
+
+  .myContent {
+    max-width: 300px;
+  }
+
+}
+
+@media (max-width:780px) {
+  .content {
+    max-width: 80%;
+  }
+
+  .myContent {
+    max-width: 80%;
+  }
+
+}
+
+@media (max-width:655px) {
+  .content {
+    max-width: 400px;
+  }
+
+  .myContent {
+    max-width: 400px;
+  }
+}
+
+@media (max-width:555px) {
+  .content {
+    max-width: 300px;
+  }
+
+  .myContent {
+    max-width: 300px;
+  }
+
+}
+
+@media (max-width:455px) {
+  .content {
+    max-width: 250px;
+  }
+
+  .myContent {
+
+    max-width: 250px;
+  }
+
+}
+
+@media (max-width:405px) {
+  .content {
+    max-width: 230px;
+  }
+
+  .myMessage {
+    padding-right: 53px;
+  }
+
+  .message {
+    padding-left: 53px;
+  }
+
+  .myContent {
+    max-width: 230px;
+  }
+
+}
+
+@media (max-width:355px) {
+  .content {
+    max-width: 220px;
+  }
+
+  .myContent {
+    max-width: 220px;
+  }
+
 }

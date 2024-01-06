@@ -41,7 +41,7 @@ export const UserProfile: React.FC = () => {
 
   if (user) {
     return (
-      <div className={classes.profile}>
+      <div className={classes.profile}> 
         <Link
           to={Routing.CHAT}
           className={classes.btnBack}

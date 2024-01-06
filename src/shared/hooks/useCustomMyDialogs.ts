@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useAppSelector } from '.'
-import { getDatabase, onValue, ref } from 'firebase/database'
+import { onValue, ref } from 'firebase/database'
 
 import { updateListMyDialogs } from '@/firebase/users/updateListMyDialogs'
 import { IUser } from '@shared/types/IUser'
+import { dbRealTime } from '@/firebase/realTimeDataBase'
 
-const dbRealTime = getDatabase()
+// const dbRealTime = getDatabase()
 
 export const useCustomMyDialogs = (
   isMyDialogs: boolean,

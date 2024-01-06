@@ -1,14 +1,18 @@
 .myUser {
   cursor: pointer;
-  width: 150px;
+  /* width: 150px; */
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
+  padding: 10px 0;
+  border-top: 1px dashed #303030;
+  border-bottom: 1px dashed#303030;
+  /* border-radius: 10px; */
 }
 
 .name {
-  font-size: 1.8rem;
+  font-size: 2rem;
   color: var(--color-user-name);
   font-weight: 600;
   max-width: 176px;
@@ -19,8 +23,8 @@
 }
 
 .img {
-  width: 58px;
-  height: 58px;
+  width: 5.8rem;
+  height: 5.8rem;
   border-radius: 50%;
 
 }
@@ -31,3 +35,9 @@
   border-radius: 50%;
 
 }
+
+/* @media (max-width:1180px) {
+  .myUser {
+    padding: 10px 0;
+  }
+} */

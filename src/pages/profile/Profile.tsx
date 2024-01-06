@@ -134,8 +134,6 @@ export const Profile: React.FC = () => {
     <div className={classes.profile}>
       <Button
         styleBtn={styleBtnBack}
-        widthIcon="30px"
-        heightIcon="30px"
         onClick={onGoBack}
         buttonType={BUTTON_TYPE.ICON}
         iconName={ICONS.BACK}

@@ -26,7 +26,11 @@ export const Registration: React.FC = () => {
   const [repeatPassword, setRepeatPassword] = useState<string>('')
 
   const handlerUserName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUserName(e.target.value)
+    if (e.target.value.length < 14) {
+      setUserName(e.target.value)
+    } else {
+      showNotification('info', 'The maximum length has been reached!')
+    }
   }
   const handlerEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value)

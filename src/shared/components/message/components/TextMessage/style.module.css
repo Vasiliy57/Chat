@@ -5,4 +5,8 @@
   letter-spacing: .6px;
   white-space: pre-wrap;
   overflow-wrap: break-word;
+  /* -ms-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto; */
+
 }
