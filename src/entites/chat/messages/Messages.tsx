@@ -34,7 +34,7 @@ export const Messages: React.FC = () => {
   }, [listMessages])
 
   return (
-    <div className={classes.messages} ref={messagesElement}>
+    <div className={classes.messages} ref={messagesElement} id="scrollableDiv">
       <div className={classes.listMessages}>
         <div ref={refInView} className={classes.inView}></div>
         {listMessages ? (

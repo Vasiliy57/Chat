@@ -46,12 +46,12 @@ export const Dialogs: React.FC = () => {
   }
   return (
     <div className={isMyDialogs ? classes.dialogs : ''}>
-      {!isMyDialogs ? (
+      {!isMyDialogs && (
         <Search
           handlerSearchDialogUserList={handlerSearchDialogUserList}
           setIsLoading={setIsLoading}
         />
-      ) : null}
+      )}
 
       <div className={classes.btnGroup}>
         <Button
