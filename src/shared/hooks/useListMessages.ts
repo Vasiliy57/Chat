@@ -35,7 +35,7 @@ export const useListMessages = ({
   useEffect(() => {
     const queryFirstLoadMessages = query(
       ref(dbRealTime, 'messages/' + currentDialogId + '/allMessages'),
-      limitToLast(6)
+      limitToLast(10)
     )
 
     const queryMessage = query(
@@ -49,13 +49,11 @@ export const useListMessages = ({
         if (firstLoadValue) {
           const messages: IMessage[] = Object.values(firstLoadValue)
 
-          if (messages.at(-1)?.email != myEmail && myUserId && userId) {
+          if (messages[0]?.email != myEmail && myUserId && userId) {
             updateLastMessage(true, myUserId, userId)
           }
 
-          setListMessages((prev) => {
-            return prev.concat(messages)
-          })
+          setListMessages(messages.reverse())
         }
 
         onValue(queryMessage, async (snapshot) => {
@@ -65,14 +63,14 @@ export const useListMessages = ({
             (lastLoadValue && !isFirstLoadMessages.current) ||
             !firstLoadValue
           ) {
-            const message: IMessage[] = Object.values(lastLoadValue)
+            const messages: IMessage[] = Object.values(lastLoadValue)
 
-            if (message.at(-1)?.email != myEmail && myUserId && userId) {
+            if (messages[0].email != myEmail && myUserId && userId) {
               updateLastMessage(true, myUserId, userId)
             }
 
             setListMessages((prev) => {
-              return prev.concat(message)
+              return [...messages, ...prev]
             })
           }
           isFirstLoadMessages.current = false
@@ -91,7 +89,7 @@ export const useListMessages = ({
 
   useEffect(() => {
     if (inView && listMessages.length > 0) {
-      lastMessageDate.current = parseInt(listMessages[0].date)
+      lastMessageDate.current = parseInt(listMessages.at(-1)!.date)
 
       const queryLoadMessages = query(
         ref(dbRealTime, 'messages/' + currentDialogId + '/allMessages'),
@@ -104,7 +102,7 @@ export const useListMessages = ({
           const newListMessages: IMessage[] = Object.values(data.val())
 
           setListMessages((prev) => {
-            return newListMessages.concat(prev)
+            return [...prev, ...newListMessages.reverse()]
           })
         }
       })
