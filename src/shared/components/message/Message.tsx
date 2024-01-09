@@ -5,7 +5,7 @@ import { messageProps } from './type'
 import img from '@shared/assets/images/user-img.jpg'
 import classes from './message.module.css'
 
-export const MessageM: React.FC<messageProps> = ({
+const MessageM: React.FC<messageProps> = ({
   isMyMessage,
   content,
   date,
@@ -23,8 +23,6 @@ export const MessageM: React.FC<messageProps> = ({
     time: isMyMessage ? classes.myTime : classes.time,
     content: isMyMessage ? classes.myContent : classes.content,
   }
-  console.log('RENDER MESSAGE')
-
   return (
     <div className={classesName.message}>
       <img src={avatar ?? img} className={classesName.avatar} />

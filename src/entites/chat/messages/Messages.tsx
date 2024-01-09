@@ -22,6 +22,7 @@ export const Messages: React.FC = () => {
     /* Optional options */
     threshold: 0,
   })
+
   const listMessages = useListMessages({ inView, currentDialogId })
 
   return (

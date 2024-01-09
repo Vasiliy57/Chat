@@ -35,7 +35,7 @@ export const useListMessages = ({
   useEffect(() => {
     const queryFirstLoadMessages = query(
       ref(dbRealTime, 'messages/' + currentDialogId + '/allMessages'),
-      limitToLast(10)
+      limitToLast(15)
     )
 
     const queryMessage = query(
