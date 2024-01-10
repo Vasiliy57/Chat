@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { storage } from '@/firebase/storage'
 import { getDownloadURL, ref } from 'firebase/storage'
-import classes from './syle.module.css'
+import classes from './style.module.css'
 interface ImageMessageProps {
   imageId: string
 }
@@ -16,7 +16,8 @@ export const ImageMessage: React.FC<ImageMessageProps> = ({ imageId }) => {
       .catch((error) => {
         console.log(error)
       })
-  }, [])
+  }, [imageId])
+
   return (
     <div className={classes.image}>
       <img src={url} alt="image" />
