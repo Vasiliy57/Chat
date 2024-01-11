@@ -8,7 +8,7 @@ import {
 import { ICONS } from '@shared/constants'
 import { BUTTON_TYPE, BUTTON_CLASS_NAME } from '@shared/constants'
 
-import classes from './header.module.css'
+import classes from './style.module.css'
 
 export const Header: React.FC = () => {
   const currentDialogUser = useAppSelector(

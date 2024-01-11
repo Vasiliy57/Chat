@@ -1,10 +1,8 @@
 import { Link } from 'react-router-dom'
 import { ISelectedUser } from './types'
-import defaultImg from '@shared/assets/images/user-img.jpg'
-
 import { Routing } from '@shared/constants'
-
-import classes from './selectedUser.module.css'
+import defaultImg from '@shared/assets/images/user-img.jpg'
+import classes from './style.module.css'
 
 export const SelectedUser: React.FC<ISelectedUser> = ({
   currentDialogUser,

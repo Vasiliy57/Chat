@@ -3,12 +3,12 @@ import { useAppDispatch, useAppSelector } from '@shared/hooks'
 
 import { CreateMessage } from '@features/index'
 import { Header, Messages } from '@/entites/chat'
+import { showNotification } from '@shared/utils'
 
 import { getDialogId } from '@/firebase/users/getDialogId'
 import { setCurrentDialogId } from '@shared/store/chat/chat'
-import { showNotification } from '@shared/utils'
 
-import classes from './dialog.module.css'
+import classes from './style.module.css'
 
 export const Dialog: React.FC = () => {
   const dispatch = useAppDispatch()

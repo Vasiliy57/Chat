@@ -5,19 +5,19 @@ import {
   useCustomMyDialogs,
 } from '@shared/hooks'
 
+import { Search } from '..'
+import { Loader } from '@shared/components/Loader/Loader'
 import { User } from '../user/User'
 import { Button } from '@shared/ui'
 
-import { BUTTON_CLASS_NAME, BUTTON_TYPE } from '@shared/constants'
-
-import classes from './dialogs.module.css'
 import {
   setCurrentDialogId,
   setCurrentDialogUser,
 } from '@shared/store/chat/chat'
-import { Search } from '..'
+import { BUTTON_CLASS_NAME, BUTTON_TYPE } from '@shared/constants'
 import { IUser } from '@shared/types/IUser'
-import { Loader } from '@shared/components/Loader/Loader'
+
+import classes from './style.module.css'
 
 export const Dialogs: React.FC = () => {
   const dispatch = useAppDispatch()

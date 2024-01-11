@@ -1,4 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
+import { useAppSelector } from '.'
+import { IMessage } from '@/entites/chat/messages/types'
+import { showNotification } from '@shared/utils'
+
 import { dbRealTime } from '@/firebase/realTimeDataBase'
 import {
   endBefore,
@@ -10,9 +14,10 @@ import {
   query,
   ref,
 } from 'firebase/database'
-import { IMessage } from '@/entites/chat/messages/types'
+
 import { updateLastMessage } from '@/firebase/messages/updateLastMessage'
-import { useAppSelector } from '.'
+
+
 interface IUseListMessages {
   inView: boolean
   currentDialogId: string | null
@@ -44,38 +49,40 @@ export const useListMessages = ({
     )
 
     if (currentDialogId) {
-      get(queryFirstLoadMessages).then((response) => {
-        const firstLoadValue = response.val()
-        if (firstLoadValue) {
-          const messages: IMessage[] = Object.values(firstLoadValue)
+      get(queryFirstLoadMessages)
+        .then((response) => {
+          const firstLoadValue = response.val()
+          if (firstLoadValue) {
+            const messages: IMessage[] = Object.values(firstLoadValue)
 
-          if (messages[0]?.email != myEmail && myUserId && userId) {
-            updateLastMessage(true, myUserId, userId)
-          }
-
-          setListMessages(messages.reverse())
-        }
-
-        onValue(queryMessage, async (snapshot) => {
-          const lastLoadValue = await snapshot.val()
-
-          if (
-            (lastLoadValue && !isFirstLoadMessages.current) ||
-            !firstLoadValue
-          ) {
-            const messages: IMessage[] = Object.values(lastLoadValue)
-
-            if (messages[0].email != myEmail && myUserId && userId) {
+            if (messages[0]?.email != myEmail && myUserId && userId) {
               updateLastMessage(true, myUserId, userId)
             }
 
-            setListMessages((prev) => {
-              return [...messages, ...prev]
-            })
+            setListMessages(messages.reverse())
           }
-          isFirstLoadMessages.current = false
+
+          onValue(queryMessage, async (snapshot) => {
+            const lastLoadValue = await snapshot.val()
+
+            if (
+              (lastLoadValue && !isFirstLoadMessages.current) ||
+              !firstLoadValue
+            ) {
+              const messages: IMessage[] = Object.values(lastLoadValue)
+
+              if (messages[0].email != myEmail && myUserId && userId) {
+                updateLastMessage(true, myUserId, userId)
+              }
+
+              setListMessages((prev) => {
+                return [...messages, ...prev]
+              })
+            }
+            isFirstLoadMessages.current = false
+          })
         })
-      })
+        .catch((error) => showNotification('error', error.message))
 
       return () => {
         isFirstLoadMessages.current = true
@@ -97,15 +104,17 @@ export const useListMessages = ({
         limitToLast(6),
         endBefore(lastMessageDate.current)
       )
-      get(queryLoadMessages).then((data) => {
-        if (data.val()) {
-          const newListMessages: IMessage[] = Object.values(data.val())
+      get(queryLoadMessages)
+        .then((data) => {
+          if (data.val()) {
+            const newListMessages: IMessage[] = Object.values(data.val())
 
-          setListMessages((prev) => {
-            return [...prev, ...newListMessages.reverse()]
-          })
-        }
-      })
+            setListMessages((prev) => {
+              return [...prev, ...newListMessages.reverse()]
+            })
+          }
+        })
+        .catch((error) => showNotification('error', error.message))
     }
   }, [inView])
 

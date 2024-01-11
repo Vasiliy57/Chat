@@ -1,3 +1,4 @@
+import { showNotification } from '@shared/utils'
 import { usersRef } from '../fireStore'
 import { doc, setDoc } from 'firebase/firestore'
 
@@ -18,7 +19,9 @@ export const registrationUser = async (
       number: null,
       address: null,
     })
-  } catch (e) {
-    console.error('Error adding document: ', e)
+  } catch (error) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    showNotification('error', error.message)
   }
 }

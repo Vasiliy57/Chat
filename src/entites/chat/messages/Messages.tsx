@@ -4,7 +4,7 @@ import { useInView } from 'react-intersection-observer'
 
 import { Message } from '@shared/components'
 
-import classes from './messages.module.css'
+import classes from './style.module.css'
 
 export const Messages: React.FC = () => {
   const messagesElement = useRef<HTMLDivElement | null>(null)

@@ -7,11 +7,11 @@ import { Avatar } from './components/Avatar/Avatar'
 import { Button } from '@shared/ui'
 import { InfoString } from './components/InfoString/InfoString'
 import { AboutMe } from './components/AboutMe/AboutMe'
+import { showNotification } from '@shared/utils'
 
 import { logOut, setUser } from '@shared/store/profile/profileSlice'
 import { saveImage } from '@/firebase/storageImages/saveImage'
 import { getUser, updateUser } from '@/firebase/users'
-import { showNotification } from '@shared/utils'
 
 import { Routing, INFO_STRING } from '@shared/constants'
 import { BUTTON_TYPE, BUTTON_CLASS_NAME } from '@shared/constants'
