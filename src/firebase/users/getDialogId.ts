@@ -1,3 +1,4 @@
+import { showNotification } from '@shared/utils'
 import { dbRealTime } from '../realTimeDataBase'
 import { ref, child, get } from 'firebase/database'
 
@@ -18,7 +19,7 @@ export const getDialogId = async (
       }
     })
     .catch((error) => {
-      console.error(error)
+      showNotification('error', error.message)
     })
   return dialogId
 }

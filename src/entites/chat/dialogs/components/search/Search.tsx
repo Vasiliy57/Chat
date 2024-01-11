@@ -7,7 +7,7 @@ import { ICONS } from '@shared/constants'
 import { INPUT_CLASS_NAME } from '@shared/constants'
 import { SearchProps } from './types'
 
-import classes from './search.module.css'
+import classes from './style.module.css'
 
 export const Search: React.FC<SearchProps> = ({
   handlerSearchDialogUserList,

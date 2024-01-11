@@ -1,13 +1,11 @@
 import { sendMessageDataBase } from '@/firebase/messages/sendMessageDataBase'
 import imageCompression from 'browser-image-compression'
+import { showNotification } from '@shared/utils'
+import { store } from '@app/store/initialStore'
+import { uniqueId } from '@shared/utils/uniqueId'
 import { saveFile } from '@/firebase/storageImages/saveFile'
 import { addDialog } from '@/firebase/users'
-import { uniqueId } from '@shared/utils/uniqueId'
 import { setCurrentDialogId } from '@shared/store/chat/chat'
-import { store } from '@app/store/initialStore'
-import { showNotification } from '@shared/utils'
-
-// type MessageType = 'text' | 'image' | 'file'
 
 interface ReqArguments {
   content: string

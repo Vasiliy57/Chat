@@ -1,15 +1,13 @@
 import { useAppDispatch } from '@shared/hooks'
 import { useEffect } from 'react'
 import { useState } from 'react'
-
-import { ConvertEmojiContent } from '@shared/utils'
-
 import moment from 'moment'
+import { ConvertEmojiContent } from '@shared/utils'
 import { setCurrentDialogUser } from '@shared/store/chat/chat'
 import { UserProps } from './types'
 
 import userImg from '@shared/assets/images/user-img.jpg'
-import classes from './user.module.css'
+import classes from './style.module.css'
 
 export const User: React.FC<UserProps> = ({
   userName,

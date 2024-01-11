@@ -17,27 +17,47 @@
 }
 
 .text {
-  font-size: 18px;
+  font-size: 1.8rem;
   font-weight: 500;
   color: var(--color-white);
   text-align: center;
 }
 
 .link {
-  font-size: 18px;
+  font-size: 1.8rem;
   font-weight: 600;
   color: var(--color-light-blue);
   white-space: nowrap;
 }
 
-@media (max-width:560px) {
+@media (max-width:1180px) {
   .form {
-    padding: 90px 16% 135px 16%;
+    gap: 40px;
   }
 }
 
-@media (max-width:460px) {
-  .form {
-    padding: 90px 5% 135px 5%;
+@media (max-width:880px) {
+  .registration {
+    max-width: 500px;
+    margin: 30px auto;
   }
+
+  .form {
+    gap: 30px;
+    padding: 90px 70px 135px 70px;
+  }
+}
+
+@media (max-width:500px) {
+
+  .registration {
+    margin: 0 auto;
+    height: 100vh;
+  }
+
+  .form {
+    padding: 60px 15% 135px 15%;
+    border-radius: 0;
+  }
+
 }

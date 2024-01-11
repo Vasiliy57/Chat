@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useDebounce } from './useDebounce'
-import { getUsersSearch } from '@/firebase/users'
 import { showNotification } from '@shared/utils'
 import { IUser } from '@shared/types/IUser'
+import { getUsersSearch } from '@/firebase/users'
+
 
 export const useCustomSearch = (
   myUserId: string,

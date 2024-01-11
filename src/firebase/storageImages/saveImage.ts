@@ -1,9 +1,14 @@
+import { showNotification } from '@shared/utils'
 import { storage } from '../storage'
 import { ref, uploadString } from 'firebase/storage'
 
 export const saveImage = (imgUrl: string, userId: string) => {
   const storageRef = ref(storage, userId)
-  uploadString(storageRef, imgUrl, 'data_url').then(() => {
-    console.log('Uploaded a data_url string!')
-  })
+  uploadString(storageRef, imgUrl, 'data_url')
+    .then(() => {
+      console.log('Uploaded a data_url string!')
+    })
+    .catch((Error) => {
+      showNotification('error', Error.message)
+    })
 }
