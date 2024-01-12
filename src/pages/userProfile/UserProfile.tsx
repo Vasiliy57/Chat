@@ -1,15 +1,15 @@
-import { useAppDispatch } from '@shared/hooks'
 import { useEffect, useState } from 'react'
-import { getUser } from '@/firebase/users'
-import defaultImg from '@shared/assets/images/user-img.jpg'
-import classes from './style.module.css'
-import { Icon } from '@shared/assets/Icon/Icon'
-import { ICONS, Routing } from '@shared/constants'
+import { useAppDispatch } from '@shared/hooks'
 import { Link, useParams } from 'react-router-dom'
+import { Icon } from '@shared/assets/Icon/Icon'
+import { getUser } from '@/firebase/users'
 import {
   setCurrentDialogId,
   setCurrentDialogUser,
 } from '@shared/store/chat/chat'
+import { ICONS, Routing } from '@shared/constants'
+import defaultImg from '@shared/assets/images/user-img.jpg'
+import classes from './style.module.css'
 
 interface IUser {
   email: string | null

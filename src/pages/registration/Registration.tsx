@@ -3,11 +3,11 @@ import { useAppDispatch } from '@shared/hooks'
 
 import { Button, FormTitle, Input } from '@/shared/ui'
 import { Link } from 'react-router-dom'
+import { showNotification } from '@shared/utils'
 
 import { createNewUserFirebase } from '@/firebase'
 import { createDialogs, registrationUser } from '@/firebase/users'
 import { setUser } from '@/shared/store/profile'
-import { showNotification } from '@shared/utils'
 
 import {
   BUTTON_TYPE,
@@ -15,7 +15,7 @@ import {
   INPUT_CLASS_NAME,
 } from '@shared/constants'
 
-import classes from './registration.module.css'
+import classes from './style.module.css'
 
 export const Registration: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -26,16 +26,32 @@ export const Registration: React.FC = () => {
   const [repeatPassword, setRepeatPassword] = useState<string>('')
 
   const handlerUserName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUserName(e.target.value)
+    if (e.target.value.length < 12) {
+      setUserName(e.target.value)
+    } else {
+      showNotification('info', 'The maximum length has been reached!')
+    }
   }
   const handlerEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value)
+    if (e.target.value.length < 64) {
+      setEmail(e.target.value)
+    } else {
+      showNotification('info', 'The maximum length has been reached!')
+    }
   }
   const handlerPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value)
+    if (e.target.value.length < 14) {
+      setPassword(e.target.value)
+    } else {
+      showNotification('info', 'The maximum length has been reached!')
+    }
   }
   const handlerRepeatPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRepeatPassword(e.target.value)
+    if (e.target.value.length < 14) {
+      setRepeatPassword(e.target.value)
+    } else {
+      showNotification('info', 'The maximum length has been reached!')
+    }
   }
   const handlerBtnReg = () => {
     if (password === repeatPassword) {

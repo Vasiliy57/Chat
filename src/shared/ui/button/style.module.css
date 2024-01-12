@@ -59,4 +59,25 @@
   position: relative;
   margin-bottom: 10px;
   background-color: var(--color-bg-main);
+  font-size: 1.5rem;
+}
+
+.phone img {
+  width: 3rem;
+  height: 3rem;
+}
+
+.menu img {
+  width: 3rem;
+  height: 3rem;
+}
+
+.video img {
+  width: 3rem;
+  height: 3rem;
+}
+
+.arrow img {
+  width: 3rem;
+  height: 3rem;
 }

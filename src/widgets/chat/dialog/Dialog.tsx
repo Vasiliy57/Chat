@@ -3,12 +3,12 @@ import { useAppDispatch, useAppSelector } from '@shared/hooks'
 
 import { CreateMessage } from '@features/index'
 import { Header, Messages } from '@/entites/chat'
+import { showNotification } from '@shared/utils'
 
 import { getDialogId } from '@/firebase/users/getDialogId'
 import { setCurrentDialogId } from '@shared/store/chat/chat'
-import { showNotification } from '@shared/utils'
 
-import classes from './dialog.module.css'
+import classes from './style.module.css'
 
 export const Dialog: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -17,6 +17,7 @@ export const Dialog: React.FC = () => {
     (state) => state.chatSlice.currentDialogUser
   )
   const myUserId = useAppSelector((state) => state.ProfileReducer.user.userId)
+  const isCurrentDialogUser: boolean = !!currentDialogUser
 
   useEffect(() => {
     if (currentDialogUser?.email) {
@@ -36,7 +37,10 @@ export const Dialog: React.FC = () => {
     )
   }
   return (
-    <div className={classes.dialog}>
+    <div
+      className={classes.dialog}
+      style={isCurrentDialogUser ? { display: 'flex' } : {}}
+    >
       <Header />
       <Messages />
       <CreateMessage />

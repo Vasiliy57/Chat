@@ -1,3 +1,4 @@
+import { showNotification } from '@shared/utils'
 import { db } from '../fireStore'
 import { doc, getDoc } from 'firebase/firestore'
 
@@ -13,13 +14,20 @@ interface IUser {
 }
 
 export const getUser = async (userId: string): Promise<IUser | null> => {
-  const userRef = doc(db, 'users', userId)
-  const userSnap = await getDoc(userRef)
+  try {
+    const userRef = doc(db, 'users', userId)
+    const userSnap = await getDoc(userRef)
 
-  if (userSnap.exists()) {
-    return userSnap.data() as IUser
-  } else {
-    console.log('No such document!')
+    if (userSnap.exists()) {
+      return userSnap.data() as IUser
+    } else {
+      showNotification('warning', 'No such document!')
+    }
+    return null
+  } catch (error) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    showNotification('error', error.message)
+    return null
   }
-  return null
 }

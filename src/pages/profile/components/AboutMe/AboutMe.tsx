@@ -14,7 +14,7 @@ export const AboutMe: React.FC<AboutMeProps> = ({
 }) => {
   return (
     <Textarea
-      maxLength={700}
+      maxLength={400}
       textareaClassName={TEXTAREA_CLASS_NAME.ABOUT_ME}
       value={content ?? undefined}
       onChange={onHandlerTextarea}

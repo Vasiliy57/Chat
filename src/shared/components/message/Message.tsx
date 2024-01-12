@@ -1,10 +1,11 @@
-import { FileMessage, ImageMessage, TextMessage } from './components'
+import { memo } from 'react'
 import moment from 'moment'
+import { FileMessage, ImageMessage, TextMessage } from './components'
 import { messageProps } from './type'
 import img from '@shared/assets/images/user-img.jpg'
-import classes from './message.module.css'
+import classes from './style.module.css'
 
-export const Message: React.FC<messageProps> = ({
+const MessageM: React.FC<messageProps> = ({
   isMyMessage,
   content,
   date,
@@ -22,7 +23,6 @@ export const Message: React.FC<messageProps> = ({
     time: isMyMessage ? classes.myTime : classes.time,
     content: isMyMessage ? classes.myContent : classes.content,
   }
-
   return (
     <div className={classesName.message}>
       <img src={avatar ?? img} className={classesName.avatar} />
@@ -47,3 +47,4 @@ export const Message: React.FC<messageProps> = ({
     </div>
   )
 }
+export const Message = memo(MessageM)

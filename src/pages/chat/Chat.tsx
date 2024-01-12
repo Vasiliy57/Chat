@@ -1,6 +1,5 @@
 import { Dialog, MenuDialogs } from '@widgets/chat'
-import { MyUser } from '@/entites/chat'
-import classes from './main.module.css'
+import classes from './style.module.css'
 
 export const Chat: React.FC = () => {
   return (
@@ -8,7 +7,7 @@ export const Chat: React.FC = () => {
       <div className={classes.main}>
         <MenuDialogs />
         <Dialog />
-        <MyUser />
+  
       </div>
     </div>
   )

@@ -1,5 +1,4 @@
 .user {
-  padding: 12px 0;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -20,7 +19,6 @@
 
 .user-select {
   background-color: #00a2ff44;
-  padding: 12px 0;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -29,15 +27,16 @@
 }
 
 .img {
-  width: 58px;
-  height: 58px;
+  width: 5.8rem;
+  height: 5.8rem;
   border-radius: 50%;
   margin-right: 20px;
 }
 
 .info {
   display: flex;
-  width: 100%;
+  flex: 0 1 100%;
+  /* width: 100%; */
   justify-content: space-between;
   align-items: center;
 }
@@ -96,4 +95,85 @@
   font-size: 1.6rem;
   font-style: italic;
   color: #797979;
+}
+
+
+@media (max-width:1180px) {
+  .user {
+    padding: 10px 14px;
+  }
+
+  .name {
+    max-width: 115px;
+  }
+
+  .lastMessage {
+    max-width: 115px;
+  }
+
+  .user-select {
+
+    padding: 10px 14px;
+
+  }
+}
+
+@media (max-width:780px) {
+  .name {
+    max-width: 550px;
+  }
+
+  .lastMessage {
+    max-width: 550px;
+  }
+
+
+}
+
+@media (max-width:720px) {
+  .name {
+    max-width: 450px;
+  }
+
+  .lastMessage {
+    max-width: 450px;
+  }
+
+
+}
+
+@media (max-width:620px) {
+  .name {
+    max-width: 350px;
+  }
+
+  .lastMessage {
+    max-width: 350px;
+  }
+
+
+}
+
+@media (max-width:520px) {
+  .name {
+    max-width: 250px;
+  }
+
+  .lastMessage {
+    max-width: 250px;
+  }
+
+
+}
+
+@media (max-width:420px) {
+  .name {
+    max-width: 150px;
+  }
+
+  .lastMessage {
+    max-width: 150px;
+  }
+
+
 }

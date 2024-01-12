@@ -3,26 +3,24 @@ import { useAppSelector, useCustomSearch } from '@shared/hooks'
 
 import { Input } from '@/shared/ui'
 import { Icon } from '@shared/assets/Icon/Icon'
-
 import { ICONS } from '@shared/constants'
 import { INPUT_CLASS_NAME } from '@shared/constants'
-import { IUser } from '@pages/types'
+import { SearchProps } from './types'
 
-import classes from './search.module.css'
+import classes from './style.module.css'
 
-interface SearchProps {
-  setSearchDialogUserList: (users: IUser[]) => void
-}
-
-export const Search: React.FC<SearchProps> = ({ setSearchDialogUserList }) => {
+export const Search: React.FC<SearchProps> = ({
+  handlerSearchDialogUserList,
+  setIsLoading,
+}) => {
   const myUserId = useAppSelector((state) => state.ProfileReducer.user.userId)
   const [value, setValue] = useState<string>('')
 
-  const foundUsers = useCustomSearch(myUserId!, value)
+  const foundUsers = useCustomSearch(myUserId!, value, setIsLoading)
 
   useEffect(() => {
-    setSearchDialogUserList(foundUsers)
-    return () => setSearchDialogUserList([])
+    handlerSearchDialogUserList(foundUsers)
+    return () => handlerSearchDialogUserList([])
   }, [foundUsers])
 
   const onHandlerInput = (e: React.ChangeEvent<HTMLInputElement>) => {

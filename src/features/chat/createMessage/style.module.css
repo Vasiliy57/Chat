@@ -1,9 +1,10 @@
 .typeMessage {
   background-color: var(--color-bg-main);
-  padding: 21px 50px;
+  padding: 21px 25px;
   display: flex;
   position: relative;
   border-top: 1px solid #303030;
+  border-right: 1px solid #303030;
 }
 
 
@@ -16,4 +17,16 @@
   display: flex;
   gap: 20px;
   align-items: center;
+}
+
+@media (max-width:1180px) {
+  .typeMessage {
+    padding: 10px 25px;
+  }
+}
+
+@media (max-width:880px) {
+  .typeMessage {
+    padding: 5px 12px;
+  }
 }

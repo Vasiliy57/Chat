@@ -1,6 +1,6 @@
 import { Icon } from '@shared/assets/Icon/Icon'
 import { ICONS } from '@shared/constants'
-import classes from './logo.module.css'
+import classes from './style.module.css'
 
 export const Logo: React.FC = () => {
   return (

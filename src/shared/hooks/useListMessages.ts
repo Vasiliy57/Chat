@@ -1,4 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
+import { useAppSelector } from '.'
+import { IMessage } from '@/entites/chat/messages/types'
+import { showNotification } from '@shared/utils'
+
 import { dbRealTime } from '@/firebase/realTimeDataBase'
 import {
   endBefore,
@@ -10,9 +14,10 @@ import {
   query,
   ref,
 } from 'firebase/database'
-import { IMessage } from '@/entites/chat/messages/types'
+
 import { updateLastMessage } from '@/firebase/messages/updateLastMessage'
-import { useAppSelector } from '.'
+
+
 interface IUseListMessages {
   inView: boolean
   currentDialogId: string | null
@@ -35,7 +40,7 @@ export const useListMessages = ({
   useEffect(() => {
     const queryFirstLoadMessages = query(
       ref(dbRealTime, 'messages/' + currentDialogId + '/allMessages'),
-      limitToLast(6)
+      limitToLast(15)
     )
 
     const queryMessage = query(
@@ -44,40 +49,40 @@ export const useListMessages = ({
     )
 
     if (currentDialogId) {
-      get(queryFirstLoadMessages).then((response) => {
-        const firstLoadValue = response.val()
-        if (firstLoadValue) {
-          const messages: IMessage[] = Object.values(firstLoadValue)
+      get(queryFirstLoadMessages)
+        .then((response) => {
+          const firstLoadValue = response.val()
+          if (firstLoadValue) {
+            const messages: IMessage[] = Object.values(firstLoadValue)
 
-          if (messages.at(-1)?.email != myEmail && myUserId && userId) {
-            updateLastMessage(true, myUserId, userId)
-          }
-
-          setListMessages((prev) => {
-            return prev.concat(messages)
-          })
-        }
-
-        onValue(queryMessage, async (snapshot) => {
-          const lastLoadValue = await snapshot.val()
-
-          if (
-            (lastLoadValue && !isFirstLoadMessages.current) ||
-            !firstLoadValue
-          ) {
-            const message: IMessage[] = Object.values(lastLoadValue)
-
-            if (message.at(-1)?.email != myEmail && myUserId && userId) {
+            if (messages[0]?.email != myEmail && myUserId && userId) {
               updateLastMessage(true, myUserId, userId)
             }
 
-            setListMessages((prev) => {
-              return prev.concat(message)
-            })
+            setListMessages(messages.reverse())
           }
-          isFirstLoadMessages.current = false
+
+          onValue(queryMessage, async (snapshot) => {
+            const lastLoadValue = await snapshot.val()
+
+            if (
+              (lastLoadValue && !isFirstLoadMessages.current) ||
+              !firstLoadValue
+            ) {
+              const messages: IMessage[] = Object.values(lastLoadValue)
+
+              if (messages[0].email != myEmail && myUserId && userId) {
+                updateLastMessage(true, myUserId, userId)
+              }
+
+              setListMessages((prev) => {
+                return [...messages, ...prev]
+              })
+            }
+            isFirstLoadMessages.current = false
+          })
         })
-      })
+        .catch((error) => showNotification('error', error.message))
 
       return () => {
         isFirstLoadMessages.current = true
@@ -91,7 +96,7 @@ export const useListMessages = ({
 
   useEffect(() => {
     if (inView && listMessages.length > 0) {
-      lastMessageDate.current = parseInt(listMessages[0].date)
+      lastMessageDate.current = parseInt(listMessages.at(-1)!.date)
 
       const queryLoadMessages = query(
         ref(dbRealTime, 'messages/' + currentDialogId + '/allMessages'),
@@ -99,15 +104,17 @@ export const useListMessages = ({
         limitToLast(6),
         endBefore(lastMessageDate.current)
       )
-      get(queryLoadMessages).then((data) => {
-        if (data.val()) {
-          const newListMessages: IMessage[] = Object.values(data.val())
+      get(queryLoadMessages)
+        .then((data) => {
+          if (data.val()) {
+            const newListMessages: IMessage[] = Object.values(data.val())
 
-          setListMessages((prev) => {
-            return newListMessages.concat(prev)
-          })
-        }
-      })
+            setListMessages((prev) => {
+              return [...prev, ...newListMessages.reverse()]
+            })
+          }
+        })
+        .catch((error) => showNotification('error', error.message))
     }
   }, [inView])
 

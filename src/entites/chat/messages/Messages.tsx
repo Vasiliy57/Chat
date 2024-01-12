@@ -1,15 +1,13 @@
-import { useEffect } from 'react'
 import { useRef } from 'react'
 import { useAppSelector, useListMessages } from '@shared/hooks'
 import { useInView } from 'react-intersection-observer'
 
 import { Message } from '@shared/components'
 
-import classes from './messages.module.css'
+import classes from './style.module.css'
 
 export const Messages: React.FC = () => {
   const messagesElement = useRef<HTMLDivElement | null>(null)
-  const heightElementMessages = useRef<number>(0)
 
   const myEmail = useAppSelector((state) => state.ProfileReducer.user.email)
   const currentDialogId = useAppSelector(
@@ -24,23 +22,19 @@ export const Messages: React.FC = () => {
     /* Optional options */
     threshold: 0,
   })
+
   const listMessages = useListMessages({ inView, currentDialogId })
 
-  useEffect(() => {
-    const heightScrollDown =
-      messagesElement.current!.scrollHeight - heightElementMessages.current
-    messagesElement.current!.scrollTop += heightScrollDown
-    heightElementMessages.current = messagesElement.current?.scrollHeight ?? 0
-  }, [listMessages])
-
   return (
-    <div className={classes.messages} ref={messagesElement}>
+    <div className={classes.messages} ref={messagesElement} id="scrollableDiv">
       <div className={classes.listMessages}>
-        <div ref={refInView} className={classes.inView}></div>
         {listMessages ? (
           <>
-            {listMessages.map((message, index) => {
-              const isMyMessage = message.email === myEmail
+            {listMessages.map((message) => {
+              const isMyMessage =
+                message.email === myEmail ||
+                message.email.toLowerCase() === myEmail!.toLowerCase()
+
               const avatar = isMyMessage ? myAvatar : userAvatar
 
               return (
@@ -52,7 +46,7 @@ export const Messages: React.FC = () => {
                   typeMessage={message.type}
                   userName={message.userName}
                   smileDetector={message.smileDetector}
-                  key={index}
+                  key={message.date}
                   id={message.id}
                 />
               )
@@ -63,6 +57,7 @@ export const Messages: React.FC = () => {
             You dont have any messages yet
           </div>
         )}
+        <div ref={refInView} className={classes.inView}></div>
       </div>
     </div>
   )
