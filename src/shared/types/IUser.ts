@@ -11,7 +11,7 @@ interface ILastMessage {
 export interface IUser {
   userName: string
   email: string
-  img: string | null
+  // img: string | null
   userId: string
   avatar: string | null
   lastMessage?: ILastMessage
