@@ -35,6 +35,7 @@
 //   )
 // }
 import { storage } from '@/firebase/storage'
+import { showNotification } from '@shared/utils'
 import { getDownloadURL, ref } from 'firebase/storage'
 
 import fileImg from './file.png'
@@ -52,18 +53,16 @@ export const FileMessage: React.FC<FileMessageProps> = ({
   const onHandlerDownload = () => {
     getDownloadURL(ref(storage, fileId))
       .then((url) => {
-        console.log(url)
-
         const xhr = new XMLHttpRequest()
         xhr.responseType = 'blob'
-        xhr.onload = (event) => {
-          const blob = xhr.response
-        }
+        // xhr.onload = () => {
+        //   const blob = xhr.response
+        // }
         xhr.open('GET', url)
         xhr.send()
       })
-      .catch((error) => {
-        console.log(error)
+      .catch((Error) => {
+        showNotification('error', Error.message)
       })
   }
 
@@ -74,4 +73,3 @@ export const FileMessage: React.FC<FileMessageProps> = ({
     </div>
   )
 }
-//https://firebasestorage.googleapis.com/v0/b/messenger-7a8c6.appspot.com
