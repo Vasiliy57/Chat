@@ -84,8 +84,12 @@ export const preActionSendMessage = async (
             props.userId,
             fileId
           )
-        } else {
+        } else if (
+          props.file.type === 'text/plain' ||
+          props.file.type === 'application/pdf'
+        ) {
           await saveFile(props.file, fileId)
+
           await sendMessageDataBase(
             props.arguments.content,
             'file',
@@ -96,6 +100,11 @@ export const preActionSendMessage = async (
             props.myUserId,
             props.userId,
             fileId
+          )
+        } else {
+          showNotification(
+            'warning',
+            'Currently, only the format files is  .txt and .pdf, and images!'
           )
         }
       }
