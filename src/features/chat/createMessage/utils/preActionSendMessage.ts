@@ -62,7 +62,8 @@ export const preActionSendMessage = async (
       return
     case 'file':
       {
-        const fileId = uniqueId()
+        const fileId = uniqueId() + '.' + props.file.name.split('.').at(-1)
+
         if (/^image/.test(props.file.type)) {
           const options = {
             maxSizeMB: 1,
@@ -84,10 +85,7 @@ export const preActionSendMessage = async (
             props.userId,
             fileId
           )
-        } else if (
-          props.file.type === 'text/plain' ||
-          props.file.type === 'application/pdf'
-        ) {
+        } else {
           await saveFile(props.file, fileId)
 
           await sendMessageDataBase(
@@ -100,11 +98,6 @@ export const preActionSendMessage = async (
             props.myUserId,
             props.userId,
             fileId
-          )
-        } else {
-          showNotification(
-            'warning',
-            'Currently, only the format files is  .txt and .pdf, and images!'
           )
         }
       }
